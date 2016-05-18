@@ -5,12 +5,26 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.5.5",
+    "angular-ui-router": "^0.3.0",
+    "bootstrap": "^3.3.6",
     "express": "^4.13.4",
-    "mongoose": "^4.4.17"
+    "install": "^0.7.3",
+    "jade": "^1.11.0",
+    "mobile-angular-ui": "^1.2.1",
+    "mongoose": "^4.4.17",
+    "npm": "^3.9.0",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0"
   }
 }
