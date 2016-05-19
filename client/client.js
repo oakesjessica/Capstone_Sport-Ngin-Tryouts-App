@@ -7,7 +7,12 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
-    
+    .when('/tryoutManagement', {
+      templateUrl: '/app/view/',
+      controller: 'tryoutManagementController',
+      controllerAs: 'tryout',
+    })
+
   $locationProvider.html5Mode(true);
 }]);
 
