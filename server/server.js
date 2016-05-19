@@ -2,7 +2,10 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var router = require('./routes/router');
-
+var morgan = require('morgan');
+//config
+app.use(morgan('dev'));
+app.use(express.static('server/public'));
 // Router
 app.use('/', router);
 

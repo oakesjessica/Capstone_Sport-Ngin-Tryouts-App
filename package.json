@@ -11,13 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.5",
-    "angular-ui-router": "^0.3.0",
+    "angular-route": "^1.5.5",
     "bootstrap": "^3.3.6",
     "express": "^4.13.4",
     "install": "^0.7.3",
     "jade": "^1.11.0",
     "mobile-angular-ui": "^1.2.1",
     "mongoose": "^4.4.17",
+    "morgan": "^1.7.0",
     "npm": "^3.9.0",
     "request": "^2.72.0"
   },
