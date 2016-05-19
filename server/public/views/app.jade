@@ -1,12 +1,13 @@
 doctype html
-html(ng-app="tryoutApp")
+html(ng-app="tryoutsApp")
   head
     title Sport Ngin Tryouts
+    base(href="/")
     script(src="vendor/angular/angular.min.js")
     script(src="vendor/angular-route/angular-route.min.js")
+    script(src="assets/js/client.min.js")
     link(rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css")
     link(rel="stylesheet" href="assets/css/style.min.css")
-    base(href="/")
   body
     h1 Hello
     div(ng-view)
