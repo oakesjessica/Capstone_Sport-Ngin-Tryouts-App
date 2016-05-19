@@ -1,4 +1,4 @@
-var app = angular.module('tryoutsApp', ['ngRoute']);
+var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
@@ -7,7 +7,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
-    
+
   $locationProvider.html5Mode(true);
 }]);
 
