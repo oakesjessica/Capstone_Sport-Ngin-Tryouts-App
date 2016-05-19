@@ -7,9 +7,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
+    
   $locationProvider.html5Mode(true);
 }]);
 
-app.controller('LoginController', function() {
-  
-})
+app.controller('LoginController', ['$http', function($http){
+
+}])
