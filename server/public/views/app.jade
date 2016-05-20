@@ -30,7 +30,7 @@ html(ng-app="tryoutsApp")
               i(class="fa fa-chevron-right pull-right")
           
 
-    main(class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')")
+    main(class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')")
                 
       // Menu    
       div(class="navbar navbar-app navbar-absolute-top")
