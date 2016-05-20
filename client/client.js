@@ -1,4 +1,4 @@
-var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui']);
+var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-angular-ui.gestures']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
