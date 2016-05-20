@@ -15,7 +15,7 @@ html(ng-app="tryoutsApp")
     link(rel="stylesheet" href="vendor/mobile-angular-ui/dist/css/mobile-angular-ui-desktop.min.css")
     link(rel="stylesheet" href="vendor/mobile-angular-ui/dist/css/mobile-angular-ui-hover.min.css")
     link(rel="stylesheet" href="assets/css/style.min.css")
-  body
+  body(prevent-touchmove-defaults)
     
     // Sidebar
     div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
@@ -30,11 +30,13 @@ html(ng-app="tryoutsApp")
               i(class="fa fa-chevron-right pull-right")
           
 
-    main.app
+    main(class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')")
                 
       // Menu    
       div(class="navbar navbar-app navbar-absolute-top")
         div.container-fluid
+        div(class="navbar-brand navbar-brand-center") Tryouts
+
         div(class="btn-group pull-left")
           div(ui-toggle='uiSidebarLeft' class="btn btn-navbar sidebar-toggle")
             i(class="fa fa-bars")
