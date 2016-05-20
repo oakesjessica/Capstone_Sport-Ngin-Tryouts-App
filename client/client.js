@@ -17,5 +17,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 }]);
 
 app.controller('LoginController', ['$http', function($http){
+  var lc = this;
 
+  lc.SNLogin = function() {
+    console.log('button clicked');
+  };  //  SNLogin
 }])
