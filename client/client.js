@@ -8,7 +8,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controllerAs: 'login',
     })
     .when('/tryoutManagement', {
-      templateUrl: '/app/view/',
+      templateUrl: '/app/view/tryoutManagement',
       controller: 'tryoutManagementController',
       controllerAs: 'tryout',
     })
