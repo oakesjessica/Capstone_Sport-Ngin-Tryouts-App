@@ -1,13 +1,16 @@
 require('dotenv').config();
 var express = require('express');
-var path = require('path');
 var app = express();
-var morgan = require('morgan');
-var mongoose = require('mongoose');
 var session = require('express-session');
+var mongoose = require('mongoose');
+var morgan = require('morgan');
+var path = require('path');
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth2').Strategy;
+var request = require('request');
+
 var router = require('./routes/router');
+var User = require('../models/user');
 
 ////////////////////////////////////////////////////////////////////
 //MongoDB
@@ -36,18 +39,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {maxAge: 600000, secure: false}
 }));
-// passport.serializeUser(function(user, done){
-//   done(null, user.id);
-// });
-// passport.deserializeUser(function(id, done){
-//   User.findById(id, function(err, user){
-//     if(err){
-//       done(err)
-//     } else{
-//       done(null, user);
-//     }
-//   });
-// });
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -56,13 +48,19 @@ passport.use(new OAuth2Strategy({
     tokenURL: 'https://api-user.ngin.com/oauth/token',
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/sportngin/callback"
+    callbackURL: 'http://localhost:3000/auth/sportngin/callback'
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ exampleId: profile.id }, function (err, user) {
-      return cb(err, user);
+    User.findOne({ '_id': profile.id }, function (err, user) {
+      console.log(accessToken, refreshToken, "profile", profile, "id", profile.id, "cb", cb);
+      if(err){
+        console.log(err);
+      } else if(user==""){
+        //  Code here, add user to database
+      } else {
+        return cb(err, user);
+      }
     });
-    console.log(accessToken, refreshToken, profile, cb);
   }
 ));
 
