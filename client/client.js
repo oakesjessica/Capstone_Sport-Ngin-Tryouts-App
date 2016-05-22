@@ -7,9 +7,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
-    .when('/tryoutManagement', {
-      templateUrl: '/app/view/tryoutManagement',
-      controller: 'tryoutManagementController',
+    .when('/management', {
+      templateUrl: '/app/view/management',
+      controller: 'TryoutManagementController',
       controllerAs: 'tryout',
     })
 
@@ -25,4 +25,9 @@ app.controller('LoginController', ['$http', function($http){
     //   console.log(response);
     // }); //  $http.get
   };  //  SNLogin
+}])
+app.controller('TryoutManagementController', ['$http', function($http){
+  var lc = this;
+
+
 }])
