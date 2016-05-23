@@ -85,8 +85,7 @@ passport.use(new OAuth2Strategy({
            console.log('body', body)
            var newUser = {};
            User.findOne({ 'nginId': body.metadata.current_user.id }, function (err, user) {
-             console.log('HELLO!!!!!')
-             console.log('USER!!!!!!!',user);
+             console.log('user',user);
              if(err){
                console.log(err);
              } else if(user=="" || user == null){
