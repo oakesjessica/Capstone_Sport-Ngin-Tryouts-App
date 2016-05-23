@@ -114,7 +114,6 @@ passport.use(new OAuth2Strategy({
     })
 
 
->>>>>>> 9893ff27061abeed6424ca222bd2c7a471debf04
   } //  function(accessToken)
 )); //  passport.use
 
