@@ -15,7 +15,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'TryoutManagementController',
       controllerAs: 'tryout',
     })
-    .when('/app/view/information', {
+    .when('/information', {
+      templateUrl: '/app/view/information',
       controller: 'TryoutInputController',
       controllerAs: 'input'
     });
@@ -38,18 +39,17 @@ app.controller('LoginController', ['$http', function($http){
   };  //  SNLogin
 }]);  //  LoginController
 
-
 app.controller('TryoutInputController', function() {
   var tic = this;
-  var categoryNum = 1;
+  var num = 1;
   tic.tryout = {};
 
   console.log('inputcontroller online');
 
-  tic.addCategory = function() {
-    console.log('add');
-    categoryNum += 1;
-    tic.tryout.fields.push({});
+  tic.addFields = function() {
+    num += 1;
+    console.log('add', num);
+    // tic.tryout.fields.push({});
   };  //  addCategory
 
   tic.submitInfo = function() {
@@ -58,5 +58,5 @@ app.controller('TryoutInputController', function() {
 }); //  TryoutInputController
 
 app.controller('TryoutManagementController', ['$http', function($http){
-  var lc = this;
+  var tmc = this;
 }]);  //  tryoutManagementController

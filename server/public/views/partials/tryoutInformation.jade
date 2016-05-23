@@ -1,7 +1,7 @@
 div.container-fluid
   h1(class="text-center") Tryout Information
   
-  form(role="form" ng-submit="input.submitInfo()")
+  form(role="form")
     div(class="form-group")
       label(for="title") Tryout Title
       input(class="form-control" type="text" name="title" placeholder="Enter Tryout Title" ng-model="tryout.title")
@@ -9,7 +9,9 @@ div.container-fluid
     div(class="form-group")
       label(for="category") Score category
       input(class="form-control" type="text" name="category" placeholder="Enter category" ng-model="tryout")
-      button(class="btn btn-sm center-block" ng-click="input.addFields()") i(class="fa fa-plus")
-
-    div(class="form-group")
-      input(type="submit" class="btn btn-lg")
+      button(class="btn btn-sm center-block" ng-click="input.addFields()" title="Add Another Category")
+        i(class="fa fa-2x fa-plus")
+        
+  
+  input(type="button" class="btn btn-md" ng-click="input.saveInfo()" value="Save" title="Save")
+  input(type="submit" class="text-center btn btn-md" ng-click="input.submitInfo()" value="Save and Continue" title="Submit")

@@ -57,12 +57,13 @@ passport.use(new OAuth2Strategy({
     var url = "http://api-user.ngin.com/oauth/me?access_token=" + accessToken;
     // console.log(url);
 
-    var options = {}
+    var options = {};
 
     request.get(url, function(err, response, body){
       console.log('body', body);
       console.log('code', response.statusCode);
-    })
+    });
+
     User.findOne({ '_id': profile.id }, function (err, user) {
       console.log(accessToken, refreshToken, "profile", profile, "id", profile.id, "cb", cb, 'fifth', fifth);
       if(err){
@@ -87,4 +88,4 @@ app.use('/', router);
 var server = app.listen(process.env.PORT || 3000, function(){
   var port = server.address().port;
   console.log('Listening on port', port);
-})
+});
