@@ -1,6 +1,15 @@
 div.container-fluid
   h1(class="text-center") Tryout Information
+  
+  form(role="form" ng-submit="input.submitInfo()")
+    div(class="form-group")
+      label(for="title") Tryout Title
+      input(class="form-control" type="text" name="title" placeholder="Enter Tryout Title" ng-model="tryout.title")
 
-  div(class="form-group")
-    label(for="title") Tryout Title
-    input(class="form-control" type="text")
+    div(class="form-group")
+      label(for="category") Score category
+      input(class="form-control" type="text" name="category" placeholder="Enter category" ng-model="tryout")
+      button(class="btn btn-sm center-block" ng-click="input.addFields()") i(class="fa fa-plus")
+
+    div(class="form-group")
+      input(type="submit" class="btn btn-lg")

@@ -1,5 +1,8 @@
 var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-angular-ui.gestures']);
 
+//////////////////////////////////////////////////////////////////////////////////
+//  Config
+//////////////////////////////////////////////////////////////////////////////////
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
@@ -12,12 +15,20 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'tryoutManagementController',
       controllerAs: 'tryout',
     })
+    .when('/app/view/information', {
+      controller: 'TryoutInputController',
+      controllerAs: 'input'
+    });
 
   $locationProvider.html5Mode(true);
-}]);
+}]);  //  app.config
 
+//////////////////////////////////////////////////////////////////////////////////
+//  Controllers
+//////////////////////////////////////////////////////////////////////////////////
 app.controller('LoginController', ['$http', function($http){
   var lc = this;
+  console.log('login');
 
   lc.SNLogin = function() {
     console.log('button clicked');
@@ -25,4 +36,23 @@ app.controller('LoginController', ['$http', function($http){
     //   console.log(response);
     // }); //  $http.get
   };  //  SNLogin
-}])
+}]);  //  LoginController
+
+
+app.controller('TryoutInputController', function() {
+  var tic = this;
+  var categoryNum = 1;
+  tic.tryout = {};
+
+  console.log('inputcontroller online');
+
+  tic.addCategory = function() {
+    console.log('add');
+    categoryNum += 1;
+    tic.tryout.fields.push({});
+  };  //  addCategory
+
+  tic.submitInfo = function() {
+    console.log('submit');
+  };
+});
