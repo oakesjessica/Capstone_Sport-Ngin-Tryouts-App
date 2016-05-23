@@ -41,6 +41,19 @@ app.use(session({
   cookie: {maxAge: 6000000, secure: false}
 }));
 
+passport.serializeUser(function(user, done){
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done){
+  User.findById(id, function(err, user){
+    if(err){
+      done(err)
+    } else{
+      done(null, user);
+    }
+  });
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
