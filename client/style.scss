@@ -35,8 +35,34 @@ $gray-light: #D4D9DC;
 $gray-xlight: #F2F3F4;
 $gray-xxlight: #FBFBFC;
 $white: #FFF;
+$highlight: #13769C;
+//$highlight-light: #13769C //  6%
+$highlight-light-FFF: #EDFEF6;  //on #FFF
 $success: #13AA37;
-
+//$success-light: #13AA37 //  6%
+$success-light-FFF: #F1FDF4;  //  on #FFF
+$warn: #EAA62F;
+//warn-light: #EAA62F //  6%
+$warn-light-FFF: #FEFBF5; //  on #FFF
+$alert: #EA322F;
+// $alert-light: #EA322F  //  6%
+$alert-light-FFF: #FEF5F5;  //  on #FFF
+$content-inverse: #FFFFFF;
+// $content-inverse-light: #FFFFFF  //  70%
+$content-inverse-light-000: #BDBEBF;  //  on #000
+// $content-inverse-xlight: #FFFFFF //  30%
+$content-inverse-xlight-000: #65686B;  //  on #000
+// $content-inverse-xxlight:  #FFFFFF //  12%
+$content-inverse-xxlight: #3D4244;  //  on #000
+$content: #23282B;
+// $content-light: #23282B;  //  70%
+$content-light-FFF: #65686A; //  on #FFF
+// $content-xlight: #23282B; //  30%
+$content-xlight-FFF: #BDBEBF; //  on #FFF
+// $content-xxlight: #23282B;  //  12%
+$content-xxlight-FFF: #E4E5E5;  //  on #FFF
+// $content-xxxlight: #23282B;  //  6%
+$content-xxxlight-FFF: #F2F2F3; //  on #FFF
 
 body {
   font-family: 'Open Sans', sans-serif;

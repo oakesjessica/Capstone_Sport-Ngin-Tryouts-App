@@ -12,7 +12,7 @@ router.get('/', function(req, res){
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
-})
+});
 
 
 router.get('/information', function(req, res) {
