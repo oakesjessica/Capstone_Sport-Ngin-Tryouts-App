@@ -1,13 +1,16 @@
 require('dotenv').config();
 var express = require('express');
-var path = require('path');
 var app = express();
-var morgan = require('morgan');
-var mongoose = require('mongoose');
 var session = require('express-session');
+var mongoose = require('mongoose');
+var morgan = require('morgan');
+var path = require('path');
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth2').Strategy;
+var request = require('request');
+var bodyParser = require('body-parser');
 var router = require('./routes/router');
+var User = require('../models/user');
 
 ////////////////////////////////////////////////////////////////////
 //MongoDB
@@ -26,7 +29,8 @@ mongoDB.once('open', function(){
 ////////////////////////////////////////////////////////////////////
 app.use(morgan('dev'));
 app.use(express.static('server/public'));
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 ////////////////////////////////////////////////////////////////////
 //Passport
 ////////////////////////////////////////////////////////////////////
@@ -34,20 +38,22 @@ app.use(session({
   secret: 'sportNgin',
   resave: true,
   saveUninitialized: false,
-  cookie: {maxAge: 600000, secure: false}
+  cookie: {maxAge: 6000000, secure: false}
 }));
-// passport.serializeUser(function(user, done){
-//   done(null, user.id);
-// });
-// passport.deserializeUser(function(id, done){
-//   User.findById(id, function(err, user){
-//     if(err){
-//       done(err)
-//     } else{
-//       done(null, user);
-//     }
-//   });
-// });
+
+passport.serializeUser(function(user, done){
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done){
+  User.findById(id, function(err, user){
+    if(err){
+      done(err)
+    } else{
+      done(null, user);
+    }
+  });
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -56,17 +62,62 @@ passport.use(new OAuth2Strategy({
     tokenURL: 'https://api-user.ngin.com/oauth/token',
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/sportngin/callback"
+    callbackURL: 'http://localhost:3000/auth/sportngin/callback'
   },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ exampleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-    console.log(accessToken, refreshToken, profile, cb);
-  }
-));
+  function(accessToken, refreshToken, profile, fourth, cb) {
+    // console.log('profile', profile);
+    console.log('accessToken', accessToken, 'refreshToken', refreshToken, 'profile', profile, 'fourth', fourth, 'cb', cb);
+    // console.log('profile.access_token', profile.access_token);
+    var url = "http://api-user.ngin.com/oauth/me?access_token=" + profile.access_token;
+    // console.log(url);
 
-////////////////////////////////////////////////////////////////////
+    var options = {json: true};
+
+    options.url = url;
+
+    console.log(url);
+
+    request.get(options, function(err, response, body){
+      // console.log('body', body);
+      // console.log('code', response.statusCode);
+      // console.log('headers', response.headers)
+         if(!err && response.statusCode == 200){
+           console.log('body', body)
+           var newUser = {};
+           User.findOne({ 'nginId': body.metadata.current_user.id }, function (err, user) {
+             console.log('user',user);
+             if(err){
+               console.log(err);
+             } else if(user=="" || user == null){
+               //  Code here, add user to database
+               newUser = new User({
+                 username: body.metadata.current_user.user_name,
+                 first_name: body.metadata.current_user.first_name,
+                 last_name: body.metadata.current_user.last_name,
+                 nginId: body.metadata.current_user.id
+               });
+               newUser.save(function(err){
+                 if(err){
+                   console.log('Issue saving to database with error', err);
+                   return cb(err, user);
+                 } else {
+                   console.log('user saved successfully');
+                   return cb(err, user);
+                 }
+               })
+             } else {
+               return cb(err, user);
+             }
+           });
+         }
+    //   // console.log('code', response.data);
+    })
+
+
+  } //  function(accessToken)
+)); //  passport.use
+
+///////////////////////////////////////// ///////////////////////////
 //Routers
 ////////////////////////////////////////////////////////////////////
 app.use('/', router);

@@ -3,15 +3,20 @@ var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '/app/view/login',
+      templateUrl: '/app/view/',
       controller: 'LoginController',
       controllerAs: 'login',
     })
-    .when('/tryoutManagement', {
-      templateUrl: '/app/view/tryoutManagement',
-      controller: 'tryoutManagementController',
-      controllerAs: 'tryout',
-    })
+    .when('/logout', {
+      templateUrl: '/app/view/',
+      controller: 'LogoutController',
+      controllerAs: 'logout'
+    });
+    // .when('/management', {
+    //   templateUrl: '/app/view/management',
+    //   controller: 'TryoutManagementController',
+    //   controllerAs: 'tryout',
+    // })
 
   $locationProvider.html5Mode(true);
 }]);
@@ -21,5 +26,33 @@ app.controller('LoginController', ['$http', function($http){
 
   lc.SNLogin = function() {
     console.log('button clicked');
+    // $http.get('/auth/sportngin/callback').then(function(response) {
+    //   console.log(response);
+    // }); //  $http.get
   };  //  SNLogin
+}])
+app.controller('TryoutManagementController', ['$http', function($http){
+  var lc = this;
+
+
+}]);
+
+app.controller('LogoutController', ['UserService', '$templateCache','$location', function(UserService, $templateCache, $location) {
+  var vm = this;
+
+  // Remove cached page
+  $templateCache.removeAll();
+
+  // Check if user is logged in
+  UserService.isAuthenticated(function(status) {
+    if (status == true) {
+      UserService.logout(function() {
+        // Redirect
+        $location.path('/');
+      });
+    } else {
+      // Redirect
+      $location.path('/');
+    }
+  })
 }])
