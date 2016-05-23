@@ -6,14 +6,14 @@ var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '/app/view/login',
+      templateUrl: '/app/view/',
       controller: 'LoginController',
       controllerAs: 'login',
     })
-    .when('/management', {
-      templateUrl: '/app/view/management',
-      controller: 'TryoutManagementController',
-      controllerAs: 'tryout',
+    .when('/logout', {
+      templateUrl: '/app/view/logout',
+      controller: 'LogoutController',
+      controllerAs: 'logout'
     })
     .when('/information', {
       templateUrl: '/app/view/information',
@@ -60,3 +60,24 @@ app.controller('TryoutInputController', function() {
 app.controller('TryoutManagementController', ['$http', function($http){
   var tmc = this;
 }]);  //  tryoutManagementController
+
+
+app.controller('LogoutController', ['UserService', '$templateCache', function(UserService, $templateCache) {
+  var vm = this;
+
+  // Remove cached page
+  $templateCache.removeAll();
+
+  // Check if user is logged in
+  UserService.isAuthenticated(function(status) {
+    if (status === true) {
+      UserService.logout(function() {
+        // Redirect
+        $location.path('/');
+      });
+    } else {
+      // Redirect
+      $location.path('/');
+    }
+  }); //  UserService.isAuthenticated
+}]);  //  LogoutController

@@ -6,13 +6,14 @@ var router = require('express').Router();
 var path = require('path');
 var jade = require('jade');
 
-router.get('/login', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/login.jade'));
-}); //  login
+router.get('/', function(req, res){
+  if(req.isAuthenticated()){
+    res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
+  } else {
+    res.render(path.join(__dirname, '../public/views/partials/login.jade'));
+  }
+})
 
-router.get('/management', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
-}); //  management
 
 router.get('/information', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/tryoutInformation.jade'));
