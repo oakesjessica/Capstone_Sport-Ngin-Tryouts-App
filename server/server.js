@@ -55,7 +55,7 @@ passport.use(new OAuth2Strategy({
       console.log(accessToken, refreshToken, "profile", profile, "id", profile.id, "cb", cb);
       if(err){
         console.log(err);
-      } else if(user==""){
+      } else if(user===""){
         //  Code here, add user to database
       } else {
         return cb(err, user);
