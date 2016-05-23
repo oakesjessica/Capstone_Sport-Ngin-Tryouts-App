@@ -8,7 +8,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controllerAs: 'login',
     })
     .when('/logout', {
-      templateUrl: '/app/view/logout',
+      templateUrl: '/app/view/',
       controller: 'LogoutController',
       controllerAs: 'logout'
     });
@@ -37,7 +37,7 @@ app.controller('TryoutManagementController', ['$http', function($http){
 
 }]);
 
-app.controller('LogoutController', ['UserService', '$templateCache', function(UserService, $templateCache) {
+app.controller('LogoutController', ['UserService', '$templateCache','$location', function(UserService, $templateCache, $location) {
   var vm = this;
 
   // Remove cached page
