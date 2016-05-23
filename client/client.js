@@ -10,9 +10,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
-    .when('/tryoutManagement', {
-      templateUrl: '/app/view/tryoutManagement',
-      controller: 'tryoutManagementController',
+    .when('/management', {
+      templateUrl: '/app/view/management',
+      controller: 'TryoutManagementController',
       controllerAs: 'tryout',
     })
     .when('/app/view/information', {
@@ -55,4 +55,8 @@ app.controller('TryoutInputController', function() {
   tic.submitInfo = function() {
     console.log('submit');
   };
-});
+}); //  TryoutInputController
+
+app.controller('TryoutManagementController', ['$http', function($http){
+  var lc = this;
+}]);  //  tryoutManagementController
