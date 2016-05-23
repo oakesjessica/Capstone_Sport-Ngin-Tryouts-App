@@ -8,7 +8,7 @@ var path = require('path');
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth2').Strategy;
 var request = require('request');
-
+var bodyParser = require('body-parser');
 var router = require('./routes/router');
 var User = require('../models/user');
 
@@ -29,7 +29,8 @@ mongoDB.once('open', function(){
 ////////////////////////////////////////////////////////////////////
 app.use(morgan('dev'));
 app.use(express.static('server/public'));
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 ////////////////////////////////////////////////////////////////////
 //Passport
 ////////////////////////////////////////////////////////////////////
@@ -37,8 +38,21 @@ app.use(session({
   secret: 'sportNgin',
   resave: true,
   saveUninitialized: false,
-  cookie: {maxAge: 600000, secure: false}
+  cookie: {maxAge: 6000000, secure: false}
 }));
+
+passport.serializeUser(function(user, done){
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done){
+  User.findById(id, function(err, user){
+    if(err){
+      done(err)
+    } else{
+      done(null, user);
+    }
+  });
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -50,29 +64,56 @@ passport.use(new OAuth2Strategy({
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: 'http://localhost:3000/auth/sportngin/callback'
   },
-  function(accessToken, refreshToken, profile, cb, fifth) {
+  function(accessToken, refreshToken, profile, fourth, cb) {
     // console.log('profile', profile);
-    console.log('accessToken', accessToken, 'refreshToken', refreshToken, 'profile', profile, 'cb', cb, 'fifth', fifth);
-
-    var url = "http://api-user.ngin.com/oauth/me?access_token=" + accessToken;
+    console.log('accessToken', accessToken, 'refreshToken', refreshToken, 'profile', profile, 'fourth', fourth, 'cb', cb);
+    // console.log('profile.access_token', profile.access_token);
+    var url = "http://api-user.ngin.com/oauth/me?access_token=" + profile.access_token;
     // console.log(url);
 
-    var options = {}
+    var options = {json: true};
 
-    request.get(url, function(err, response, body){
-      console.log('body', body);
-      console.log('code', response.statusCode);
+    options.url = url;
+
+    console.log(url);
+
+    request.get(options, function(err, response, body){
+      // console.log('body', body);
+      // console.log('code', response.statusCode);
+      // console.log('headers', response.headers)
+         if(!err && response.statusCode == 200){
+           console.log('body', body)
+           var newUser = {};
+           User.findOne({ 'nginId': body.metadata.current_user.id }, function (err, user) {
+             console.log('user',user);
+             if(err){
+               console.log(err);
+             } else if(user=="" || user == null){
+               //  Code here, add user to database
+               newUser = new User({
+                 username: body.metadata.current_user.user_name,
+                 first_name: body.metadata.current_user.first_name,
+                 last_name: body.metadata.current_user.last_name,
+                 nginId: body.metadata.current_user.id
+               });
+               newUser.save(function(err){
+                 if(err){
+                   console.log('Issue saving to database with error', err);
+                   return cb(err, user);
+                 } else {
+                   console.log('user saved successfully');
+                   return cb(err, user);
+                 }
+               })
+             } else {
+               return cb(err, user);
+             }
+           });
+         }
+    //   // console.log('code', response.data);
     })
-    User.findOne({ '_id': profile.id }, function (err, user) {
-      console.log(accessToken, refreshToken, "profile", profile, "id", profile.id, "cb", cb, 'fifth', fifth);
-      if(err){
-        console.log(err);
-      } else if(user==""){
-        //  Code here, add user to database
-      } else {
-        // return cb(err, user);
-      }
-    });
+
+
   } //  function(accessToken)
 )); //  passport.use
 
