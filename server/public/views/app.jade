@@ -17,6 +17,24 @@ html(ng-app="tryoutsApp")
     link(rel="stylesheet" href="assets/css/style.min.css")
   body(prevent-touchmove-defaults)
     
+    // Desktop Navbar 
+    nav(class="navbar navbar-default navbar-fixed-top navbar-desktop")
+      div.container-fluid
+        div.navbar-header
+          a(class="navbar-brand" href="#") Tryouts
+
+        
+        ul.nav.navbar-nav
+          li 
+            a(href="/") Home
+          li 
+            a(href="/tryouts") Tryouts
+
+        div(class="btn-group pull-left")
+          div(ui-toggle='uiSidebarLeft' class="btn btn-navbar sidebar-toggle")
+            i(class="fa fa-bars")
+
+    
     // Sidebar
     div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
       h1.app-name Menu
@@ -33,13 +51,14 @@ html(ng-app="tryoutsApp")
     main(class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')")
                 
       // Menu    
-      div(class="navbar navbar-app navbar-absolute-top")
+      div(class="navbar navbar-app navbar-absolute-top navbar-mobile")
         div.container-fluid
         div(class="navbar-brand navbar-brand-center") Tryouts
 
         div(class="btn-group pull-left")
           div(ui-toggle='uiSidebarLeft' class="btn btn-navbar sidebar-toggle")
             i(class="fa fa-bars")
+
       
       // Body of application
       section.app-body
