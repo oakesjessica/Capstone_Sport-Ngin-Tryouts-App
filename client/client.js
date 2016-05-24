@@ -48,22 +48,35 @@ app.controller('TryoutInputController', function() {
   var tic = this;
   var num = 1;
   tic.tryout = {};
+  tic.categories = [{id: 'choice1'}];
+
 
   console.log('inputcontroller online');
 
   tic.addFields = function() {
     num += 1;
+    tic.categories.push({'id':'choice'+num});
+    console.log(tic.categories);
     console.log('add', num);
     // tic.tryout.fields.push({});
-  };  //  addCategory
+  };  //  addFields
+
+  tic.removeField = function(id) {
+    num -= 1;
+
+
+  };  //  removeField
 
   tic.submitInfo = function() {
     console.log('submit');
   };
 }); //  TryoutInputController
 
+
+
 app.controller('TryoutManagementController', ['$http', function($http){
   var tmc = this;
+
 }]);  //  tryoutManagementController
 
 
