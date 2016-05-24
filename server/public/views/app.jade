@@ -27,10 +27,12 @@ html(ng-app="tryoutsApp")
       div.scrollable
         div.scrollable-content
           div(class="list-group" ui-turn-off="uiSidebarLeft")
-            a(class="list-group-item" href="/") Tryout Management
+            
+            a(class="list-group-item" href="/") Home
               i(class="fa fa-chevron-right pull-right")
-            a(class="list-group-item" href="/link2") Link 2
-              i(class="fa fa-chevron-right pull-right")
+            
+            a(class="list-group-item" href="/logout") Logout
+              i.fa.fa-chevron-right.pull-right
           
 
     main(class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')")
@@ -55,8 +57,6 @@ html(ng-app="tryoutsApp")
       div(class="navbar navbar-app navbar-absolute-top navbar-mobile")
         div.container-fluid
         div(class="navbar-brand navbar-brand-center") Tryouts
-          a(href="/logout")
-            button(class="btn btn-primary") Logout
 
         div(class="btn-group pull-left")
           div(ui-toggle='uiSidebarLeft' class="btn btn-navbar sidebar-toggle")
