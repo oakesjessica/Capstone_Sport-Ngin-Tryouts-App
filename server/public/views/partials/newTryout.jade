@@ -1,0 +1,26 @@
+div.container-fluid
+  h1(class="text-center") Tryout Information
+  
+  ng-form(role="form" name="tryoutForm")
+    div(class="form-group row")
+      label(for="title") Tryout Title
+      input(class="form-control" type="text" name="title" placeholder="Enter Tryout Title" ng-model="input.tryout.title" required)
+      p(class="help-block" ng-show="tryoutForm.title.$invalid") This field is required
+    
+    div(class="form-group row")
+      label(for="tryoutDate") Date
+      input(class="form-control" type="Date" name="date" placeholder="placeholder for datepicker" ng-model="input.tryout.date" required)
+      p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
+
+    div(class="form-group row" ng-repeat="categ in input.categories track by $index")
+      ng-form(name="categoryForm")
+        label(for="categ" ng-show="$first") Score Categories
+        div
+          input(class="form-control" type="text" name="" ng-model="categ.field" placeholder="Enter score category" required)
+          p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
+          button(class="btn btn-xs" ng-show="!$first" ng-click="input.removeField($index)")
+            i(class="fa fa-minus")
+        button(class="btn btn-sm center-block" ng-show="$last" ng-click="input.addFields()")
+          i(class="fa fa-2x fa-plus")
+
+    input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")
