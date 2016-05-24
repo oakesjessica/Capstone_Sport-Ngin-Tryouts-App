@@ -21,7 +21,7 @@ html(ng-app="tryoutsApp")
     nav(class="navbar navbar-default navbar-fixed-top navbar-desktop")
       div.container-fluid
         div.navbar-header
-          a(class="navbar-brand" href="#") Tryouts
+          
 
         
         ul.nav.navbar-nav
@@ -42,7 +42,7 @@ html(ng-app="tryoutsApp")
       div.scrollable
         div.scrollable-content
           div(class="list-group" ui-turn-off="uiSidebarLeft")
-            a(class="list-group-item" href="/management") Tryout Management
+            a(class="list-group-item" href="/") Tryout Management
               i(class="fa fa-chevron-right pull-right")
             a(class="list-group-item" href="/link2") Link 2
               i(class="fa fa-chevron-right pull-right")
@@ -63,6 +63,6 @@ html(ng-app="tryoutsApp")
 
       
       // Body of application
-      section.app-body
-        ng-view.app-content
+      section.app-body.scrollable.body
+        ng-view.app-content.scrollable-content
     

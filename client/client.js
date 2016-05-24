@@ -38,10 +38,8 @@ app.controller('LoginController', ['$http', function($http){
 
   lc.SNLogin = function() {
     console.log('button clicked');
-    // $http.get('/auth/sportngin/callback').then(function(response) {
-    //   console.log(response);
-    // }); //  $http.get
-  };  //  SNLogin
+
+  };
 }]);  //  LoginController
 
 app.controller('TryoutInputController', function() {
