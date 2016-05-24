@@ -47,7 +47,7 @@ passport.serializeUser(function(user, done){
 passport.deserializeUser(function(id, done){
   User.findById(id, function(err, user){
     if(err){
-      done(err)
+      done(err);
     } else{
       done(null, user);
     }
@@ -88,7 +88,7 @@ passport.use(new OAuth2Strategy({
              console.log('user',user);
              if(err){
                console.log(err);
-             } else if(user=="" || user == null){
+             } else if(user==="" || user === null){
                //  Code here, add user to database
                newUser = new User({
                  username: body.metadata.current_user.user_name,
@@ -104,20 +104,18 @@ passport.use(new OAuth2Strategy({
                    console.log('user saved successfully');
                    return cb(err, user);
                  }
-               })
+               });
              } else {
                return cb(err, user);
              }
            });
          }
     //   // console.log('code', response.data);
-    })
-
-
+  });
   } //  function(accessToken)
 )); //  passport.use
 
-///////////////////////////////////////// ///////////////////////////
+/////////////////////////////////////////////////////////////////////
 //Routers
 ////////////////////////////////////////////////////////////////////
 app.use('/', router);

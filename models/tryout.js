@@ -5,8 +5,10 @@ var Schema = mongoose.Schema;
 // Link user_id
 var tryoutSchema = new Schema({
   tryout_title: { type: String, required: true},
+  date: { type: Date, required: true},
   categories: { type: Array, required: true},
-  user_id: { type: Schema.ObjectId, ref: 'UserSchema'}
+  user_id: { type: Schema.ObjectId, ref: 'UserSchema'},
+  code: {type: String, required: false, unique: true}
 });
 
 

@@ -5,6 +5,7 @@
 var router = require('express').Router();
 var path = require('path');
 var jade = require('jade');
+var AccessCode = require('../../models/tryout');
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
@@ -18,5 +19,7 @@ router.get('/', function(req, res){
 router.get('/information', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/tryoutInformation.jade'));
 });
-
+router.get('/archives', function(req, res){
+  res.render(path.join(__dirname, '../public/views/partials/archives.jade'));
+});
 module.exports = router;
