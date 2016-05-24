@@ -82,7 +82,8 @@ passport.use(new OAuth2Strategy({
       // console.log('code', response.statusCode);
       // console.log('headers', response.headers)
          if(!err && response.statusCode == 200){
-           console.log('body', body)
+           console.log('body', body);
+
            var newUser = {};
            User.findOne({ 'nginId': body.metadata.current_user.id }, function (err, user) {
              console.log('user',user);
@@ -102,13 +103,17 @@ passport.use(new OAuth2Strategy({
                    return cb(err, user);
                  } else {
                    console.log('user saved successfully');
-                   return cb(err, user);
+
+                   User.findOne({ 'nginId': body.metadata.current_user.id }, function(err, user) {
+                     return cb(err, user);
+                   });
                  }
                });
              } else {
                return cb(err, user);
              }
            });
+
          }
     //   // console.log('code', response.data);
   });
