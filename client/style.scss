@@ -115,6 +115,11 @@ td{
   border-radius: 0;
 }
 
+.help-block {
+  font-size: 11px;
+  color: $alert;
+}
+
 @media screen and (min-width: 992px) {
 
   .has-navbar-top .app-body {
