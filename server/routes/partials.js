@@ -5,6 +5,7 @@
 var router = require('express').Router();
 var path = require('path');
 var jade = require('jade');
+var AccessCode = require('../../models/tryout');
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
