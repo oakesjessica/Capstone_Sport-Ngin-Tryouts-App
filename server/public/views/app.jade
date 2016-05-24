@@ -19,8 +19,7 @@ html(ng-app="tryoutsApp")
     
     // Modals
     div(ui-yield-to="modals")
-    
-    
+        
     // Sidebar
     div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
       h1.app-name Menu
@@ -48,9 +47,9 @@ html(ng-app="tryoutsApp")
             li 
               a(href="/tryouts") Tryouts
 
-          div(class="pull-right")
-            div(ui-toggle='uiSidebarLeft' class="btn btn-navbar sidebar-toggle")
-              i(class="fa fa-bars")
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href="/logout") Logout
                 
       // Mobile Navbar    
       div(class="navbar navbar-app navbar-absolute-top navbar-mobile")
