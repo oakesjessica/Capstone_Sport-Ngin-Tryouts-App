@@ -104,17 +104,21 @@ td{
 
 .app-body {
   background: #f2f3f4;
-}
 
+  .app-content {
+    padding: 20px;
+  }
+}
 .navbar-mobile {
   height: 60px;
   background: #FFF;
+  border-radius: 0;
 }
 
 @media screen and (min-width: 992px) {
 
   .has-navbar-top .app-body {
-    padding-top: 100px;
+    padding-top: 80px;
   }
 
     .navbar-mobile {
@@ -123,6 +127,10 @@ td{
 
     .scrollable, .sidebar {
       display: none !important;
+    }
+
+    .body {
+      display: block !important;
     }
 
     .has-sidebar-left .app, .sidebar-left-in .app {
@@ -141,7 +149,7 @@ td{
   }
 
   .has-navbar-top .app-body {
-    padding-top: 80px;
+    padding-top: 60px;
   }
 
 }
