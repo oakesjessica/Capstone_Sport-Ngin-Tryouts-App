@@ -1,6 +1,6 @@
 var router = require('express').Router();
 var passport = require('passport');
-
+var Tryout = require('../../models/tryout')
 router.get('/sportngin', passport.authenticate('oauth2'));
 
 router.get('/sportngin/callback',
@@ -27,5 +27,14 @@ router.get('/check', function(req, res) {
   }
 });
 
-
+router.post('/guest', function(req, res){
+  var code = req.body.code;
+  Tryout.findOne({code: code}).exec(function(err, guest){
+    if(err){
+      console.log('Error', err);
+    } else {
+      res.send(guest);
+    }
+  });
+});
 module.exports = router;

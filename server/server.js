@@ -11,7 +11,7 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var router = require('./routes/router');
 var User = require('../models/user');
-
+var Tryout = require('../models/tryout');
 ////////////////////////////////////////////////////////////////////
 //MongoDB
 ////////////////////////////////////////////////////////////////////
@@ -110,6 +110,8 @@ passport.use(new OAuth2Strategy({
     }); //  request.get
   } //  function(accessToken)
 )); //  passport.use
+
+
 
 /////////////////////////////////////////////////////////////////////
 //Routers

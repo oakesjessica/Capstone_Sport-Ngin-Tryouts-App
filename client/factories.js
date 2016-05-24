@@ -14,12 +14,18 @@ app.factory('UserService', ['$http', function($http){
       }
     });
   };
-
+var guestAuthentication = function(code){
+  $http.post('/auth/guest', code).then(function(response){
+    console.log(response);
+  });
+};
   return {
     logout: logout,
-    isAuthenticated: isAuthenticated
+    isAuthenticated: isAuthenticated,
+    guestAuthentication: guestAuthentication
   };
 }]);
+
 
 ///////////////////////////////////////////////////////////////////////////
 app.factory('TryoutService', ['$http', function($http) {

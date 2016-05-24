@@ -32,9 +32,14 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-app.controller('LoginController', ['$http', function($http){
+app.controller('LoginController', ['$http','UserService', function($http, UserService){
   var lc = this;
+  lc.guest = {};
 
+  lc.guestLogin = function(){
+    console.log(lc.guest);
+    UserService.guestAuthentication(lc.guest);
+  };
 }]);  //  LoginController
 
 app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {

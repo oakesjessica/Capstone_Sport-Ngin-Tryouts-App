@@ -12,4 +12,4 @@ var tryoutSchema = new Schema({
 });
 
 
-module.exports = mongoose.model('Code', tryoutSchema);
+module.exports = mongoose.model('Tryout', tryoutSchema);
