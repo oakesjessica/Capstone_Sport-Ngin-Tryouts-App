@@ -15,8 +15,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LogoutController',
       controllerAs: 'logout'
     })
-    .when('/information', {
-      templateUrl: '/app/view/information',
+    .when('/new', {
+      templateUrl: '/app/view/new',
       controller: 'TryoutInputController',
       controllerAs: 'input'
     })
@@ -34,41 +34,33 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 app.controller('LoginController', ['$http', function($http){
   var lc = this;
-  console.log('login');
 
-  lc.SNLogin = function() {
-    console.log('button clicked');
-
-  };
 }]);  //  LoginController
 
-app.controller('TryoutInputController', function() {
+app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {
   var tic = this;
   var num = 1;
-  tic.tryout = {};
-  tic.categories = [{id: 'choice1'}];
 
-
-  console.log('inputcontroller online');
+  tic.tryout = {
+    title: '',
+    date: null
+  };
+  tic.categories = [{'id': 1}];
 
   tic.addFields = function() {
     num += 1;
-    tic.categories.push({'id':'choice'+num});
-    console.log(tic.categories);
-    console.log('add', num);
-    // tic.tryout.fields.push({});
+    tic.categories.push({'id':num});
   };  //  addFields
 
   tic.removeField = function(id) {
-    num -= 1;
-
-
+    tic.categories.splice(id, 1);
   };  //  removeField
 
   tic.submitInfo = function() {
-    console.log('submit');
-  };
-}); //  TryoutInputController
+    tic.tryout.categories = tic.categories;
+    TryoutService.saveTryoutInfo(tic.tryout);
+  };  //  submitInfo
+}]); //  TryoutInputController
 
 
 
@@ -100,4 +92,4 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
 
 app.controller('ArchivesController', function(){
   var vm = this;
-})
+});

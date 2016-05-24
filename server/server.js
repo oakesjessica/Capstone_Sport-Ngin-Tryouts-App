@@ -65,58 +65,47 @@ passport.use(new OAuth2Strategy({
     callbackURL: 'http://localhost:3000/auth/sportngin/callback'
   },
   function(accessToken, refreshToken, profile, fourth, cb) {
-    // console.log('profile', profile);
     console.log('accessToken', accessToken, 'refreshToken', refreshToken, 'profile', profile, 'fourth', fourth, 'cb', cb);
-    // console.log('profile.access_token', profile.access_token);
     var url = "http://api-user.ngin.com/oauth/me?access_token=" + profile.access_token;
     // console.log(url);
 
     var options = {json: true};
-
     options.url = url;
 
-    console.log(url);
-
     request.get(options, function(err, response, body){
-      // console.log('body', body);
-      // console.log('code', response.statusCode);
-      // console.log('headers', response.headers)
-         if(!err && response.statusCode == 200){
-           console.log('body', body);
+      if(!err && response.statusCode == 200){
+        console.log('body', body);
 
-           var newUser = {};
-           User.findOne({ 'nginId': body.metadata.current_user.id }, function (err, user) {
-             console.log('user',user);
-             if(err){
-               console.log(err);
-             } else if(user==="" || user === null){
-               //  Code here, add user to database
-               newUser = new User({
-                 username: body.metadata.current_user.user_name,
-                 first_name: body.metadata.current_user.first_name,
-                 last_name: body.metadata.current_user.last_name,
-                 nginId: body.metadata.current_user.id
-               });
-               newUser.save(function(err){
-                 if(err){
-                   console.log('Issue saving to database with error', err);
-                   return cb(err, user);
-                 } else {
-                   console.log('user saved successfully');
-
-                   User.findOne({ 'nginId': body.metadata.current_user.id }, function(err, user) {
-                     return cb(err, user);
-                   });
-                 }
-               });
-             } else {
-               return cb(err, user);
-             }
-           });
-
-         }
-    //   // console.log('code', response.data);
-  });
+        var newUser = {};
+        User.findOne({ 'nginId': body.metadata.current_user.id }, function (err, user) {
+          console.log('user',user);
+          if(err){
+            console.log(err);
+          } else if(user==="" || user === null){
+            //  Code here, add user to database
+            newUser = new User({
+              username: body.metadata.current_user.user_name,
+              first_name: body.metadata.current_user.first_name,
+              last_name: body.metadata.current_user.last_name,
+              nginId: body.metadata.current_user.id
+            });
+            newUser.save(function(err){
+              if(err){
+                console.log('Issue saving to database with error', err);
+                return cb(err, user);
+              } else {
+                console.log('user saved successfully');
+                User.findOne({ 'nginId': body.metadata.current_user.id }, function(err, user) {
+                  return cb(err, user);
+                }); //  User.findOne
+              } //  else
+            }); //  newUser.save
+          } else {
+            return cb(err, user);
+          } //  else
+        }); //  User.findOne
+      }  // if(!err && response.sendStatus === 200)
+    }); //  request.get
   } //  function(accessToken)
 )); //  passport.use
 
