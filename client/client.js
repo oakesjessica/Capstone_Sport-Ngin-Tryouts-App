@@ -19,6 +19,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       templateUrl: '/app/view/information',
       controller: 'TryoutInputController',
       controllerAs: 'input'
+    })
+    .when('/archives', {
+      templateUrl: '/app/view/archives',
+      controller: 'ArchivesController',
+      controllerAs: 'archive'
     });
 
   $locationProvider.html5Mode(true);
@@ -81,3 +86,7 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
     }
   }); //  UserService.isAuthenticated
 }]);  //  LogoutController
+
+app.controller('ArchivesController', function(){
+  var vm = this;
+})
