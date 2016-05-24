@@ -57,6 +57,8 @@ passport.deserializeUser(function(id, done){
 app.use(passport.initialize());
 app.use(passport.session());
 
+console.log('STUFF', process.env.CLIENT_ID, process.env.CLIENT_SECRET);
+
 passport.use(new OAuth2Strategy({
     authorizationURL: 'https://user.sportngin.com/oauth/authorize',
     tokenURL: 'https://api-user.ngin.com/oauth/token',
