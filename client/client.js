@@ -37,7 +37,25 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
+
+app.controller('AppController', ['UserService', function(UserService) {
+  var vm = this;
+  vm.user = UserService.user;
+
+  UserService.isAuthenticated(function(status, user) {
+    console.log(status);
+  })
+}])
+
+
+
+
 app.controller('LoginController', ['$http','UserService', function($http, UserService){
+
+  UserService.isAuthenticated(function(status) {
+
+  });
+
   var lc = this;
   lc.guest = {};
 

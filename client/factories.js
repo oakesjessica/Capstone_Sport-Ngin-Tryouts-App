@@ -2,6 +2,9 @@
                           User Service
 *******************************************************************************/
 app.factory('UserService', ['$http', function($http){
+
+  var user = {};
+
   var logout = function(callback) {
     $http.get('/auth/logout').then(function(response) {
       callback();
@@ -11,18 +14,23 @@ app.factory('UserService', ['$http', function($http){
   var isAuthenticated = function(callback) {
     $http.get('/auth/check').then(function(response) {
       if(response.data.success === true) {
-        callback(true);
+        user.data = response.data.user;
+        callback(true, response.data);
       } else {
+        user.data = response.data;
         callback(false);
       }
     });
   };
-var guestAuthentication = function(code){
-  $http.post('/auth/guest', code).then(function(response){
-    console.log(response);
-  });
-};
+
+  var guestAuthentication = function(code){
+    $http.post('/auth/guest', code).then(function(response){
+      console.log(response);
+    });
+  };
+
   return {
+    user: user,
     logout: logout,
     isAuthenticated: isAuthenticated,
     guestAuthentication: guestAuthentication
