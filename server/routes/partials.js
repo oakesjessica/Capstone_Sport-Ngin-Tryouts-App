@@ -8,6 +8,7 @@ var jade = require('jade');
 var Tryout = require('../../models/tryout');
 var code = require('../../modules/randomCode');
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 
 router.get('/', function(req, res){
@@ -39,10 +40,11 @@ router.post('/new', function(req, res) {
   var newTryout = new Tryout({
     title: req.body.title,
     date: req.body.date,
+    time: req.body.time,
     categories: req.body.categories,
     user_id: req.user.id
   });
-
+  newTryout.dateString = moment(newTryout.date).zone(5).format('LL')
   newTryout.save(function(err) {
     if (err) {
       console.log('Error saving tryout to db', err);

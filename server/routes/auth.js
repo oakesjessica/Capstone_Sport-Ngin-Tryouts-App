@@ -16,7 +16,6 @@ router.get('/logout', function(req, res){
 });
 
 router.get('/check', function(req, res) {
-  console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',req.user, '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
   if(req.isAuthenticated()) {
     res.status(200).json({
       success: true,

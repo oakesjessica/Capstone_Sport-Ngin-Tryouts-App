@@ -44,21 +44,17 @@ app.factory('UserService', ['$http', function($http){
 app.factory('TryoutService', ['$http', function($http) {
   var data = [];
   var saveTryoutInfo = function(data) {
-    console.log('factory', data);
     $http.post('/app/view/new', data).then(function(response) {
-      sessionStorage.removeItem('test');
-      console.log(response.config.data);
-      sessionStorage.setItem('test', response.config.data);
-      var item = sessionStorage.getItem('test');
-      console.log('item');
+      console.log(response);
     });
   };
-   var generateCode = function(info){
-     $http.get('/app/view/guestcode/' + info._id).then(function(response){
-       console.log('response.data', response.data);
+  var generateCode = function(info){
+    $http.get('/app/view/guestcode/' + info._id).then(function(response){
+      console.log('response.data', response.data);
 
-     })
-   }
+    });
+  };
+
   var getTryoutInfo = function() {
     var item = sessionStorage.getItem('test');
     console.log(item);
