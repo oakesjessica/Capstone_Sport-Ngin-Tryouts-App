@@ -1,7 +1,15 @@
 var router = require('express').Router();
 var path = require('path');
 var request = require('request');
-
+var tryout = require('../../models/tryout.js');
+router.get('/app/view/data', function(req, res){
+  tryout.find({}).exec(function(err, tryouts){
+    if(err){
+      console.log('Error', err);
+    }
+    res.send(JSON.stringify(tryouts));
+  })
+});
 
 router.get('/testAPI', function(req, res){
   var options = {

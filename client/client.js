@@ -42,7 +42,7 @@ app.controller('LoginController', ['$http','UserService', function($http, UserSe
   };
 }]);  //  LoginController
 
-app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {
+app.controller('TryoutInputController', ['TryoutService', '$http' function(TryoutService, $http) {
   var tic = this;
   var num = 1;
 
@@ -71,7 +71,19 @@ app.controller('TryoutInputController', ['TryoutService', function(TryoutService
 
 app.controller('TryoutManagementController', ['$http', function($http){
   var tmc = this;
-
+  tmc.tryouts = [];
+  var fetchTryouts = function(){
+    $http.get('/app/view/data').then(function(response){
+      console.log('response from /app/view/data', response);
+      if(response.status !== 200){
+        ('Failed to fetch tryouts');
+      }
+      tmc.tryouts = response.data;
+      return response.data;
+      fetchTryouts();
+    })
+  }
+  fetchTryouts();
 }]);  //  tryoutManagementController
 
 
