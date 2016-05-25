@@ -8,6 +8,8 @@ var jade = require('jade');
 var Tryout = require('../../models/tryout');
 var code = require('../../modules/randomCode');
 var mongoose = require('mongoose');
+
+
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
     res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
@@ -15,6 +17,7 @@ router.get('/', function(req, res){
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
 });
+
 router.get('/guestcode/:id', function(req, res){
   var newCode = code.createAccessCode();
   Tryout.findByIdAndUpdate({'_id':req.params.id},{'code': newCode}, {new: true}, function(err, tryout){
@@ -24,8 +27,8 @@ router.get('/guestcode/:id', function(req, res){
     } else {
       res.send(tryout);
     }
-  })
-})
+  });
+});
 
 router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
