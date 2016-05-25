@@ -10,7 +10,7 @@ var tryoutSchema = new Schema({
   user_id: { type: Schema.ObjectId, ref: 'UserSchema'},
   code: {type: String, required: false, unique: true},
   players: { type: Array, 'default': []},
-  dateCreatedString: String
+  dateString: String
 });
 
 
