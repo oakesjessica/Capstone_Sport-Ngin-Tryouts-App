@@ -61,23 +61,26 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
 
 
   UserService.isAuthenticated(function(status) {
+    if (status == true) {
 
+      var fetchTryouts = function(){
+        $http.get('/app/view/data').then(function(response){
+          console.log('response from /app/view/data', response);
+          if(response.status !== 200){
+            ('Failed to fetch tryouts');
+          }
+          lc.tryouts = response.data;
+          return response.data;
+        })
+      }
+      fetchTryouts();
+
+    }
   });
 
 
   var lc = this;
   lc.tryouts = [];
-  var fetchTryouts = function(){
-    $http.get('/app/view/data').then(function(response){
-      console.log('response from /app/view/data', response);
-      if(response.status !== 200){
-        ('Failed to fetch tryouts');
-      }
-      lc.tryouts = response.data;
-      return response.data;
-    })
-  }
-  fetchTryouts();
   lc.guest = {};
   lc.guestLogin = function(){
     console.log(lc.guest);
