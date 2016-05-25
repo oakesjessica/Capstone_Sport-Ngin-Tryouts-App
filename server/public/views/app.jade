@@ -23,7 +23,7 @@ html(ng-app="tryoutsApp")
     // Sidebar
     div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
       h1(class="app-name" ng-if="!app.user.data.username") Menu
-      h1(class="app-name" ng-if="app.user.data.username"){{app.user.data.first_name}} {{app.user.data.last_name}}
+      h1(class="app-name" ng-if="app.user.data.username") {{app.user.data.first_name}} {{app.user.data.last_name}}
       
       div.scrollable
         div.scrollable-content

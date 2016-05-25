@@ -8,8 +8,9 @@ var tryoutSchema = new Schema({
   date: { type: Date, required: true},
   categories: { type: Array, 'default': [] },
   user_id: { type: Schema.ObjectId, ref: 'UserSchema'},
-  code: {type: String, required: false, unique: true},
-  players: { type: Array, 'default': []}
+  code: {type: String, required: false, unique: true, sparse: true},
+  players: { type: Array, 'default': []},
+  dateString: String
 });
 
 
