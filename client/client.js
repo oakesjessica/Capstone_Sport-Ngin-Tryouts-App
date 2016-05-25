@@ -10,6 +10,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
+    // .when('/management', {
+    //   templateUrl: '/app/view/management',
+    //   controller: 'TryoutManagementController',
+    //   controllerAs: 'management',
+    // })
     .when('/logout', {
       templateUrl: '/app/view/',
       controller: 'LogoutController',
@@ -57,15 +62,27 @@ app.controller('LoginController', ['$http','UserService', function($http, UserSe
   });
 
   var lc = this;
+  lc.tryouts = [];
+  var fetchTryouts = function(){
+    $http.get('/app/view/data').then(function(response){
+      console.log('response from /app/view/data', response);
+      if(response.status !== 200){
+        ('Failed to fetch tryouts');
+      }
+      lc.tryouts = response.data;
+      return response.data;
+    })
+  }
+  fetchTryouts();
   lc.guest = {};
-
   lc.guestLogin = function(){
     console.log(lc.guest);
     UserService.guestAuthentication(lc.guest);
   };
 }]);  //  LoginController
 
-app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {
+
+app.controller('TryoutInputController', ['TryoutService', '$http', function(TryoutService, $http) {
   var tic = this;
   var num = 1;
 
