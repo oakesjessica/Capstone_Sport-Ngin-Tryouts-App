@@ -1,14 +1,19 @@
 div.container-fluid
 h1 Tryout Management
 p Upcoming Tryouts
-table
+table.table.table-striped
+  thead
       tr
-        td Name
-        td Date
-      tr
-        td Division 1 tryouts
-        td 06/19/2053
-
+        th Name
+        th Date
+        th
+  tbody
+      tr(ng-repeat="tryout in login.tryouts")
+        td {{tryout.title}}
+        td {{tryout.date}}
+        td 
+          button(ng-if="!tryout.code" class="btn btn-success btn-xs" ng-click="login.generateGuestCode(tryout)") Guest Code
+          span(ng-if="tryout.code") {{tryout.code}}
 a(href="/archives")
   button(class="btn btn-primary") Archives
 

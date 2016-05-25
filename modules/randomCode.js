@@ -3,7 +3,7 @@ var random = {};
 random.createAccessCode = function() {
   var random = [];
   var code = '';
-  var possibilities = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var possibilities = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz123456789';
 
   for (var i = 0; i < 6; i++) {
     random.push(possibilities.charAt(Math.floor(Math.random() * possibilities.length)));
@@ -13,7 +13,7 @@ random.createAccessCode = function() {
   return code;
 };  //  createAccessCode
 
-random.randomInt = function(min, max) {
+var randomInt = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };  //  randomInt
 

@@ -15,14 +15,15 @@ html(ng-app="tryoutsApp")
     link(rel="stylesheet" href="vendor/mobile-angular-ui/dist/css/mobile-angular-ui-desktop.min.css")
     link(rel="stylesheet" href="vendor/mobile-angular-ui/dist/css/mobile-angular-ui-hover.min.css")
     link(rel="stylesheet" href="assets/css/style.min.css")
-  body(prevent-touchmove-defaults)
+  body(prevent-touchmove-defaults ng-controller="AppController as app")
     
     // Modals
     div(ui-yield-to="modals")
         
     // Sidebar
     div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
-      h1.app-name Menu
+      h1(class="app-name" ng-if="!app.user.data.username") Menu
+      h1(class="app-name" ng-if="app.user.data.username"){{app.user.data.first_name}} {{app.user.data.last_name}}
       
       div.scrollable
         div.scrollable-content
@@ -37,6 +38,7 @@ html(ng-app="tryoutsApp")
 
     main(class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')")
       
+      
       // Desktop Navbar 
       nav(class="navbar navbar-default navbar-fixed-top navbar-desktop")
         div.container-fluid
@@ -48,8 +50,10 @@ html(ng-app="tryoutsApp")
               a(href="/") Home
             li 
               a(href="/tryouts") Tryouts
-
-          ul.nav.navbar-nav.navbar-right
+              
+          ul(class="nav navbar-nav navbar-right" ng-if="app.user.data.username")
+            li
+              p.navbar-text Hello, {{app.user.data.first_name}} {{app.user.data.last_name}}
             li
               a(href="/logout") Logout
                 
@@ -65,5 +69,7 @@ html(ng-app="tryoutsApp")
       
       // Body of application
       section.app-body.scrollable.body
+        p User Object: {{app.user.data}}
+
         ng-view.app-content.scrollable-content
     
