@@ -43,8 +43,8 @@ app.controller('AppController', ['UserService', function(UserService) {
 
   UserService.isAuthenticated(function(status, user) {
     console.log(status);
-  })
-}])
+  });
+}]);
 
 
 app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
@@ -53,21 +53,24 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   lc.guest = {};
 
   UserService.isAuthenticated(function(status) {
-    if (status == true) {
-
+    if (status === true) {
       var fetchTryouts = function(){
         $http.get('/app/view/data').then(function(response){
-          console.log('response from /app/view/data', response);
           if(response.status !== 200){
             ('Failed to fetch tryouts');
           }
           lc.tryouts = response.data;
-          fetchTryouts();
+          console.log(response.data);
           return response.data;
-        })
-      }
+        });
+      };
       fetchTryouts();
     }
+
+    lc.generateGuestCode = function(info) {
+      TryoutService.generateCode(info);
+      fetchTryouts();
+    };
   });
 
   lc.guestLogin = function(){
