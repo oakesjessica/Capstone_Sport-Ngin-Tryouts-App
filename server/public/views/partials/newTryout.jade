@@ -9,7 +9,12 @@ div.container-fluid
     
     div(class="form-group row")
       label(for="tryoutDate") Date
-      input(class="form-control" type="Date" name="date" placeholder="placeholder for datepicker" ng-model="input.tryout.date" required)
+      input(class="form-control" type="text" name="date" pick-a-date="input.currDate" placeholder="placeholder for datepicker" ng-model="input.tryout.date" required)
+      p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
+      
+    div(class="form-group row")
+      label(for="tryoutDate") Time
+      input(class="form-control" type="text" pick-a-date="input.currTime" name="date" placeholder="placeholder for datepicker" ng-model="input.tryout.date" required)
       p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
 
     div(class="form-group row" ng-repeat="categ in input.categories track by $index")
