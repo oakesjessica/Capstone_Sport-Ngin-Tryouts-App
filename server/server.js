@@ -67,6 +67,9 @@ passport.use(new OAuth2Strategy({
     callbackURL: 'http://localhost:3000/auth/sportngin/callback'
   },
   function(accessToken, refreshToken, profile, fourth, cb) {
+    var aToken = accessToken;
+    var rToken = refreshToken;
+
     console.log('accessToken', accessToken, 'refreshToken', refreshToken, 'profile', profile, 'fourth', fourth, 'cb', cb);
     var url = "http://api-user.ngin.com/oauth/me?access_token=" + profile.access_token;
     // console.log(url);

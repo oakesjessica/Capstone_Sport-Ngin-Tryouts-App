@@ -34,6 +34,8 @@ router.post('/guest', function(req, res){
       console.log('Error', err);
     } else {
       res.send(guest);
+      req.session
+      console.log("success", guest);
     }
   });
 });
