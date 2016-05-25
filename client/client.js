@@ -70,6 +70,7 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
             ('Failed to fetch tryouts');
           }
           lc.tryouts = response.data;
+          fetchTryouts();
           return response.data;
         })
       }
