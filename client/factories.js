@@ -34,6 +34,7 @@ var guestAuthentication = function(code){
                           Tryout Service
 *******************************************************************************/
 app.factory('TryoutService', ['$http', function($http) {
+  var data = [];
   var saveTryoutInfo = function(data) {
     console.log('factory', data);
     $http.post('/app/view/new', data).then(function(response) {
@@ -44,7 +45,12 @@ app.factory('TryoutService', ['$http', function($http) {
       console.log('item');
     });
   };
+   var generateCode = function(info){
+     $http.get('/app/view/guestcode/' + info._id).then(function(response){
+       console.log('response.data', response.data);
 
+     })
+   }
   var getTryoutInfo = function() {
     var item = sessionStorage.getItem('test');
     console.log(item);
@@ -52,6 +58,8 @@ app.factory('TryoutService', ['$http', function($http) {
 
   return {
     saveTryoutInfo: saveTryoutInfo,
-    getTryoutInfo: getTryoutInfo
+    getTryoutInfo: getTryoutInfo,
+    generateCode: generateCode,
+    data: data
   };
 }]);

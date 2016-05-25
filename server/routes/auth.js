@@ -27,6 +27,7 @@ router.get('/check', function(req, res) {
   }
 });
 
+//Access Code
 router.post('/guest', function(req, res){
   var code = req.body.code;
   Tryout.findOne({code: code}).exec(function(err, guest){

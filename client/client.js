@@ -42,7 +42,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-app.controller('LoginController', ['$http','UserService', function($http, UserService){
+app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
   var lc = this;
   lc.tryouts = [];
   var fetchTryouts = function(){
@@ -60,7 +60,14 @@ app.controller('LoginController', ['$http','UserService', function($http, UserSe
   lc.guestLogin = function(){
     console.log(lc.guest);
     UserService.guestAuthentication(lc.guest);
-  };
+  }; //guest login
+  lc.generateGuestCode = function(info){
+    console.log(info);
+    TryoutService.generateCode(info)
+    // lc.guestcode = TryoutService.data;
+    // TryoutService.generateCode()
+  }
+
 }]);  //  LoginController
 
 
