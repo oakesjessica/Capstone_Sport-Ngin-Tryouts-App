@@ -42,7 +42,29 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-app.controller('LoginController', ['$http','UserService', function($http, UserService){
+
+
+
+app.controller('AppController', ['UserService', function(UserService) {
+  var vm = this;
+  vm.user = UserService.user;
+
+  UserService.isAuthenticated(function(status, user) {
+    console.log(status);
+  })
+}])
+
+
+
+
+app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
+
+
+  UserService.isAuthenticated(function(status) {
+
+  });
+
+
   var lc = this;
   lc.tryouts = [];
   var fetchTryouts = function(){
@@ -60,7 +82,14 @@ app.controller('LoginController', ['$http','UserService', function($http, UserSe
   lc.guestLogin = function(){
     console.log(lc.guest);
     UserService.guestAuthentication(lc.guest);
-  };
+  }; //guest login
+  lc.generateGuestCode = function(info){
+    console.log(info);
+    TryoutService.generateCode(info)
+    // lc.guestcode = TryoutService.data;
+    // TryoutService.generateCode()
+  }
+
 }]);  //  LoginController
 
 
@@ -68,10 +97,7 @@ app.controller('TryoutInputController', ['TryoutService', '$http', function(Tryo
   var tic = this;
   var num = 1;
 
-  tic.tryout = {
-    title: '',
-    date: null
-  };
+  tic.tryout = {};
   tic.categories = [{'id': 1}];
 
   tic.addField = function() {
