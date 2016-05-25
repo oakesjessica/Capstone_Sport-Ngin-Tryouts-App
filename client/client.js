@@ -15,16 +15,21 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LogoutController',
       controllerAs: 'logout'
     })
+    .when('/archives', {
+      templateUrl: '/app/view/archives',
+      controller: 'ArchivesController',
+      controllerAs: 'archive'
+    })
     .when('/new', {
       templateUrl: '/app/view/new',
       controller: 'TryoutInputController',
       controllerAs: 'input'
     })
-    .when('/archives', {
-      templateUrl: '/app/view/archives',
-      controller: 'ArchivesController',
-      controllerAs: 'archive'
-    });
+    .when('/review', {
+      templateUrl: '/app/view/review',
+      controller: 'ReviewInputController',
+      controllerAs: 'rev'
+    })
 
   $locationProvider.html5Mode(true);
 }]);  //  app.config
@@ -52,7 +57,7 @@ app.controller('TryoutInputController', ['TryoutService', function(TryoutService
   };
   tic.categories = [{'id': 1}];
 
-  tic.addFields = function() {
+  tic.addField = function() {
     num += 1;
     tic.categories.push({'id':num});
   };  //  addFields
@@ -65,6 +70,7 @@ app.controller('TryoutInputController', ['TryoutService', function(TryoutService
     tic.tryout.categories = tic.categories;
     TryoutService.saveTryoutInfo(tic.tryout);
   };  //  submitInfo
+
 }]); //  TryoutInputController
 
 
