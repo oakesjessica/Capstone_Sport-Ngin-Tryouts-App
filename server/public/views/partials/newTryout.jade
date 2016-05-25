@@ -20,7 +20,7 @@ div.container-fluid
           p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
           button(class="btn btn-xs" ng-show="!$first" ng-click="input.removeField($index)")
             i(class="fa fa-minus")
-        button(class="btn btn-sm center-block" ng-show="$last" ng-click="input.addFields()")
+        button(class="btn btn-sm center-block" ng-show="$last" ng-click="input.addField()")
           i(class="fa fa-2x fa-plus")
 
     input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")

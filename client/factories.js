@@ -1,3 +1,6 @@
+/*******************************************************************************
+                          User Service
+*******************************************************************************/
 app.factory('UserService', ['$http', function($http){
   var logout = function(callback) {
     $http.get('/auth/logout').then(function(response) {
@@ -27,16 +30,28 @@ var guestAuthentication = function(code){
 }]);
 
 
-///////////////////////////////////////////////////////////////////////////
+/*******************************************************************************
+                          Tryout Service
+*******************************************************************************/
 app.factory('TryoutService', ['$http', function($http) {
   var saveTryoutInfo = function(data) {
     console.log('factory', data);
     $http.post('/app/view/new', data).then(function(response) {
-      console.log(response);
+      sessionStorage.removeItem('test');
+      console.log(response.config.data);
+      sessionStorage.setItem('test', response.config.data);
+      var item = sessionStorage.getItem('test');
+      console.log('item');
     });
   };
 
+  var getTryoutInfo = function() {
+    var item = sessionStorage.getItem('test');
+    console.log(item);
+  };
+
   return {
-    saveTryoutInfo: saveTryoutInfo
+    saveTryoutInfo: saveTryoutInfo,
+    getTryoutInfo: getTryoutInfo
   };
 }]);
