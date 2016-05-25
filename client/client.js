@@ -51,10 +51,7 @@ app.controller('TryoutInputController', ['TryoutService', function(TryoutService
   var tic = this;
   var num = 1;
 
-  tic.tryout = {
-    title: '',
-    date: null
-  };
+  tic.tryout = {};
   tic.categories = [{'id': 1}];
 
   tic.addField = function() {
