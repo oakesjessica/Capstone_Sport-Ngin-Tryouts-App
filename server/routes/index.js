@@ -4,7 +4,7 @@ var request = require('request');
 var Tryout = require('../../models/tryout.js');
 
 router.get('/app/view/data', function(req, res){
-  Tryout.find({user_id : req.user.id}).exec(function(err, tryouts){
+  Tryout.find({'user_id' : req.user.id}).exec(function(err, tryouts){
     if(err){
       console.log('Error', err);
     }
@@ -30,8 +30,8 @@ router.get('/testAPI', function(req, res){
       console.log(body);
       res.send(JSON.parse(body));
     });
-  })
-})
+  });
+});
 router.get('/*', function(req, res){
   res.render(path.join(__dirname, '../public/views/app.jade'));
 });

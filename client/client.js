@@ -1,4 +1,4 @@
-var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-angular-ui.gestures']);
+var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-angular-ui.gestures', 'pickadate']);
 
 //////////////////////////////////////////////////////////////////////////////////
 //  Config
@@ -10,11 +10,6 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
-    // .when('/management', {
-    //   templateUrl: '/app/view/management',
-    //   controller: 'TryoutManagementController',
-    //   controllerAs: 'management',
-    // })
     .when('/logout', {
       templateUrl: '/app/view/',
       controller: 'LogoutController',
@@ -42,9 +37,6 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-
-
-
 app.controller('AppController', ['UserService', function(UserService) {
   var vm = this;
   vm.user = UserService.user;
@@ -55,10 +47,10 @@ app.controller('AppController', ['UserService', function(UserService) {
 }])
 
 
-
-
 app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
-
+  var lc = this;
+  lc.tryouts = [];
+  lc.guest = {};
 
   UserService.isAuthenticated(function(status) {
     if (status == true) {
@@ -75,31 +67,21 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
         })
       }
       fetchTryouts();
-
     }
   });
 
-
-  var lc = this;
-  lc.tryouts = [];
-  lc.guest = {};
   lc.guestLogin = function(){
     console.log(lc.guest);
     UserService.guestAuthentication(lc.guest);
-  }; //guest login
-  lc.generateGuestCode = function(info){
-    console.log(info);
-    TryoutService.generateCode(info)
-    // lc.guestcode = TryoutService.data;
-    // TryoutService.generateCode()
-  }
-
+  };
 }]);  //  LoginController
 
-
-app.controller('TryoutInputController', ['TryoutService', '$http', function(TryoutService, $http) {
+app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {
   var tic = this;
   var num = 1;
+
+  tic.curDate = new Date();
+  tic.curTime = new Date();
 
   tic.tryout = {};
   tic.categories = [{'id': 1}];

@@ -40,6 +40,7 @@ router.post('/new', function(req, res) {
   var newTryout = new Tryout({
     title: req.body.title,
     date: req.body.date,
+    time: req.body.time,
     categories: req.body.categories,
     user_id: req.user.id
   });
