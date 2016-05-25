@@ -9,7 +9,6 @@ var Tryout = require('../../models/tryout');
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
-    console.log(req.user);
     res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
