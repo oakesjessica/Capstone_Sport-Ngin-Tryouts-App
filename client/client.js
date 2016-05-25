@@ -97,10 +97,7 @@ app.controller('TryoutInputController', ['TryoutService', '$http', function(Tryo
   var tic = this;
   var num = 1;
 
-  tic.tryout = {
-    title: '',
-    date: null
-  };
+  tic.tryout = {};
   tic.categories = [{'id': 1}];
 
   tic.addField = function() {
