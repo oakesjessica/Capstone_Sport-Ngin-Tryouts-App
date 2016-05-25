@@ -8,9 +8,9 @@ table.table.table-striped
         th Date
         th
   tbody
-      tr(ng-repeat="tryout in login.tryouts")
+      tr(ng-repeat="tryout in login.tryouts track by $index")
         td {{tryout.title}}
-        td {{tryout.date}}
+        td {{tryout.dateCreatedString}}
         td 
           button(ng-if="!tryout.code" class="btn btn-success btn-xs" ng-click="login.generateGuestCode(tryout)") Guest Code
           span(ng-if="tryout.code") {{tryout.code}}

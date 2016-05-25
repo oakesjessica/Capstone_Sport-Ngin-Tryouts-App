@@ -20,6 +20,7 @@
     "install": "^0.7.3",
     "jade": "^1.11.0",
     "mobile-angular-ui": "^1.2.1",
+    "moment": "^2.13.0",
     "mongoose": "^4.4.17",
     "morgan": "^1.7.0",
     "npm": "^3.9.0",
