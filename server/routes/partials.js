@@ -9,7 +9,6 @@ var Tryout = require('../../models/tryout');
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
-    console.log(req.user);
     res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
@@ -23,7 +22,22 @@ router.get('/new', function(req, res) {
 
 router.post('/new', function(req, res) {
   console.log(req.body, req.user.id);
-  
+  var newTryout = new Tryout({
+    title: req.body.title,
+    date: req.body.date,
+    categories: req.body.categories,
+    user_id: req.user.id
+  });
+
+  newTryout.save(function(err) {
+    if (err) {
+      console.log('Error saving tryout to db', err);
+      res.status(500).send(err);
+    } else {
+      console.log('Tryout successfully saved');
+      res.sendStatus(200);
+    }
+  });
 });
 
 router.get('/archives', function(req, res){
