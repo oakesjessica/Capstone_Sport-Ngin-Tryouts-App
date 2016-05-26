@@ -10,21 +10,36 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'LoginController',
       controllerAs: 'login',
     })
+    // .when('/management', {
+    //   templateUrl: '/app/view/management',
+    //   controller: 'TryoutManagementController',
+    //   controllerAs: 'management',
+    // })
     .when('/logout', {
       templateUrl: '/app/view/',
       controller: 'LogoutController',
       controllerAs: 'logout'
+    })
+    .when('/archives', {
+      templateUrl: '/app/view/archives',
+      controller: 'ArchivesController',
+      controllerAs: 'archive'
     })
     .when('/new', {
       templateUrl: '/app/view/new',
       controller: 'TryoutInputController',
       controllerAs: 'input'
     })
-    .when('/archives', {
-      templateUrl: '/app/view/archives',
-      controller: 'ArchivesController',
-      controllerAs: 'archive'
-    });
+    .when('/review', {
+      templateUrl: '/app/view/review',
+      controller: 'ReviewInputController',
+      controllerAs: 'rev'
+    })
+    .when('/players', {
+      templateUrl: '/app/view/review',
+      controller: 'PlayerNumberController',
+      controllerAs: 'num'
+    })
 
   $locationProvider.html5Mode(true);
 }]);  //  app.config
@@ -32,17 +47,58 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-app.controller('LoginController', ['$http','UserService', function($http, UserService){
-  var lc = this;
-  lc.guest = {};
 
+
+
+app.controller('AppController', ['UserService', function(UserService) {
+  var vm = this;
+  vm.user = UserService.user;
+
+  UserService.isAuthenticated(function(status, user) {
+    console.log(status);
+  })
+}])
+
+
+
+
+app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
+
+
+  UserService.isAuthenticated(function(status) {
+
+  });
+
+
+  var lc = this;
+  lc.tryouts = [];
+  var fetchTryouts = function(){
+    $http.get('/app/view/data').then(function(response){
+      console.log('response from /app/view/data', response);
+      if(response.status !== 200){
+        ('Failed to fetch tryouts');
+      }
+      lc.tryouts = response.data;
+      return response.data;
+    })
+  }
+  fetchTryouts();
+  lc.guest = {};
   lc.guestLogin = function(){
     console.log(lc.guest);
     UserService.guestAuthentication(lc.guest);
-  };
+  }; //guest login
+  lc.generateGuestCode = function(info){
+    console.log(info);
+    TryoutService.generateCode(info)
+    // lc.guestcode = TryoutService.data;
+    // TryoutService.generateCode()
+  }
+
 }]);  //  LoginController
 
-app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {
+
+app.controller('TryoutInputController', ['TryoutService', '$http', function(TryoutService, $http) {
   var tic = this;
   var num = 1;
 
@@ -52,7 +108,7 @@ app.controller('TryoutInputController', ['TryoutService', function(TryoutService
   };
   tic.categories = [{'id': 1}];
 
-  tic.addFields = function() {
+  tic.addField = function() {
     num += 1;
     tic.categories.push({'id':num});
   };  //  addFields
@@ -65,6 +121,7 @@ app.controller('TryoutInputController', ['TryoutService', function(TryoutService
     tic.tryout.categories = tic.categories;
     TryoutService.saveTryoutInfo(tic.tryout);
   };  //  submitInfo
+
 }]); //  TryoutInputController
 
 

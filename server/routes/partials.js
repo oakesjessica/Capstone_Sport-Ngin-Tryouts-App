@@ -6,20 +6,34 @@ var router = require('express').Router();
 var path = require('path');
 var jade = require('jade');
 var Tryout = require('../../models/tryout');
-
+var code = require('../../modules/randomCode');
+var mongoose = require('mongoose');
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
-    console.log(req.user);
     res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
 });
-
+router.get('/guestcode/:id', function(req, res){
+  var newCode = code.createAccessCode();
+  Tryout.findByIdAndUpdate({'_id':req.params.id},{'code': newCode}, {new: true}, function(err, tryout){
+    if(err){
+      console.log('err', err);
+      res.sendStatus(500);
+    } else {
+      res.send(tryout);
+    }
+  })
+})
 
 router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
 });
+//
+// router.get('/players', function(req, res) {
+//   res.render(path.join(__dirname, '../public/views/partials/players.jade'));
+// });
 
 router.post('/new', function(req, res) {
   console.log(req.body, req.user.id);

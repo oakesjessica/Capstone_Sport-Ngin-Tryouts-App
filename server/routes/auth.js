@@ -1,6 +1,6 @@
 var router = require('express').Router();
 var passport = require('passport');
-var Tryout = require('../../models/tryout')
+var Tryout = require('../../models/tryout');
 router.get('/sportngin', passport.authenticate('oauth2'));
 
 router.get('/sportngin/callback',
@@ -16,9 +16,11 @@ router.get('/logout', function(req, res){
 });
 
 router.get('/check', function(req, res) {
+  console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',req.user, '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
   if(req.isAuthenticated()) {
     res.status(200).json({
-      success: true
+      success: true,
+      user: req.user
     });
   } else {
     res.status(200).json({
@@ -27,6 +29,7 @@ router.get('/check', function(req, res) {
   }
 });
 
+//Access Code
 router.post('/guest', function(req, res){
   var code = req.body.code;
   Tryout.findOne({code: code}).exec(function(err, guest){
