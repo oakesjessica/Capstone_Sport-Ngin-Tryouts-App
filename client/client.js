@@ -74,7 +74,13 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   });
 
   lc.guestLogin = function(){
-    UserService.guestAuthentication(lc.guest);
+    UserService.guestAuthentication(lc.guest, function(status) {
+      if(status == true) {
+        console.log('Code worked!');
+      } else {
+        console.log(':(');
+      }
+    });
   };
 
   lc.deleteTryout = function(tryout) {
@@ -122,7 +128,7 @@ app.controller('ReviewController', ['TryoutService', '$routeParams', function(Tr
 
   var TryoutInfo = {};
   TryoutInfo = $routeParams.id;
-  
+
   TryoutService.getSingleTryout(TryoutInfo);
 
 }]);  //  ReviewController
