@@ -25,12 +25,12 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'TryoutInputController',
       controllerAs: 'input'
     })
-    .when('/review/:id', {
-      templateUrl: '/app/view/review/',
-      controller: 'ReviewController',
-      controllerAs: 'rev'
+    .when('/edit/:id', {
+      templateUrl: '/app/view/edit/',
+      controller: 'EditController',
+      controllerAs: 'edit'
     })
-    .when('/players', {
+    .when('/players/:id', {
       templateUrl: '/app/view/players',
       controller: 'PlayerNumberController',
       controllerAs: 'num'
@@ -42,8 +42,17 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-app.controller('PlayerNumberController', function(){
-});
+app.controller('PlayerNumberController', ['$routeParams', function($routeParams){
+  var pc = this;
+  // pc.playersList = TryoutService.data;
+  pc.tryout = {};
+  pc.tryout.playersList = [{player: '1', first: 'adam', last: 'sanders'}, {player: '2', first: 'taylor', last: 'sandquist'}];
+
+  var TryoutInfo = {};
+  pc.tryout.tryout_id = $routeParams.id;
+  console.log(pc.tryout);
+
+}]);
 
 
 app.controller('AppController', ['UserService', function(UserService) {
@@ -75,7 +84,7 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
 
   lc.guestLogin = function(){
     UserService.guestAuthentication(lc.guest, function(status) {
-      if(status == true) {
+      if(status === true) {
         console.log('Code worked!');
       } else {
         console.log(':(');
@@ -122,14 +131,8 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
 }]); //  TryoutInputController
 
 
-app.controller('ReviewController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams) {
-
-  var review = TryoutService.data;
-
-  var TryoutInfo = {};
-  TryoutInfo = $routeParams.id;
-
-  TryoutService.getSingleTryout(TryoutInfo);
+app.controller('EditController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams) {
+  var ec = this;
 
 }]);  //  ReviewController
 

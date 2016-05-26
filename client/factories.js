@@ -49,20 +49,13 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
   var data = [];
   var saveTryoutInfo = function(data) {
     $http.post('/app/view/new', data).then(function(response) {
-      $location.path('/review/' + response.data._id);
+      $location.path('/players/' + response.data._id);
     });
   };
 
   var generateCode = function(info){
     $http.get('/app/view/guestcode/' + info._id).then(function(response){
       fetchTryouts();
-    });
-  };
-
-  var getSingleTryout = function(tryoutId) {
-    $http.get('/app/view/review/' + tryoutId).then(function(response) {
-      data.val = response.data;
-      console.log(data.val);
     });
   };
 
@@ -80,7 +73,6 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
 
   return {
     saveTryoutInfo: saveTryoutInfo,
-    getSingleTryout: getSingleTryout,
     generateCode: generateCode,
     fetchTryouts: fetchTryouts,
     deleteTryout: deleteTryout,

@@ -2,15 +2,11 @@ div.container-fluid
   h1 Players
   p Assign Player Numbers
 
-    div(class="form-group row" ng-repeat="player in    ")
-      label(for="number") Player Number 
-      input(class="form-control" type="text" name="number")
-      input(class="form-control" type="text" name="name" ng-model="{{player.    }}")
-      button(class="btn btn-primary") Delete Player
+    div(class="form-group row" ng-repeat="player in num.tryout.playersList")
+      label(for="name") Player Number 
+      input(class="form-control" type="text" name="name")
+      input(class="form-control" type="text" name="name")
 
 
-a(href="/archives")
-  button(class="btn btn-primary") Archives
-
-a(href="/new")
-  button(class="btn btn-primary") Create new Tryout
+a(href="/tryout")
+  button(class="btn btn-primary") Save

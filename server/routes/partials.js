@@ -50,16 +50,16 @@ router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
 });
 
-router.get('/review', function(req, res) {
-  res.render(path.join(__dirname, '../public/views/partials/reviewInput.jade'));
+router.get('/edit', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/editTryout.jade'));
 });
 
-router.get('/review/:id', function(req, res) {
+router.get('/edit/:id', function(req, res) {
   var tryoutId = req.params.id;
 
   Tryout.find({'_id': tryoutId}).exec(function(err, tryout) {
     if(err) {
-      console.log('Error fetching tryout for review', err);
+      console.log('Error fetching tryout to edit', err);
       res.status(500).send(err);
     } else {
       res.status(200).send(tryout);
