@@ -91,10 +91,11 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   };
 }]);  //  LoginController
 
-app.controller('TryoutInputController', ['TryoutService', 'UserService', function(TryoutService, UserService) {
+app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location',  function(TryoutService, UserService, $location) {
+  var tic = this;
+
   UserService.isAuthenticated(function(status) {
     if (status === true) {
-      var tic = this;
       var num = 1;
 
       tic.curDate = new Date();
@@ -116,7 +117,9 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', functio
         tic.tryout.categories = tic.categories;
         TryoutService.saveTryoutInfo(tic.tryout);
       };  //  submitInfo
-    } //  if
+    } else {
+      $location.path('/');
+    }
   }); //  UserService
 
 }]); //  TryoutInputController
