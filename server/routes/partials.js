@@ -8,6 +8,9 @@ var jade = require('jade');
 var Tryout = require('../../models/tryout');
 var code = require('../../modules/randomCode');
 var mongoose = require('mongoose');
+var moment = require('moment');
+
+
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
     res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
@@ -15,6 +18,7 @@ router.get('/', function(req, res){
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
 });
+
 router.get('/guestcode/:id', function(req, res){
   var newCode = code.createAccessCode();
   Tryout.findByIdAndUpdate({'_id':req.params.id},{'code': newCode}, {new: true}, function(err, tryout){
@@ -24,8 +28,8 @@ router.get('/guestcode/:id', function(req, res){
     } else {
       res.send(tryout);
     }
-  })
-})
+  });
+});
 
 router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
@@ -40,10 +44,11 @@ router.post('/new', function(req, res) {
   var newTryout = new Tryout({
     title: req.body.title,
     date: req.body.date,
+    time: req.body.time,
     categories: req.body.categories,
     user_id: req.user.id
   });
-
+  newTryout.dateString = moment(newTryout.date).utcOffset(5).format('LL')
   newTryout.save(function(err) {
     if (err) {
       console.log('Error saving tryout to db', err);

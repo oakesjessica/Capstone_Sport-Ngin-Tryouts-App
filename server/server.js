@@ -65,7 +65,6 @@ passport.use(new OAuth2Strategy({
     callbackURL: 'http://localhost:3000/auth/sportngin/callback'
   },
   function(accessToken, refreshToken, profile, fourth, cb) {
-    console.log('accessToken', accessToken, 'refreshToken', refreshToken, 'profile', profile, 'fourth', fourth, 'cb', cb);
     var url = "http://api-user.ngin.com/oauth/me?access_token=" + profile.access_token;
     // console.log(url);
 
@@ -74,11 +73,9 @@ passport.use(new OAuth2Strategy({
 
     request.get(options, function(err, response, body){
       if(!err && response.statusCode == 200){
-        console.log('body', body);
 
         var newUser = {};
         User.findOne({ 'nginId': body.metadata.current_user.id }, function (err, user) {
-          console.log('user',user);
           if(err){
             console.log(err);
           } else if(user==="" || user === null){
