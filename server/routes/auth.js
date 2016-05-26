@@ -27,9 +27,8 @@ router.get('/check', function(req, res) {
     });
   }
 });
-
 //Access Code
-router.post('/guest', function(req, res){
+router.post('/guestCode', function(req, res){
   var code = req.body.code;
   Tryout.findOne({code: code}).exec(function(err, guest){
     if(err){
@@ -39,4 +38,19 @@ router.post('/guest', function(req, res){
     }
   });
 });
+router.post('/guest', function(req, res){
+  var code = req.body.code;
+  Tryout.findOne({'code': code }, function(err, guest){
+    console.log(guest);
+    if(err){
+      console.log('Error', err);
+      res.sendStatus(500);
+    } else if(guest == '' || guest == null){
+      res.sendStatus(404);
+      console.log('no code found');
+    } else {
+      res.sendStatus(200);
+    }
+  })
+})
 module.exports = router;
