@@ -25,9 +25,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'TryoutInputController',
       controllerAs: 'input'
     })
-    .when('/review', {
-      templateUrl: '/app/view/review',
-      controller: 'ReviewInputController',
+    .when('/review/:id', {
+      templateUrl: '/app/view/review/',
+      controller: 'ReviewController',
       controllerAs: 'rev'
     })
     .when('/players', {
@@ -42,10 +42,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-
-
 app.controller('PlayerNumberController', function(){
-
 });
 
 
@@ -64,30 +61,24 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   lc.tryouts = [];
   lc.guest = {};
 
+  lc.tryouts = TryoutService.data;
+
   UserService.isAuthenticated(function(status) {
     if (status === true) {
-      var fetchTryouts = function(){
-        $http.get('/app/view/data').then(function(response){
-          if(response.status !== 200){
-            console.log('Failed to fetch tryouts');
-          }
-          lc.tryouts = response.data;
-          console.log(response.data);
-          return response.data;
-        });
-      };
-      fetchTryouts();
+      TryoutService.fetchTryouts();
     }
 
     lc.generateGuestCode = function(info) {
       TryoutService.generateCode(info);
-      fetchTryouts();
     };
   });
 
   lc.guestLogin = function(){
-    console.log(lc.guest);
     UserService.guestAuthentication(lc.guest);
+  };
+
+  lc.deleteTryout = function(tryout) {
+    TryoutService.deleteTryout(tryout);
   };
 }]);  //  LoginController
 
@@ -98,8 +89,8 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
     if (status === true) {
       var num = 1;
 
-      tic.curDate = new Date();
-      tic.curTime = new Date();
+      // tic.curDate = new Date();
+      // tic.curTime = new Date();
 
       tic.tryout = {};
       tic.categories = [{'id': 1}];
@@ -125,11 +116,16 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
 }]); //  TryoutInputController
 
 
+app.controller('ReviewController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams) {
 
-app.controller('TryoutManagementController', ['$http', function($http){
-  var tmc = this;
+  var review = TryoutService.data;
 
-}]);  //  tryoutManagementController
+  var TryoutInfo = {};
+  TryoutInfo = $routeParams.id;
+  
+  TryoutService.getSingleTryout(TryoutInfo);
+
+}]);  //  ReviewController
 
 
 app.controller('LogoutController', ['UserService', '$templateCache','$location', function(UserService, $templateCache, $location) {
