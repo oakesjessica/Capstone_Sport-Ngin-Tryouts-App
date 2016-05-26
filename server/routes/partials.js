@@ -48,7 +48,8 @@ router.post('/new', function(req, res) {
     categories: req.body.categories,
     user_id: req.user.id
   });
-  newTryout.dateString = moment(newTryout.date).utcOffset(5).format('LL')
+  newTryout.dateString = moment(newTryout.date).utcOffset(5).format('LL');
+
   newTryout.save(function(err) {
     if (err) {
       console.log('Error saving tryout to db', err);
