@@ -57,7 +57,7 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
       var fetchTryouts = function(){
         $http.get('/app/view/data').then(function(response){
           if(response.status !== 200){
-            ('Failed to fetch tryouts');
+            console.log('Failed to fetch tryouts');
           }
           lc.tryouts = response.data;
           console.log(response.data);
@@ -79,29 +79,33 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   };
 }]);  //  LoginController
 
-app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {
-  var tic = this;
-  var num = 1;
+app.controller('TryoutInputController', ['TryoutService', 'UserService', function(TryoutService, UserService) {
+  UserService.isAuthenticated(function(status) {
+    if (status === true) {
+      var tic = this;
+      var num = 1;
 
-  tic.curDate = new Date();
-  tic.curTime = new Date();
+      tic.curDate = new Date();
+      tic.curTime = new Date();
 
-  tic.tryout = {};
-  tic.categories = [{'id': 1}];
+      tic.tryout = {};
+      tic.categories = [{'id': 1}];
 
-  tic.addField = function() {
-    num += 1;
-    tic.categories.push({'id':num});
-  };  //  addFields
+      tic.addField = function() {
+        num += 1;
+        tic.categories.push({'id':num});
+      };  //  addFields
 
-  tic.removeField = function(id) {
-    tic.categories.splice(id, 1);
-  };  //  removeField
+      tic.removeField = function(id) {
+        tic.categories.splice(id, 1);
+      };  //  removeField
 
-  tic.submitInfo = function() {
-    tic.tryout.categories = tic.categories;
-    TryoutService.saveTryoutInfo(tic.tryout);
-  };  //  submitInfo
+      tic.submitInfo = function() {
+        tic.tryout.categories = tic.categories;
+        TryoutService.saveTryoutInfo(tic.tryout);
+      };  //  submitInfo
+    } //  if
+  }); //  UserService
 
 }]); //  TryoutInputController
 

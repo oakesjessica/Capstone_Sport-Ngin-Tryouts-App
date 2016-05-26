@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var tryoutSchema = new Schema({
   title: { type: String, required: true},
   date: { type: Date, required: true},
-  time: { type: Date, required: true},
+  time: { type: String, required: true},
   categories: { type: Array, 'default': [] },
   user_id: { type: Schema.ObjectId, ref: 'UserSchema'},
   code: {type: String, required: false, unique: true, sparse: true},
