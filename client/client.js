@@ -36,7 +36,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controllerAs: 'rev'
     })
     .when('/players', {
-      templateUrl: '/app/view/review',
+      templateUrl: '/app/view/players',
       controller: 'PlayerNumberController',
       controllerAs: 'num'
     })
@@ -48,7 +48,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
 
+app.controller('PlayerNumberController', function(){
 
+});
 
 app.controller('AppController', ['UserService', function(UserService) {
   var vm = this;

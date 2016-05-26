@@ -30,10 +30,10 @@ router.get('/guestcode/:id', function(req, res){
 router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
 });
-//
-// router.get('/players', function(req, res) {
-//   res.render(path.join(__dirname, '../public/views/partials/players.jade'));
-// });
+
+router.get('/players', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/players.jade'));
+});
 
 router.post('/new', function(req, res) {
   console.log(req.body, req.user.id);
