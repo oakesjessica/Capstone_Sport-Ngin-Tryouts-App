@@ -23,9 +23,13 @@ app.factory('UserService', ['$http', function($http){
     });
   };
 
-  var guestAuthentication = function(code){
-    $http.post('/auth/guestCode', code).then(function(response){
+  var guestAuthentication = function(code, callback){
+    $http.post('/auth/guest', code).then(function(response){
       console.log(response);
+      user.guest = response.data.guest;
+      callback(true);
+    }, function(response) {
+      callback(false);
     });
   };
 

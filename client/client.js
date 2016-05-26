@@ -87,7 +87,13 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
 
   lc.guestLogin = function(){
     console.log(lc.guest);
-    UserService.guestAuthentication(lc.guest);
+    UserService.guestAuthentication(lc.guest, function(status) {
+      if(status == true) {
+        console.log('Code worked!');
+      } else {
+        console.log(':(');
+      }
+    });
   };
 }]);  //  LoginController
 
