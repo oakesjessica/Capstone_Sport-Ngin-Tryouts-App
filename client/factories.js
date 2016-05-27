@@ -85,8 +85,15 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
   }
   var scorePlayer = function(info){
     console.log(info);
-    $http.get('/app/view/doTheThing/' + info.tryout_id).then(function(response){
-      $location.path('/doTheThing/:id');
+    // $http.get('/app/view/doTheThing/' + info.tryout_id).then(function(response){
+    //   $location.path('/doTheThing/:id');
+    // })
+  }
+  var fetchOneTryout = function(id){
+    // console.log('id factory ', id);
+    $http.get('/app/view/tryout/get/' + id).then(function(response){
+      // console.log('one response', response);
+      data.val = response.data;
     })
   }
   return {
@@ -97,6 +104,7 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     data: data,
     savePlayersToDb: savePlayersToDb,
     scorePlayer: scorePlayer,
-    getPlayers: getPlayers
+    getPlayers: getPlayers,
+    fetchOneTryout: fetchOneTryout
   };
 }]);

@@ -57,12 +57,25 @@ app.controller('AssignScoreController', function(){
 
 app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var trc = this;
-  trc.player = {};
-  trc.player.tryout_id = $routeParams.id;
-  console.log(trc.player.tryout_id);
-  trc.reviewPlayer = function(){
-    TryoutService.scorePlayer(trc.player);
+  trc.playerInfo = {
+    tryout_id: ''
+  };
+  trc.displayTryout = TryoutService.data;
+
+  trc.tryout_id = $routeParams.id;
+  console.log('before', trc.playerInfo);
+  trc.playerInfo.tryout_id = $routeParams.id;
+  console.log('player info after', trc.playerInfo);
+  console.log('id', trc.tryout_id);
+
+  trc.reviewPlayer = function(playerData){
+    //TryoutService.scorePlayer(trc.player);
+    console.log(playerData);
+    trc.playerInfo.player_id = playerData.player_id;
+
+    TryoutService.scorePlayer(trc.playerInfo);
   }
+  TryoutService.fetchOneTryout(trc.tryout_id);
 }]);  //  TryoutReviewController
 
 

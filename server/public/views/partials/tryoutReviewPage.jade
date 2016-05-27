@@ -1,3 +1,9 @@
 h1 Review Page
-p(ng-click="review.reviewPlayer()") Bob
+div(ng-repeat="player in review.displayTryout.val.players track by $index")
+  p {{player.jerseyNum}}
+  
+  p(ng-click="review.reviewPlayer(player)") {{player.profiles.first_name}} {{player.profiles.last_name}}
+  p total 
+    span(ng-if="!player.total") no sum 
+    span(ng-if="player.total") {{player.total}}
 button() Button
