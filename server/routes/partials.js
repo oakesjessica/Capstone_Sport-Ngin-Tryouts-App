@@ -179,5 +179,10 @@ router.get('/tryout/get/:id', function(req,res){
       res.status(200).send(tryout);
     }
   });
+
+
+
+router.get('/404', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/404.jade'));
 })
 module.exports = router;
