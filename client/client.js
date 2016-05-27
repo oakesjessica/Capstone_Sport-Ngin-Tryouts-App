@@ -1,4 +1,4 @@
-var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-angular-ui.gestures', 'pickadate']);
+var app = angular.module('tryoutsApp', ['ngRoute', 'angular-loading-bar', 'mobile-angular-ui', 'mobile-angular-ui.gestures', 'pickadate']);
 
 //////////////////////////////////////////////////////////////////////////////////
 //  Config
@@ -35,23 +35,63 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'PlayerNumberController',
       controllerAs: 'num'
     })
-
+    .when('/tryout/:id', {
+      templateUrl: '/app/view/tryout',
+      controller: 'TryoutReviewController',
+      controllerAs: 'review'
+    })
+    .when('/doTheThing/:id', {
+      templateUrl: '/app/view/doTheThing',
+      controller: 'AssignScoreController',
+      controllerAs: 'assign'
+    })
   $locationProvider.html5Mode(true);
 }]);  //  app.config
 
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-app.controller('PlayerNumberController', ['$routeParams', function($routeParams){
+app.controller('AssignScoreController', function(){
+  console.log('Hello World');
+})
+
+app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
+  var trc = this;
+  trc.player = {};
+  trc.player.tryout_id = $routeParams.id;
+  console.log(trc.player.tryout_id);
+  trc.reviewPlayer = function(){
+    TryoutService.scorePlayer(trc.player);
+  }
+}]);  //  TryoutReviewController
+
+
+app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var pc = this;
-  // pc.playersList = TryoutService.data;
-  pc.tryout = {};
-  pc.tryout.playersList = [{player: '1', first: 'adam', last: 'sanders'}, {player: '2', first: 'taylor', last: 'sandquist'}];
 
-  var TryoutInfo = {};
-  pc.tryout.tryout_id = $routeParams.id;
-  console.log(pc.tryout);
+  pc.playerProfiles = [];
+  pc.playersList = TryoutService.data;
 
+  pc.tryout_id = $routeParams.id;
+
+  pc.savePlayers = function(){
+    for (var i = 0; i < pc.playersList.val.length; i++) {
+      pc.playerTryout = {
+        jerseyNum: "",
+        profiles: {}
+      };
+      pc.playerTryout.profiles.survey_id = pc.playersList.val[i].survey_result_id;
+      pc.playerTryout.profiles.first_name = pc.playersList.val[i].qu_el_3797779;
+      pc.playerTryout.profiles.last_name = pc.playersList.val[i].qu_el_3797780;
+      pc.playerTryout.profiles.level = pc.playersList.val[i].qu_el_3797961;
+      pc.playerTryout.jerseyNum = pc.playersList.val[i].alias;
+      pc.playerProfiles.push(pc.playerTryout);
+    }
+
+    TryoutService.savePlayersToDb(pc.playerProfiles, pc.tryout_id);
+  };
+
+  TryoutService.getPlayers();
 }]);
 
 
@@ -65,11 +105,11 @@ app.controller('AppController', ['UserService', function(UserService) {
 }]);
 
 
-app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
+app.controller('LoginController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar){
   var lc = this;
   lc.tryouts = [];
   lc.guest = {};
-
+  lc.tryoutToDelete = {};
   lc.tryouts = TryoutService.data;
 
   UserService.isAuthenticated(function(status) {
@@ -95,6 +135,16 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   lc.deleteTryout = function(tryout) {
     TryoutService.deleteTryout(tryout);
   };
+
+
+  // fake the initial load so first time users can see the bar right away:
+  cfpLoadingBar.start();
+  lc.fakeIntro = true;
+  $timeout(function() {
+    cfpLoadingBar.complete();
+    lc.fakeIntro = false;
+  }, 1250);
+
 }]);  //  LoginController
 
 app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location',  function(TryoutService, UserService, $location) {
@@ -103,9 +153,6 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
   UserService.isAuthenticated(function(status) {
     if (status === true) {
       var num = 1;
-
-      // tic.curDate = new Date();
-      // tic.curTime = new Date();
 
       tic.tryout = {};
       tic.categories = [{'id': 1}];

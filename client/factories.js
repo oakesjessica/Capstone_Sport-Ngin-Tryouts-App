@@ -58,7 +58,11 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
       fetchTryouts();
     });
   };
-
+  var getPlayers = function(){
+    $http.get('/app/view/players/testAPI').then(function(response){
+      data.val = response.data;
+    })
+  }
   var fetchTryouts = function(){
     $http.get('/app/view/data').then(function(response){
       data.val = response.data;
@@ -70,12 +74,29 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
       fetchTryouts();
     });
   };
-
+  var savePlayersToDb = function(info, id){
+    $http.put('/app/view/players/' + id, info).then(function(response) {
+      $location.path('/tryout/' + id);
+    })
+    // $http.put('/app/view/players').then(function(response){
+    //   console.log(response);
+    //   // $location.path('/tryout/' + info);
+    // })
+  }
+  var scorePlayer = function(info){
+    console.log(info);
+    $http.get('/app/view/doTheThing/' + info.tryout_id).then(function(response){
+      $location.path('/doTheThing/:id');
+    })
+  }
   return {
     saveTryoutInfo: saveTryoutInfo,
     generateCode: generateCode,
     fetchTryouts: fetchTryouts,
     deleteTryout: deleteTryout,
-    data: data
+    data: data,
+    savePlayersToDb: savePlayersToDb,
+    scorePlayer: scorePlayer,
+    getPlayers: getPlayers
   };
 }]);

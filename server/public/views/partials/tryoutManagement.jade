@@ -1,3 +1,22 @@
+div(ui-content-for="modals")
+  div(class="modal modal-overlay" ui-if="deleteModal" ui-state="deleteModal")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button(class="close" ui-turn-off="deleteModal") &times;
+          h4.modal-title Delete Tryout
+        
+        div.modal-body
+          p Removing this tryout will delete it perminantly. Are you sure you would like to continue?
+            
+        div.modal-footer
+          button(ui-turn-off="deleteModal" class="btn btn-primary") Cancel
+          button(ui-turn-off="deleteModal" ng-click="login.deleteTryout(login.tryoutToDelete)" class="btn btn-danger") Delete
+
+
+
+
+
 div.container-fluid
 h1 Tryout Management
 p Upcoming Tryouts
@@ -6,17 +25,19 @@ table.table.table-striped
       tr
         th Name
         th Date
+        th Time
         th Guest Code
         th
   tbody
       tr(ng-repeat="tryout in login.tryouts.val track by $index")
         td {{tryout.title}}
         td {{tryout.dateString}}
+        td {{tryout.time}}
         td 
           button(ng-if="!tryout.code" class="btn btn-success btn-xs" ng-click="login.generateGuestCode(tryout)") Get Code
           span(ng-if="tryout.code") {{tryout.code}}
         td
-          button(class="btn btn-danger" ng-click="login.deleteTryout(tryout)")
+          button(ui-turn-on="deleteModal" class="btn btn-danger" ng-click="login.tryoutToDelete = tryout")
             i(class="fa fa-trash")
 a(href="/archives")
   button(class="btn btn-primary") Archives
