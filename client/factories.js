@@ -70,12 +70,25 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
       fetchTryouts();
     });
   };
-
+  var savePlayersToDb = function(info){
+    console.log(info);
+    $http.get('/app/view/tryout').then(function(response){
+      $location.path('/tryout/' + info);
+    })
+  }
+  var scorePlayer = function(info){
+    console.log(info);
+    $http.get('/app/view/doTheThing/' + info.tryout_id).then(function(response){
+      $location.path('/doTheThing/:id');
+    })
+  }
   return {
     saveTryoutInfo: saveTryoutInfo,
     generateCode: generateCode,
     fetchTryouts: fetchTryouts,
     deleteTryout: deleteTryout,
-    data: data
+    data: data,
+    savePlayersToDb: savePlayersToDb,
+    scorePlayer: scorePlayer
   };
 }]);

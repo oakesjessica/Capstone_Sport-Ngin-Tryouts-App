@@ -70,8 +70,12 @@ router.get('/edit/:id', function(req, res) {
 router.get('/players', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/players.jade'));
 });
-
-
+router.get('/tryout', function(req, res){
+  res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'));
+})
+router.get('/doTheThing', function(req, res){
+  res.render(path.join(__dirname, '../public/views/partials/individualPlayer.jade'));
+})
 router.post('/new', function(req, res) {
   console.log(req.body, req.user.id);
   var newTryout = new Tryout({
