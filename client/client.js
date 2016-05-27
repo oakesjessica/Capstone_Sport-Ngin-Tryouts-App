@@ -1,4 +1,4 @@
-var app = angular.module('tryoutsApp', ['ngRoute', 'mobile-angular-ui', 'mobile-angular-ui.gestures', 'pickadate']);
+var app = angular.module('tryoutsApp', ['ngRoute', 'angular-loading-bar', 'mobile-angular-ui', 'mobile-angular-ui.gestures', 'pickadate']);
 
 //////////////////////////////////////////////////////////////////////////////////
 //  Config
@@ -105,11 +105,11 @@ app.controller('AppController', ['UserService', function(UserService) {
 }]);
 
 
-app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
+app.controller('LoginController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar){
   var lc = this;
   lc.tryouts = [];
   lc.guest = {};
-
+  lc.tryoutToDelete = {};
   lc.tryouts = TryoutService.data;
 
   UserService.isAuthenticated(function(status) {
@@ -135,6 +135,16 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   lc.deleteTryout = function(tryout) {
     TryoutService.deleteTryout(tryout);
   };
+
+
+  // fake the initial load so first time users can see the bar right away:
+  cfpLoadingBar.start();
+  lc.fakeIntro = true;
+  $timeout(function() {
+    cfpLoadingBar.complete();
+    lc.fakeIntro = false;
+  }, 1250);
+
 }]);  //  LoginController
 
 app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location',  function(TryoutService, UserService, $location) {
