@@ -65,11 +65,11 @@ app.controller('AppController', ['UserService', function(UserService) {
 }]);
 
 
-app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
+app.controller('LoginController', ['$http','UserService', 'TryoutService', '$location', function($http, UserService, TryoutService, $location){
   var lc = this;
   lc.tryouts = [];
   lc.guest = {};
-
+  lc.tryoutToDelete = {};
   lc.tryouts = TryoutService.data;
 
   UserService.isAuthenticated(function(status) {
