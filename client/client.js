@@ -76,18 +76,19 @@ app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', funct
 
   pc.savePlayers = function(){
     for (var i = 0; i < pc.playersList.val.length; i++) {
-      pc.profileInfo = {};
-      pc.profileInfo.survey_id = pc.playersList.val[i].survey_result_id;
-      pc.profileInfo.first_name = pc.playersList.val[i].qu_el_3797779;
-      pc.profileInfo.last_name = pc.playersList.val[i].qu_el_3797780;
-      pc.profileInfo.level = pc.playersList.val[i].qu_el_3797961;
-      pc.profileInfo.jerseyNum = pc.playersList.val[i].alias;
-
-      pc.playerProfiles.push(pc.profileInfo);
+      pc.playerTryout = {
+        jerseyNum: "",
+        profiles: {}
+      };
+      pc.playerTryout.profiles.survey_id = pc.playersList.val[i].survey_result_id;
+      pc.playerTryout.profiles.first_name = pc.playersList.val[i].qu_el_3797779;
+      pc.playerTryout.profiles.last_name = pc.playersList.val[i].qu_el_3797780;
+      pc.playerTryout.profiles.level = pc.playersList.val[i].qu_el_3797961;
+      pc.playerTryout.jerseyNum = pc.playersList.val[i].alias;
+      pc.playerProfiles.push(pc.playerTryout);
     }
 
-    console.log(pc.playerProfiles);
-    // TryoutService.savePlayersToDb(pc.tryout_id);
+    TryoutService.savePlayersToDb(pc.playerProfiles, pc.tryout_id);
   };
 
   TryoutService.getPlayers();
