@@ -45,6 +45,11 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'AssignScoreController',
       controllerAs: 'assign'
     })
+    .otherwise({
+      templateUrl: '/app/view/404',
+      controller: 'ErrorController',
+      controllerAs: 'error'
+    })
   $locationProvider.html5Mode(true);
 }]);  //  app.config
 
@@ -206,3 +211,8 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
 app.controller('ArchivesController', function(){
   var vm = this;
 });
+
+
+app.controller('ErrorController', function() {
+  
+})

@@ -139,4 +139,10 @@ router.post('/new', function(req, res) {
 router.get('/archives', function(req, res){
   res.render(path.join(__dirname, '../public/views/partials/archives.jade'));
 });
+
+
+
+router.get('/404', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/404.jade'));
+})
 module.exports = router;
