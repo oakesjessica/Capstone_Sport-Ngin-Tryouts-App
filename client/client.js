@@ -35,23 +35,48 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'PlayerNumberController',
       controllerAs: 'num'
     })
-
+    .when('/tryout/:id', {
+      templateUrl: '/app/view/tryout',
+      controller: 'TryoutReviewController',
+      controllerAs: 'review'
+    })
+    .when('/doTheThing/:id', {
+      templateUrl: '/app/view/doTheThing',
+      controller: 'AssignScoreController',
+      controllerAs: 'assign'
+    })
   $locationProvider.html5Mode(true);
 }]);  //  app.config
 
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
-app.controller('PlayerNumberController', ['$routeParams', function($routeParams){
+app.controller('AssignScoreController', function(){
+  console.log('Hello World');
+})
+
+app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
+  var trc = this;
+  trc.player = {};
+  trc.player.tryout_id = $routeParams.id;
+  console.log(trc.player.tryout_id);
+  trc.reviewPlayer = function(){
+    TryoutService.scorePlayer(trc.player);
+  }
+}])
+app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var pc = this;
   // pc.playersList = TryoutService.data;
+
   pc.tryout = {};
   pc.tryout.playersList = [{player: '1', first: 'adam', last: 'sanders'}, {player: '2', first: 'taylor', last: 'sandquist'}];
 
   var TryoutInfo = {};
   pc.tryout.tryout_id = $routeParams.id;
   console.log(pc.tryout);
-
+  pc.savePlayers = function(){
+    TryoutService.savePlayersToDb(pc.tryout.tryout_id);
+  }
 }]);
 
 
