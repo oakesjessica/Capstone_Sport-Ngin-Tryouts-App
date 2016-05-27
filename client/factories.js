@@ -60,7 +60,6 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
   };
   var getPlayers = function(){
     $http.get('/app/view/players/testAPI').then(function(response){
-      console.log(response);
       data.val = response.data;
     })
   }
@@ -75,11 +74,14 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
       fetchTryouts();
     });
   };
-  var savePlayersToDb = function(info){
-    console.log(info);
-    $http.get('/app/view/tryout').then(function(response){
-      $location.path('/tryout/' + info);
+  var savePlayersToDb = function(info, id){
+    $http.put('/app/view/players/' + id, info).then(function(response) {
+      $location.path('/tryout/' + id);
     })
+    // $http.put('/app/view/players').then(function(response){
+    //   console.log(response);
+    //   // $location.path('/tryout/' + info);
+    // })
   }
   var scorePlayer = function(info){
     console.log(info);
