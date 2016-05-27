@@ -69,22 +69,24 @@ app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', funct
 app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var pc = this;
 
-  pc.playerProfile = {};
-  pc.playersList = [];
+  pc.playerProfiles = [];
   pc.playersList = TryoutService.data;
 
   pc.tryout_id = $routeParams.id;
 
   pc.savePlayers = function(){
-    // for (var i = 0; i < pc.playersList; i++) {
-    //   pc.playerProfile.survey_id = pc.playersList.survey_result_id;
-    //   pc.playerProfile.first_name = pc.playersList.qu_el_3797779;
-    //   pc.playerProfile.last_name = pc.playersList.qu_el_3797780;
-    //   pc.playerProfile.level = pc.playersList.qu_el_3797961;
-    //   pc.playerProfile.jerseyNum = pc.playersList.alias;
-    // }
+    for (var i = 0; i < pc.playersList.val.length; i++) {
+      pc.profileInfo = {};
+      pc.profileInfo.survey_id = pc.playersList.val[i].survey_result_id;
+      pc.profileInfo.first_name = pc.playersList.val[i].qu_el_3797779;
+      pc.profileInfo.last_name = pc.playersList.val[i].qu_el_3797780;
+      pc.profileInfo.level = pc.playersList.val[i].qu_el_3797961;
+      pc.profileInfo.jerseyNum = pc.playersList.val[i].alias;
 
-    console.log(pc.playerProfile);
+      pc.playerProfiles.push(pc.profileInfo);
+    }
+
+    console.log(pc.playerProfiles);
     // TryoutService.savePlayersToDb(pc.tryout_id);
   }
 
