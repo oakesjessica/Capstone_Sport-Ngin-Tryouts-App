@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var passport = require('passport');
 var Tryout = require('../../models/tryout');
+
 router.get('/sportngin', passport.authenticate('oauth2'));
 
 router.get('/sportngin/callback',
@@ -27,9 +28,8 @@ router.get('/check', function(req, res) {
     });
   }
 });
-
 //Access Code
-router.post('/guest', function(req, res){
+router.post('/guestCode', function(req, res){
   var code = req.body.code;
   Tryout.findOne({code: code}).exec(function(err, guest){
     if(err){
@@ -41,4 +41,26 @@ router.post('/guest', function(req, res){
     }
   });
 });
+router.post('/guest', function(req, res){
+  var code = req.body.code;
+  Tryout.findOne({'code': code }, function(err, guest){
+    console.log(guest);
+    if(err){
+      console.log('Error', err);
+      res.status(500).json({
+        success: false
+      });
+    } else if(guest == '' || guest == null){
+      res.status(404).json({
+        success: false
+      });
+      console.log('no code found');
+    } else {
+      res.status(200).json({
+        success: true,
+        guest: guest
+      });
+    }
+  })
+})
 module.exports = router;

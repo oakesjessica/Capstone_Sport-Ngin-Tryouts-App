@@ -25,10 +25,15 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'TryoutInputController',
       controllerAs: 'input'
     })
-    .when('/review', {
-      templateUrl: '/app/view/review',
-      controller: 'ReviewInputController',
-      controllerAs: 'rev'
+    .when('/edit/:id', {
+      templateUrl: '/app/view/edit/',
+      controller: 'EditController',
+      controllerAs: 'edit'
+    })
+    .when('/players/:id', {
+      templateUrl: '/app/view/players',
+      controller: 'PlayerNumberController',
+      controllerAs: 'num'
     })
 
   $locationProvider.html5Mode(true);
@@ -37,14 +42,27 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 //////////////////////////////////////////////////////////////////////////////////
 //  Controllers
 //////////////////////////////////////////////////////////////////////////////////
+app.controller('PlayerNumberController', ['$routeParams', function($routeParams){
+  var pc = this;
+  // pc.playersList = TryoutService.data;
+  pc.tryout = {};
+  pc.tryout.playersList = [{player: '1', first: 'adam', last: 'sanders'}, {player: '2', first: 'taylor', last: 'sandquist'}];
+
+  var TryoutInfo = {};
+  pc.tryout.tryout_id = $routeParams.id;
+  console.log(pc.tryout);
+
+}]);
+
+
 app.controller('AppController', ['UserService', function(UserService) {
   var vm = this;
   vm.user = UserService.user;
 
   UserService.isAuthenticated(function(status, user) {
     console.log(status);
-  })
-}])
+  });
+}]);
 
 
 app.controller('LoginController', ['$http','UserService', 'TryoutService', function($http, UserService, TryoutService){
@@ -52,62 +70,71 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', funct
   lc.tryouts = [];
   lc.guest = {};
 
-  UserService.isAuthenticated(function(status) {
-    if (status == true) {
+  lc.tryouts = TryoutService.data;
 
-      var fetchTryouts = function(){
-        $http.get('/app/view/data').then(function(response){
-          console.log('response from /app/view/data', response);
-          if(response.status !== 200){
-            ('Failed to fetch tryouts');
-          }
-          lc.tryouts = response.data;
-          fetchTryouts();
-          return response.data;
-        })
-      }
-      fetchTryouts();
+  UserService.isAuthenticated(function(status) {
+    if (status === true) {
+      TryoutService.fetchTryouts();
     }
+
+    lc.generateGuestCode = function(info) {
+      TryoutService.generateCode(info);
+    };
   });
 
   lc.guestLogin = function(){
-    console.log(lc.guest);
-    UserService.guestAuthentication(lc.guest);
+    UserService.guestAuthentication(lc.guest, function(status) {
+      if(status === true) {
+        console.log('Code worked!');
+      } else {
+        console.log(':(');
+      }
+    });
+  };
+
+  lc.deleteTryout = function(tryout) {
+    TryoutService.deleteTryout(tryout);
   };
 }]);  //  LoginController
 
-app.controller('TryoutInputController', ['TryoutService', function(TryoutService) {
+app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location',  function(TryoutService, UserService, $location) {
   var tic = this;
-  var num = 1;
 
-  tic.curDate = new Date();
-  tic.curTime = new Date();
+  UserService.isAuthenticated(function(status) {
+    if (status === true) {
+      var num = 1;
 
-  tic.tryout = {};
-  tic.categories = [{'id': 1}];
+      // tic.curDate = new Date();
+      // tic.curTime = new Date();
 
-  tic.addField = function() {
-    num += 1;
-    tic.categories.push({'id':num});
-  };  //  addFields
+      tic.tryout = {};
+      tic.categories = [{'id': 1}];
 
-  tic.removeField = function(id) {
-    tic.categories.splice(id, 1);
-  };  //  removeField
+      tic.addField = function() {
+        num += 1;
+        tic.categories.push({'id':num});
+      };  //  addFields
 
-  tic.submitInfo = function() {
-    tic.tryout.categories = tic.categories;
-    TryoutService.saveTryoutInfo(tic.tryout);
-  };  //  submitInfo
+      tic.removeField = function(id) {
+        tic.categories.splice(id, 1);
+      };  //  removeField
+
+      tic.submitInfo = function() {
+        tic.tryout.categories = tic.categories;
+        TryoutService.saveTryoutInfo(tic.tryout);
+      };  //  submitInfo
+    } else {
+      $location.path('/');
+    }
+  }); //  UserService
 
 }]); //  TryoutInputController
 
 
+app.controller('EditController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams) {
+  var ec = this;
 
-app.controller('TryoutManagementController', ['$http', function($http){
-  var tmc = this;
-
-}]);  //  tryoutManagementController
+}]);  //  ReviewController
 
 
 app.controller('LogoutController', ['UserService', '$templateCache','$location', function(UserService, $templateCache, $location) {

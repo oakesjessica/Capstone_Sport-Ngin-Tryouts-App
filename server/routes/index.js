@@ -32,6 +32,7 @@ router.get('/testAPI', function(req, res){
     });
   });
 });
+
 router.get('/*', function(req, res){
   res.render(path.join(__dirname, '../public/views/app.jade'));
 });
