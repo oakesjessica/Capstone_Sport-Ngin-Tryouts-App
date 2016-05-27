@@ -88,7 +88,7 @@ app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', funct
 
     console.log(pc.playerProfiles);
     // TryoutService.savePlayersToDb(pc.tryout_id);
-  }
+  };
 
   TryoutService.getPlayers();
 }]);
@@ -142,9 +142,6 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
   UserService.isAuthenticated(function(status) {
     if (status === true) {
       var num = 1;
-
-      // tic.curDate = new Date();
-      // tic.curTime = new Date();
 
       tic.tryout = {};
       tic.categories = [{'id': 1}];
