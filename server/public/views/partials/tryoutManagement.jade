@@ -25,12 +25,14 @@ table.table.table-striped
       tr
         th Name
         th Date
+        th Time
         th Guest Code
         th
   tbody
       tr(ng-repeat="tryout in login.tryouts.val track by $index")
         td {{tryout.title}}
         td {{tryout.dateString}}
+        td {{tryout.time}}
         td 
           button(ng-if="!tryout.code" class="btn btn-success btn-xs" ng-click="login.generateGuestCode(tryout)") Get Code
           span(ng-if="tryout.code") {{tryout.code}}

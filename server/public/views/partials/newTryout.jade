@@ -9,12 +9,12 @@ div.container-fluid
     
     div(class="form-group row")
       label(for="tryoutDate") Date
-      input(class="form-control" type="text" name="date" pick-a-date="input.curDate" placeholder="Pick a date" ng-model="input.tryout.date" required)
+      input(class="form-control" type="text" name="date" pick-a-date="input.currDate" placeholder="Pick a date" ng-model="input.tryout.date" required)
       p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
       
     div(class="form-group row")
       label(for="tryoutTime") Time
-      input(class="form-control" type="text" name="time" pick-a-time="input.curTime" pick-a-time-options="{ interval:15}" placeholder="Enter time" ng-model="input.tryout.time" required)
+      input(class="form-control" type="text" name="time" pick-a-time="input.currTime" pick-a-time-options="{interval:15, min:[7, 30], max:[21,0]}" placeholder="Enter time" ng-model="input.tryout.time" required)
       p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
 
     div(class="form-group row" ng-repeat="categ in input.categories track by $index")

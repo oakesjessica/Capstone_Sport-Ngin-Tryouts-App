@@ -63,20 +63,34 @@ app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', funct
   trc.reviewPlayer = function(){
     TryoutService.scorePlayer(trc.player);
   }
-}])
+}]);  //  TryoutReviewController
+
+
 app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var pc = this;
-  // pc.playersList = TryoutService.data;
 
-  pc.tryout = {};
-  pc.tryout.playersList = [{player: '1', first: 'adam', last: 'sanders'}, {player: '2', first: 'taylor', last: 'sandquist'}];
+  pc.playerProfiles = [];
+  pc.playersList = TryoutService.data;
 
-  var TryoutInfo = {};
-  pc.tryout.tryout_id = $routeParams.id;
-  console.log(pc.tryout);
+  pc.tryout_id = $routeParams.id;
+
   pc.savePlayers = function(){
-    TryoutService.savePlayersToDb(pc.tryout.tryout_id);
-  }
+    for (var i = 0; i < pc.playersList.val.length; i++) {
+      pc.profileInfo = {};
+      pc.profileInfo.survey_id = pc.playersList.val[i].survey_result_id;
+      pc.profileInfo.first_name = pc.playersList.val[i].qu_el_3797779;
+      pc.profileInfo.last_name = pc.playersList.val[i].qu_el_3797780;
+      pc.profileInfo.level = pc.playersList.val[i].qu_el_3797961;
+      pc.profileInfo.jerseyNum = pc.playersList.val[i].alias;
+
+      pc.playerProfiles.push(pc.profileInfo);
+    }
+
+    console.log(pc.playerProfiles);
+    // TryoutService.savePlayersToDb(pc.tryout_id);
+  };
+
+  TryoutService.getPlayers();
 }]);
 
 
@@ -128,9 +142,6 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
   UserService.isAuthenticated(function(status) {
     if (status === true) {
       var num = 1;
-
-      // tic.curDate = new Date();
-      // tic.curTime = new Date();
 
       tic.tryout = {};
       tic.categories = [{'id': 1}];

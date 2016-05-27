@@ -58,7 +58,12 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
       fetchTryouts();
     });
   };
-
+  var getPlayers = function(){
+    $http.get('/app/view/players/testAPI').then(function(response){
+      console.log(response);
+      data.val = response.data;
+    })
+  }
   var fetchTryouts = function(){
     $http.get('/app/view/data').then(function(response){
       data.val = response.data;
@@ -89,6 +94,7 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     deleteTryout: deleteTryout,
     data: data,
     savePlayersToDb: savePlayersToDb,
-    scorePlayer: scorePlayer
+    scorePlayer: scorePlayer,
+    getPlayers: getPlayers
   };
 }]);
