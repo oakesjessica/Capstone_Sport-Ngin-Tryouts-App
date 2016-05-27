@@ -7,13 +7,17 @@ table.table.table-striped
         th Name
         th Date
         th Guest Code
+        th
   tbody
-      tr(ng-repeat="tryout in login.tryouts track by $index")
+      tr(ng-repeat="tryout in login.tryouts.val track by $index")
         td {{tryout.title}}
         td {{tryout.dateString}}
         td 
           button(ng-if="!tryout.code" class="btn btn-success btn-xs" ng-click="login.generateGuestCode(tryout)") Get Code
           span(ng-if="tryout.code") {{tryout.code}}
+        td
+          button(class="btn btn-danger" ng-click="login.deleteTryout(tryout)")
+            i(class="fa fa-trash")
 a(href="/archives")
   button(class="btn btn-primary") Archives
 
