@@ -83,8 +83,8 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', functi
     asc.player.val.players[0].total = total;
   };
 
-  asc.saveScoresAndTotal = function(info) {
-    console.log(info);
+  asc.saveScoresAndTotal = function(infoData) {
+    TryoutService.saveTotal(infoData, info.tryout_id);
   };
 
   TryoutService.getOnePlayer(info);

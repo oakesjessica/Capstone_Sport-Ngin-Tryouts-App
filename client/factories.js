@@ -107,8 +107,10 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     });
   };  //  fetchOneTryout
 
-  var saveTotals = function(info) {
-    console.log(info);
+  var saveTotal = function(info, id) {
+    $http.put('/app/view/scoreplayer/' + id, info).then(function(response) {
+      $location.path('/tryout/' + id);
+    });
   };  //  saveTotals
 
   return {
@@ -121,18 +123,7 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     getPlayers: getPlayers,
     getOnePlayer: getOnePlayer,
     fetchOneTryout: fetchOneTryout,
-    saveTotals: saveTotals,
+    saveTotal: saveTotal,
     data: data
   };
 }]);
-
-/*******************************************************************************
-                          Player Service
-*******************************************************************************/
-app.factory('PlayerService', function() {
-  var formData = {};
-
-
-
-
-});

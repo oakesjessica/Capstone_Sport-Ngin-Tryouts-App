@@ -52,7 +52,6 @@ router.get('/scoreplayer/input', function(req, res) {
   var tryout_id = req.query.tryout_id;
   var player_id = req.query.player_id;
 
-
   Tryout.findOne({'_id': tryout_id}).select({'players': { $elemMatch: { 'player_id': player_id}}}).exec(function(err, player) {
     if (err) {
       console.log('Error retrieving player to evaluate');
@@ -63,6 +62,27 @@ router.get('/scoreplayer/input', function(req, res) {
     }
   }); //  Tryout.findOne
 }); //  router.get('/scoreplayer/input')
+
+router.put('/scoreplayer/:id', function(req, res) {
+  var tryout_id = req.params.id;
+  var player_id = req.body.player_id;
+  var playerInfo = req.body;
+
+  Tryout.update({
+    '_id': tryout_id, 'players.player_id': player_id}, {
+      '$set': {
+        'players.$.categories': req.body.categories,
+        'players.$.total': req.body.total
+      }
+    }, { new: true }, function(err, player) {
+      if (err) {
+        console.log('Error updating player scores', err);
+        res.status(500).send(err);
+      } else {
+        res.status(200).send(player);
+      }
+    });
+}); //  router.put('/scoreplayer')
 
 router.delete('/:id', function(req, res) {
   if(req.isAuthenticated()) {
