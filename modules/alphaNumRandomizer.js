@@ -1,6 +1,6 @@
 var random = {};
 
-random.createAccessCode = function() {
+random.createRandomCodeString = function() {
   var random = [];
   var code = '';
   var possibilities = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz123456789';

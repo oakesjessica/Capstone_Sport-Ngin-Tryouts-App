@@ -5,12 +5,12 @@
 var router = require('express').Router();
 var path = require('path');
 var jade = require('jade');
-var Tryout = require('../../models/tryout');
-var code = require('../../modules/randomCode');
-var addCateg = require('../../modules/playerCategories');
 var mongoose = require('mongoose');
 var moment = require('moment');
 var request = require('request');
+var code = require('../../modules/alphaNumRandomizer');
+var addCateg = require('../../modules/playerCategories');
+var Tryout = require('../../models/tryout');
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
@@ -18,25 +18,70 @@ router.get('/', function(req, res){
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
-});
+}); //  router.get('/')
+
+router.get('/new', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
+}); //  router.get('/new')
+
+router.get('/edit', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/editTryout.jade'));
+}); //  router.get('/edit')
+
+router.get('/players', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/players.jade'));
+}); //  router.get('/players')
+
+router.get('/tryout', function(req, res){
+  res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'));
+}); //  router.get('/tryout')
+
+router.get('/scoreplayer', function(req, res){
+  res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'));
+}); //  router.get('/scoreplayer')
+
+router.get('/archives', function(req, res){
+  res.render(path.join(__dirname, '../public/views/partials/archives.jade'));
+}); //  router.get('/archives')
+
+router.get('/404', function(req, res) {
+  res.render(path.join(__dirname, '../public/views/partials/404.jade'));
+}); //  router.get('/404')
+
+router.get('/scoreplayer/input', function(req, res) {
+  var tryout_id = req.query.tryout_id;
+  var player_id = req.query.player_id;
+
+
+  Tryout.findOne({'_id': tryout_id}).select({'players': { $elemMatch: { 'player_id': player_id}}}).exec(function(err, player) {
+    if (err) {
+      console.log('Error retrieving player to evaluate');
+      res.status(500).send(err);
+    } else {
+      console.log('Successfully retrieved player to evaluate');
+      res.status(200).send(player);
+    }
+  }); //  Tryout.findOne
+}); //  router.get('/scoreplayer/input')
 
 router.delete('/:id', function(req, res) {
   if(req.isAuthenticated()) {
     var id = req.params.id;
     Tryout.findOneAndRemove({'_id': id}, function(err, tryout) {
       if (err) {
-        console.log('Error deleting tryout');
+        console.log('Error deleting tryout', err);
         res.status(500).send(err);
       } else {
         console.log('Successfully deleted tryout');
         res.status(200).send(tryout);
       }
-    });
-  }
-});
+    }); //  Tryout.findOneAndRemove
+  } //  if(req.isAuthenticated)
+}); //  router.delete('/:id')
 
 router.get('/guestcode/:id', function(req, res){
-  var newCode = code.createAccessCode();
+  var newCode = code.createRandomCodeString();
+
   Tryout.findByIdAndUpdate({'_id':req.params.id},{'code': newCode}, {new: true}, function(err, tryout){
     if(err){
       console.log('Error updating guest code', err);
@@ -45,16 +90,8 @@ router.get('/guestcode/:id', function(req, res){
       console.log('Successfully updated guest code');
       res.status(200).send(tryout);
     }
-  });
-});
-
-router.get('/new', function(req, res) {
-  res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
-});
-
-router.get('/edit', function(req, res) {
-  res.render(path.join(__dirname, '../public/views/partials/editTryout.jade'));
-});
+  }); //  Tryout.findByIdAndUpdate
+}); //  router.get('/guestcode/:id')
 
 router.get('/edit/:id', function(req, res) {
   var tryoutId = req.params.id;
@@ -69,23 +106,12 @@ router.get('/edit/:id', function(req, res) {
   }); //  Tryout.find
 }); //  router.get
 
-router.get('/players', function(req, res) {
-  res.render(path.join(__dirname, '../public/views/partials/players.jade'));
-});
-
-router.get('/tryout', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'));
-});
-
-router.get('/doTheThing', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/individualPlayer.jade'));
-});
-
 router.get('/players/testAPI', function(req, res){
   var options = {
     url: "https://api-user.ngin.com/oauth/token?grant_type=refresh_token&client_id=" + process.env.CLIENT_ID +
     "&client_secret=" + process.env.CLIENT_SECRET + "&refresh_token=" + process.env.REFRESH_TOKEN
   };
+
   request.post(options, function(err, response, body){
     /// Turn into JSON object
     body = JSON.parse(body);
@@ -98,8 +124,8 @@ router.get('/players/testAPI', function(req, res){
         "Authorization": "Bearer " + access_token,
         "Accept" : "application/json",
         "NGIN-API-VERSION" : "0.1"
-      },
-    };
+      },  //  headers
+    };  //  apiOptions
 
     request.get(apiOptions, function(err, response, body){
       var surveyId = JSON.parse(body)[1].id;
@@ -110,20 +136,21 @@ router.get('/players/testAPI', function(req, res){
           "Authorization": "Bearer " + access_token,
           "Accept" : "application/json",
           "NGIN-API-VERSION" : "0.1"
-        }
-      } //  surveyOptions
+        } //  headers
+      }; //  surveyOptions
 
       request.get(surveyOptions, function(err, response, body){
         res.send(JSON.parse(body));
-      });
-    });
-  });
+      }); //  request.get(surveyOptions)
+    }); //  request.get(apiOptions)
+  }); //  request.post
 }); //Testing Api
+
 
 router.put('/players/:id', function(req, res) {
   Tryout.findOne({'_id':req.params.id}, function(err, tryout) {
     if (err) {
-      console.log(err);
+      console.log('Error saving players to db', err);
       res.status(500).send(err);
     } else {
       var playersWithCategs = addCateg.add(req.body, tryout.categories);
@@ -136,9 +163,9 @@ router.put('/players/:id', function(req, res) {
           console.log('Successfully added players to db');
           res.status(200).send(newTryout);
           // res.send(newTryout)
-        }
+        } //  else
       }); //  Tryout.update
-    }
+    } //  else
   }); //  Tryout.findOne
 }); //  router.put('players')
 
@@ -164,29 +191,19 @@ router.post('/new', function(req, res) {
   });
 });
 
-router.get('/archives', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/archives.jade'));
-});
-
 router.get('/tryout/get/:id', function(req,res){
   var id = req.params.id;
-  console.log(id, "id");
+
   Tryout.findOne({'_id':id}, function(err, tryout){
     if(err){
       console.log(err);
       res.status(500).send(err);
-    }else{
-      console.log("Successfully retrieved");
+    } else{
+      console.log("Successfully retrieved tryout");
       res.status(200).send(tryout);
-    }
-  });
-});
-
-
-
-router.get('/404', function(req, res) {
-  res.render(path.join(__dirname, '../public/views/partials/404.jade'));
-});
+    } //  else
+  }); //  Tryout.findOne
+}); //  request.get('/tryout/get/:id')
 
 
 module.exports = router;

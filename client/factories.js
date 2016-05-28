@@ -46,65 +46,93 @@ app.factory('UserService', ['$http', function($http){
                           Tryout Service
 *******************************************************************************/
 app.factory('TryoutService', ['$http', '$location', function($http, $location) {
-  var data = [];
+  var data = {};
+
   var saveTryoutInfo = function(data) {
     $http.post('/app/view/new', data).then(function(response) {
       $location.path('/players/' + response.data._id);
     });
-  };
+  };  //  saveTryoutInfo
 
   var generateCode = function(info){
     $http.get('/app/view/guestcode/' + info._id).then(function(response){
       fetchTryouts();
     });
-  };
+  };  //  generateCode
+
   var getPlayers = function(){
     $http.get('/app/view/players/testAPI').then(function(response){
       data.val = response.data;
-    })
-  }
+    });
+  };  //  getPlayers
+
   var fetchTryouts = function(){
     $http.get('/app/view/data').then(function(response){
       data.val = response.data;
     });
-  };
+  };  //  fetchTryouts
 
   var deleteTryout = function(info) {
     $http.delete('/app/view/' + info._id).then(function(response) {
       fetchTryouts();
     });
-  };
+  };  //  deleteTryout
+
   var savePlayersToDb = function(info, id){
     $http.put('/app/view/players/' + id, info).then(function(response) {
       $location.path('/tryout/' + id);
-    })
-    // $http.put('/app/view/players').then(function(response){
-    //   console.log(response);
-    //   // $location.path('/tryout/' + info);
-    // })
-  }
+    });
+  };  //  savePlayersToDb
+
   var scorePlayer = function(info){
-    console.log(info);
-    // $http.get('/app/view/doTheThing/' + info.tryout_id).then(function(response){
-    //   $location.path('/doTheThing/:id');
-    // })
-  }
-  var fetchOneTryout = function(id){
-    // console.log('id factory ', id);
-    $http.get('/app/view/tryout/get/' + id).then(function(response){
-      // console.log('one response', response);
+    $location.path('/scoreplayer/' + info.tryout_id + "/" + info.player_id);
+  };  //  scorePlayer
+
+  var getOnePlayer = function(info) {
+    var config = {
+      params: {
+        tryout_id: info.tryout_id,
+        player_id: info.player_id
+      }
+    };  //  config
+
+    $http.get('/app/view/scoreplayer/input/', config).then(function(response) {
       data.val = response.data;
-    })
-  }
+    });
+  };  //  getOnePlayer
+
+  var fetchOneTryout = function(id){
+    $http.get('/app/view/tryout/get/' + id).then(function(response){
+      data.val = response.data;
+    });
+  };  //  fetchOneTryout
+
+  var saveTotals = function(info) {
+    console.log(info);
+  };  //  saveTotals
+
   return {
     saveTryoutInfo: saveTryoutInfo,
     generateCode: generateCode,
     fetchTryouts: fetchTryouts,
     deleteTryout: deleteTryout,
-    data: data,
     savePlayersToDb: savePlayersToDb,
     scorePlayer: scorePlayer,
     getPlayers: getPlayers,
-    fetchOneTryout: fetchOneTryout
+    getOnePlayer: getOnePlayer,
+    fetchOneTryout: fetchOneTryout,
+    saveTotals: saveTotals,
+    data: data
   };
 }]);
+
+/*******************************************************************************
+                          Player Service
+*******************************************************************************/
+app.factory('PlayerService', function() {
+  var formData = {};
+
+
+
+
+});

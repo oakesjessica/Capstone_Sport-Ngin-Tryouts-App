@@ -1,8 +1,8 @@
 var app = angular.module('tryoutsApp', ['ngRoute', 'angular-loading-bar', 'mobile-angular-ui', 'mobile-angular-ui.gestures', 'pickadate']);
 
-//////////////////////////////////////////////////////////////////////////////////
-//  Config
-//////////////////////////////////////////////////////////////////////////////////
+/*=================================================================================
+                                    Config
+=================================================================================*/
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
@@ -40,8 +40,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller: 'TryoutReviewController',
       controllerAs: 'review'
     })
-    .when('/doTheThing/:id', {
-      templateUrl: '/app/view/doTheThing',
+    .when('/scoreplayer/:id/:player', {
+      templateUrl: '/app/view/scoreplayer',
       controller: 'AssignScoreController',
       controllerAs: 'assign'
     })
@@ -49,41 +49,72 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       templateUrl: '/app/view/404',
       controller: 'ErrorController',
       controllerAs: 'error'
-    })
+    });
+
   $locationProvider.html5Mode(true);
 }]);  //  app.config
 
-//////////////////////////////////////////////////////////////////////////////////
-//  Controllers
-//////////////////////////////////////////////////////////////////////////////////
-app.controller('AssignScoreController', function(){
-  console.log('Hello World');
-})
+/*=================================================================================
+                                    Controllers
+=================================================================================*/
+/**********************************************************************************
+                                Score Player
+**********************************************************************************/
+app.controller('AssignScoreController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams){
+  var asc = this;
+  asc.player = TryoutService.data;
 
+  var info = {
+    player_id: $routeParams.player,
+    tryout_id: $routeParams.id
+  };
+
+  asc.calcTotal = function() {
+    var categScores = asc.player.val.players[0].categories;
+    var total = 0;
+
+    for (var i = 0; i < categScores.length; i++) {
+      if (!categScores[i].score) {
+        continue;
+      } else {
+        total += categScores[i].score;
+      }
+    }
+    asc.player.val.players[0].total = total;
+  };
+
+  asc.saveScoresAndTotal = function(info) {
+    console.log(info);
+  };
+
+  TryoutService.getOnePlayer(info);
+}]);
+
+/**********************************************************************************
+                              Review Tryout Information
+**********************************************************************************/
 app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var trc = this;
   trc.playerInfo = {
     tryout_id: ''
   };
   trc.displayTryout = TryoutService.data;
-
-  trc.tryout_id = $routeParams.id;
-  console.log('before', trc.playerInfo);
   trc.playerInfo.tryout_id = $routeParams.id;
-  console.log('player info after', trc.playerInfo);
-  console.log('id', trc.tryout_id);
 
   trc.reviewPlayer = function(playerData){
-    //TryoutService.scorePlayer(trc.player);
-    console.log(playerData);
     trc.playerInfo.player_id = playerData.player_id;
 
     TryoutService.scorePlayer(trc.playerInfo);
-  }
-  TryoutService.fetchOneTryout(trc.tryout_id);
+  };  //  trc.reviewPlayer
+
+
+  TryoutService.fetchOneTryout(trc.playerInfo.tryout_id);
 }]);  //  TryoutReviewController
 
 
+/**********************************************************************************
+                          Assign Player a Jersey Number
+**********************************************************************************/
 app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var pc = this;
 
@@ -113,6 +144,9 @@ app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', funct
 }]);
 
 
+/**********************************************************************************
+                                    App
+**********************************************************************************/
 app.controller('AppController', ['UserService', function(UserService) {
   var vm = this;
   vm.user = UserService.user;
@@ -122,7 +156,9 @@ app.controller('AppController', ['UserService', function(UserService) {
   });
 }]);
 
-
+/**********************************************************************************
+                                Login
+**********************************************************************************/
 app.controller('LoginController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar){
   var lc = this;
   lc.tryouts = [];
@@ -165,6 +201,9 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', '$loc
 
 }]);  //  LoginController
 
+/**********************************************************************************
+                                Tryout Form
+**********************************************************************************/
 app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location',  function(TryoutService, UserService, $location) {
   var tic = this;
 
@@ -196,12 +235,17 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
 }]); //  TryoutInputController
 
 
+/**********************************************************************************
+                                  Edit Tryout
+**********************************************************************************/
 app.controller('EditController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams) {
   var ec = this;
 
 }]);  //  ReviewController
 
-
+/**********************************************************************************
+                                  Logout
+**********************************************************************************/
 app.controller('LogoutController', ['UserService', '$templateCache','$location', function(UserService, $templateCache, $location) {
   var vm = this;
 
@@ -222,11 +266,16 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
   }); //  UserService.isAuthenticated
 }]);  //  LogoutController
 
+/**********************************************************************************
+                                      Archives
+**********************************************************************************/
 app.controller('ArchivesController', function(){
   var vm = this;
 });
 
 
+/**********************************************************************************
+                                    404
+**********************************************************************************/
 app.controller('ErrorController', function() {
-  
-})
+});

@@ -4,12 +4,14 @@ var Tryout = require('../../models/tryout');
 
 router.get('/sportngin', passport.authenticate('oauth2'));
 
+
 router.get('/sportngin/callback',
   passport.authenticate('oauth2', {failureRedirect: '/'}),
   function(req, res) {
     res.redirect('/');
   }
 );
+
 router.get('/logout', function(req, res){
   console.log('Logging out!!!!');
   req.logout();
@@ -36,11 +38,13 @@ router.post('/guestCode', function(req, res){
       console.log('Error', err);
     } else {
       res.send(guest);
-      req.session
+      req.session;
       console.log("success", guest);
     }
   });
 });
+
+
 router.post('/guest', function(req, res){
   var code = req.body.code;
   Tryout.findOne({'code': code }, function(err, guest){
@@ -50,7 +54,7 @@ router.post('/guest', function(req, res){
       res.status(500).json({
         success: false
       });
-    } else if(guest == '' || guest == null){
+    } else if(guest === '' || guest === null){
       res.status(404).json({
         success: false
       });
@@ -61,6 +65,8 @@ router.post('/guest', function(req, res){
         guest: guest
       });
     }
-  })
-})
+  });
+});
+
+
 module.exports = router;
