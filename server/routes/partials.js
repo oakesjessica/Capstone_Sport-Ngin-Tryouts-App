@@ -167,22 +167,26 @@ router.post('/new', function(req, res) {
 router.get('/archives', function(req, res){
   res.render(path.join(__dirname, '../public/views/partials/archives.jade'));
 });
+
 router.get('/tryout/get/:id', function(req,res){
   var id = req.params.id;
   console.log(id, "id");
   Tryout.findOne({'_id':id}, function(err, tryout){
     if(err){
       console.log(err);
-      res.status(500).send(err)
+      res.status(500).send(err);
     }else{
       console.log("Successfully retrieved");
       res.status(200).send(tryout);
     }
   });
+});
 
 
 
 router.get('/404', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/404.jade'));
-})
+});
+
+
 module.exports = router;
