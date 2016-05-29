@@ -7,8 +7,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $routeProvider
     .when('/', {
       templateUrl: '/app/view/',
-      controller: 'LoginController',
-      controllerAs: 'login',
+      controller: 'HomeController',
+      controllerAs: 'home'
     })
     .when('/logout', {
       templateUrl: '/app/view/',
@@ -60,9 +60,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 /**********************************************************************************
                                 Score Player
 **********************************************************************************/
-app.controller('AssignScoreController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams){
+app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope){
   var asc = this;
   asc.player = TryoutService.data;
+  var original = TryoutService.data;
 
   var info = {
     player_id: $routeParams.player,
@@ -85,6 +86,12 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', functi
 
   asc.saveScoresAndTotal = function(infoData) {
     TryoutService.saveTotal(infoData, info.tryout_id);
+  };
+
+  asc.reset = function() {
+    asc.player = angular.copy(original);
+    console.log(asc.player);
+    $scope.scoreForm.$setPristine();
   };
 
   TryoutService.getOnePlayer(info);
@@ -120,7 +127,6 @@ app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', funct
 
   pc.playerProfiles = [];
   pc.playersList = TryoutService.data;
-
   pc.tryout_id = $routeParams.id;
 
   pc.savePlayers = function(){
@@ -140,6 +146,10 @@ app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', funct
     TryoutService.savePlayersToDb(pc.playerProfiles, pc.tryout_id);
   };
 
+  pc.back = function() {
+
+  };  //  back
+
   TryoutService.getPlayers();
 }]);
 
@@ -157,27 +167,39 @@ app.controller('AppController', ['UserService', function(UserService) {
 }]);
 
 /**********************************************************************************
-                                Login
+                                HomePage
 **********************************************************************************/
-app.controller('LoginController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar){
-  var lc = this;
-  lc.tryouts = [];
-  lc.guest = {};
-  lc.tryoutToDelete = {};
-  lc.tryouts = TryoutService.data;
+app.controller('HomeController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar){
+  var hc = this;
+  hc.tryouts = [];
+  hc.guest = {};
+  hc.tryoutToDelete = {};
+  hc.tryouts = TryoutService.data;
 
   UserService.isAuthenticated(function(status) {
     if (status === true) {
       TryoutService.fetchTryouts();
-    }
 
-    lc.generateGuestCode = function(info) {
-      TryoutService.generateCode(info);
-    };
+      hc.generateGuestCode = function(tryout) {
+        TryoutService.generateCode(tryout);
+      };
+
+      hc.deleteTryout = function(tryout) {
+        TryoutService.deleteTryout(tryout);
+      };
+
+      hc.reviewTryout = function(tryout) {
+        TryoutService.reviewATryout(tryout);
+      };
+
+      hc.createNew = function() {
+        TryoutService.inputTryout();
+      };
+    }
   });
 
-  lc.guestLogin = function(){
-    UserService.guestAuthentication(lc.guest, function(status) {
+  hc.guestLogin = function(){
+    UserService.guestAuthentication(hc.guest, function(status) {
       if(status === true) {
         console.log('Code worked!');
       } else {
@@ -186,33 +208,28 @@ app.controller('LoginController', ['$http','UserService', 'TryoutService', '$loc
     });
   };
 
-  lc.deleteTryout = function(tryout) {
-    TryoutService.deleteTryout(tryout);
-  };
-
-
   // fake the initial load so first time users can see the bar right away:
   cfpLoadingBar.start();
-  lc.fakeIntro = true;
+  hc.fakeIntro = true;
   $timeout(function() {
     cfpLoadingBar.complete();
-    lc.fakeIntro = false;
+    hc.fakeIntro = false;
   }, 1250);
 
 }]);  //  LoginController
 
 /**********************************************************************************
-                                Tryout Form
+                            Tryout Input Form
 **********************************************************************************/
-app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location',  function(TryoutService, UserService, $location) {
+app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location', '$routeParams', function(TryoutService, UserService, $location, $routeParams) {
   var tic = this;
 
   UserService.isAuthenticated(function(status) {
     if (status === true) {
       var num = 1;
-
       tic.tryout = {};
       tic.categories = [{'id': 1}];
+      tic.currDate = new Date();
 
       tic.addField = function() {
         num += 1;
@@ -227,6 +244,11 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
         tic.tryout.categories = tic.categories;
         TryoutService.saveTryoutInfo(tic.tryout);
       };  //  submitInfo
+
+      tic.back = function() {
+        window.history.back();
+      };  //  back
+
     } else {
       $location.path('/');
     }
@@ -267,10 +289,9 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
 }]);  //  LogoutController
 
 /**********************************************************************************
-                                      Archives
+                                  Archives
 **********************************************************************************/
 app.controller('ArchivesController', function(){
-  var vm = this;
 });
 
 

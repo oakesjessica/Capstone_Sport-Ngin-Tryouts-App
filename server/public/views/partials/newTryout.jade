@@ -9,7 +9,7 @@ div.container-fluid
     
     div(class="form-group row")
       label(for="tryoutDate") Date
-      input(class="form-control" type="text" name="date" pick-a-date="input.currDate" placeholder="Pick a date" ng-model="input.tryout.date" required)
+      input(class="form-control" type="text" name="date" pick-a-date="input.currDate" pick-a-date-options="{min: input.currDate}" placeholder="Pick a date" ng-model="input.tryout.date" required)
       p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
       
     div(class="form-group row")
@@ -27,5 +27,6 @@ div.container-fluid
             i(class="fa fa-minus")
         button(class="btn btn-sm center-block" ng-show="$last" ng-click="input.addField()")
           i(class="fa fa-2x fa-plus")
-
+    
+    input(type="button" class="btn btn-md" ng-click="input.back()" value="Back" title="Back to Home")
     input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")

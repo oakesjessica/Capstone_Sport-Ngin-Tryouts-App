@@ -113,6 +113,16 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     });
   };  //  saveTotals
 
+  var reviewATryout = function(info) {
+    console.log(info);
+    $location.path('/tryout/' + info._id);
+    // $location.path('/edit/' + info._id);
+  };  //  reviewATryout
+
+  var inputTryout = function() {
+    $location.path('/new/');
+  };  //  inputTryout
+
   return {
     saveTryoutInfo: saveTryoutInfo,
     generateCode: generateCode,
@@ -124,6 +134,8 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     getOnePlayer: getOnePlayer,
     fetchOneTryout: fetchOneTryout,
     saveTotal: saveTotal,
+    reviewATryout: reviewATryout,
+    inputTryout: inputTryout,
     data: data
   };
 }]);

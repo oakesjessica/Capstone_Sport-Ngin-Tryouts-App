@@ -68,6 +68,8 @@ router.put('/scoreplayer/:id', function(req, res) {
   var player_id = req.body.player_id;
   var playerInfo = req.body;
 
+  //  API PUT CALL TO SPORT NGIN
+
   Tryout.update({
     '_id': tryout_id, 'players.player_id': player_id}, {
       '$set': {
@@ -79,6 +81,7 @@ router.put('/scoreplayer/:id', function(req, res) {
         console.log('Error updating player scores', err);
         res.status(500).send(err);
       } else {
+        console.log('Successfully updated player score');
         res.status(200).send(player);
       }
     });

@@ -1,5 +1,5 @@
 div.container-fluid
-  ng-form
+  ng-form(role="form" name="asc.scoreForm")
     div(ng-repeat="player in assign.player.val.players")
       h3(class="text-center") Player {{ player.profiles.first_name }} {{ player.profiles.last_name }} # {{ player.jerseyNum }}
       
@@ -11,4 +11,5 @@ div.container-fluid
         h4 Total {{ assign.calcTotal() }} 
         p {{ player.total }}
       
+      input(type="button" ng-click="assign.reset()" value="Reset")
       input(type="submit" ng-click="assign.saveScoresAndTotal(player)" value="Save")
