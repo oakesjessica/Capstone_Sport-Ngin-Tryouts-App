@@ -1,3 +1,18 @@
+div(ui-content-for="modals")
+  div(class="modal modal-overlay" ui-if="confirmModal" ui-state="confirmModal")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button(class="close" ui-turn-off="deleteModal") &times;
+          h4.modal-title Delete Tryout
+        
+        div.modal-body
+          p Any changes made will be lost. Continue?
+            
+        div.modal-footer
+          button(ui-turn-off="confirmModal" class="btn btn-primary") Cancel
+          button(ui-turn-off="confirmModal" ng-click="input.back()" class="btn btn-danger") Cancel
+
 div.container-fluid
   h1(class="text-center") Tryout Information
   
@@ -28,5 +43,5 @@ div.container-fluid
         button(class="btn btn-sm center-block" ng-show="$last" ng-click="input.addField()")
           i(class="fa fa-2x fa-plus")
     
-    input(type="button" class="btn btn-md" ng-click="input.back()" value="Back" title="Back to Home")
+    input(type="button" class="btn btn-md" ng-click="input.back()" value="Cancel" title="Cancel")
     input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")

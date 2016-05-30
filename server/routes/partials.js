@@ -67,24 +67,70 @@ router.put('/scoreplayer/:id', function(req, res) {
   var tryout_id = req.params.id;
   var player_id = req.body.player_id;
   var playerInfo = req.body;
+  var survey_id = req.body.profiles.survey_id;
+  var total = req.body.total;
+  console.log(total);
+  console.log(total.toString(), 'string');
 
   //  API PUT CALL TO SPORT NGIN
+  var options = {
+    url: "https://api-user.ngin.com/oauth/token?grant_type=refresh_token&client_id=" + process.env.CLIENT_ID +
+    "&client_secret=" + process.env.CLIENT_SECRET + "&refresh_token=" + process.env.REFRESH_TOKEN
+  };
 
-  Tryout.update({
-    '_id': tryout_id, 'players.player_id': player_id}, {
-      '$set': {
-        'players.$.categories': req.body.categories,
-        'players.$.total': req.body.total
+  request.post(options, function(err, response, body){
+    if (err) {
+      console.log('Error with posting to API to get access token');
+      res.status(500).send(err);
+    } else {
+      // Turn into JSON object
+      body = JSON.parse(body);
+      var access_token = body.access_token;
+
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      var data = {
+        "tryout_score": total
       }
-    }, { new: true }, function(err, player) {
-      if (err) {
-        console.log('Error updating player scores', err);
-        res.status(500).send(err);
-      } else {
-        console.log('Successfully updated player score');
-        res.status(200).send(player);
-      }
-    });
+
+      var apiPutOptions = {
+        url: "https://api.sportngin.com/survey_results/" + survey_id + "/answers?tryout_score="+total,
+        headers: {
+          "Authorization": "Bearer " + access_token,
+          "Accept" : "application/json",
+          "NGIN-API-VERSION" : "0.1",
+          "Content-Type": "application/json"
+        }  //  headers
+      };  //  apiPutOptions
+
+      request.put(apiPutOptions, function(err, response, body) {
+        if (err) {
+          console.log('Error with API PUT request,', err);
+          res.status(500).send(err);
+        } else {
+          console.log('body', JSON.parse(body));
+          res.send(JSON.parse(body));
+        }
+      });
+    }
+  }); //  request.post
+
+
+  //
+  // Tryout.update({
+  //   '_id': tryout_id, 'players.player_id': player_id}, {
+  //     '$set': {
+  //       'players.$.categories': req.body.categories,
+  //       'players.$.total': total
+  //     }
+  //   }, { new: true }, function(err, player) {
+  //     if (err) {
+  //       console.log('Error updating player scores', err);
+  //       res.status(500).send(err);
+  //     } else {
+  //       console.log('Successfully updated player score');
+  //       res.status(200).send(player);
+  //     }
+  //   });
 }); //  router.put('/scoreplayer')
 
 router.delete('/:id', function(req, res) {
