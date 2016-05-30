@@ -108,29 +108,25 @@ router.put('/scoreplayer/:id', function(req, res) {
           res.status(500).send(err);
         } else {
           console.log('body', JSON.parse(body));
-          res.send(JSON.parse(body));
+          Tryout.update({
+            '_id': tryout_id, 'players.player_id': player_id}, {
+              '$set': {
+                'players.$.categories': req.body.categories,
+                'players.$.total': total
+              }
+            }, { new: true }, function(err, player) {
+              if (err) {
+                console.log('Error updating player scores', err);
+                res.status(500).send(err);
+              } else {
+                console.log('Successfully updated player score');
+                res.status(200).send(player);
+              }
+            });
         }
       });
     }
   }); //  request.post
-
-
-  //
-  // Tryout.update({
-  //   '_id': tryout_id, 'players.player_id': player_id}, {
-  //     '$set': {
-  //       'players.$.categories': req.body.categories,
-  //       'players.$.total': total
-  //     }
-  //   }, { new: true }, function(err, player) {
-  //     if (err) {
-  //       console.log('Error updating player scores', err);
-  //       res.status(500).send(err);
-  //     } else {
-  //       console.log('Successfully updated player score');
-  //       res.status(200).send(player);
-  //     }
-  //   });
 }); //  router.put('/scoreplayer')
 
 router.delete('/:id', function(req, res) {
