@@ -128,8 +128,7 @@ router.put('/edit/:id', function(req, res) {
   console.log(req.params.id);
   console.log(req.body);
   // console.log(moment(req.body.dateString).format());
-var playerUpdates = updateCateg.add(req.body.players, req.body.categories);
-console.log('HELLO!!!!!!!!!!!', new Date(req.body.dateString));
+  var playerUpdates = updateCateg.add(req.body.players, req.body.categories);
   Tryout.update({'_id': tryout_id}, {
     '$set': {
       'title': req.body.title,
@@ -287,6 +286,7 @@ router.get('/tryout/get/:id', function(req,res){
       res.status(500).send(err);
     } else{
       console.log("Successfully retrieved tryout");
+      console.log(tryout);
       res.status(200).send(tryout);
     } //  else
   }); //  Tryout.findOne
