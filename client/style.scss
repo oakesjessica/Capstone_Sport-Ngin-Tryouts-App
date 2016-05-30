@@ -1,16 +1,146 @@
-ul{
-  list-style-type: none;
-  display: -webkit-box;
-
-  li{
-    margin: 5px;
-  }
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url('../fonts/OpenSans-Regular.ttf');
 }
 
-hr{
-  width: 50%;
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url('../fonts/OpenSans-Italic.ttf');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url('../fonts/OpenSans-Semibold.ttf');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: local('Open Sans Semibold Italic'), local('OpenSans-SemiboldItalic'), url('../fonts/OpenSans-SemiboldItalic.ttf');
+}
+
+// Variables
+$black: #23282B;
+$gray-xdark: #23282B;
+$gray-dark: #3A4247;
+$gray: #505C63;
+$gray-light: #D4D9DC;
+$gray-xlight: #F2F3F4;
+$gray-xxlight: #FBFBFC;
+$white: #FFF;
+$highlight: #13769C;
+//$highlight-light: #13769C //  6%
+$highlight-light-FFF: #EDFEF6;  //on #FFF
+$success: #13AA37;
+//$success-light: #13AA37 //  6%
+$success-light-FFF: #F1FDF4;  //  on #FFF
+$warn: #EAA62F;
+//warn-light: #EAA62F //  6%
+$warn-light-FFF: #FEFBF5; //  on #FFF
+$alert: #EA322F;
+// $alert-light: #EA322F  //  6%
+$alert-light-FFF: #FEF5F5;  //  on #FFF
+$content-inverse: #FFFFFF;
+// $content-inverse-light: #FFFFFF  //  70%
+$content-inverse-light-000: #BDBEBF;  //  on #000
+// $content-inverse-xlight: #FFFFFF //  30%
+$content-inverse-xlight-000: #65686B;  //  on #000
+// $content-inverse-xxlight:  #FFFFFF //  12%
+$content-inverse-xxlight: #3D4244;  //  on #000
+$content: #23282B;
+// $content-light: #23282B;  //  70%
+$content-light-FFF: #65686A; //  on #FFF
+// $content-xlight: #23282B; //  30%
+$content-xlight-FFF: #BDBEBF; //  on #FFF
+// $content-xxlight: #23282B;  //  12%
+$content-xxlight-FFF: #E4E5E5;  //  on #FFF
+// $content-xxxlight: #23282B;  //  6%
+$content-xxxlight-FFF: #F2F2F3; //  on #FFF
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
 }
 
 .text-center {
   text-align: center;
+}
+
+.navbar-desktop {
+  border-radius: 0;
+  height: 80px;
+  background: #FFF;
+}
+
+.app-body {
+  background: #f2f3f4;
+
+  .app-content {
+    padding: 20px;
+  }
+}
+.navbar-mobile {
+  height: 60px;
+  background: #FFF;
+  border-radius: 0;
+}
+
+.help-block {
+  font-size: 11px;
+  color: $alert;
+}
+
+@media screen and (min-width: 992px) {
+
+  .has-navbar-top .app-body {
+    padding-top: 80px;
+  }
+
+    .navbar-mobile {
+      display: none !important;
+    }
+
+    .scrollable, .sidebar {
+      display: none !important;
+    }
+
+    .body {
+      display: block !important;
+    }
+
+    .has-sidebar-left .app, .sidebar-left-in .app {
+      margin-left: 0 !important;
+    }
+
+    .sidebar-toggle {
+      display: none !important;
+    }
+
+}
+
+@media screen and (max-width: 991px) {
+  .navbar-desktop {
+    display: none;
+  }
+
+  .has-navbar-top .app-body {
+    padding-top: 60px;
+  }
+
+}
+.playerAlias{
+  width: 10%;
+  display: inline;
+  margin-right: 5px;
 }

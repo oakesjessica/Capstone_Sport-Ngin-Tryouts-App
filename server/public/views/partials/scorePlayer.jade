@@ -1,0 +1,15 @@
+div.container-fluid
+  ng-form(role="form" name="asc.scoreForm")
+    div(ng-repeat="player in assign.player.val.players")
+      h3(class="text-center") Player {{ player.profiles.first_name }} {{ player.profiles.last_name }} # {{ player.jerseyNum }}
+      
+      div(class="form-group row" ng-repeat="categ in player.categories")
+        label(class="col-md-6") {{ categ.field }}
+        input(class="form-control col-md-2" type="number" name="score" ng-model="categ.score")
+        
+      div(class="row center-block")
+        h4 Total {{ assign.calcTotal() }} 
+        p {{ player.total }}
+      
+      input(type="button" ng-click="assign.reset()" value="Reset")
+      input(type="submit" ng-click="assign.saveScoresAndTotal(player)" value="Save")
