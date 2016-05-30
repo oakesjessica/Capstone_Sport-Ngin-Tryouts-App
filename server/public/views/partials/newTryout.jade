@@ -1,17 +1,17 @@
 div(ui-content-for="modals")
-  div(class="modal modal-overlay" ui-if="confirmModal" ui-state="confirmModal")
+  div(class="modal modal-overlay" ui-if="cancelModal" ui-state="cancelModal")
     div.modal-dialog
       div.modal-content
         div.modal-header
-          button(class="close" ui-turn-off="deleteModal") &times;
-          h4.modal-title Delete Tryout
+          button(class="close" ui-turn-off="cancelModal") &times;
+          h4.modal-title Go Back to Home
         
         div.modal-body
-          p Any changes made will be lost. Continue?
+          p Any changes will be lost. Continue?
             
         div.modal-footer
-          button(ui-turn-off="confirmModal" class="btn btn-primary") Cancel
-          button(ui-turn-off="confirmModal" ng-click="input.back()" class="btn btn-danger") Cancel
+          button(ui-turn-off="cancelModal" class="btn btn-primary") Cancel
+          button(ui-turn-off="cancelModal" ng-click="input.back()" class="btn btn-danger") Yes
 
 div.container-fluid
   h1(class="text-center") Tryout Information
@@ -30,7 +30,7 @@ div.container-fluid
     div(class="form-group row")
       label(for="tryoutTime") Time
       input(class="form-control" type="text" name="time" pick-a-time="input.currTime" pick-a-time-options="{interval:15, min:[7, 30], max:[21,0]}" placeholder="Enter time" ng-model="input.tryout.time" required)
-      p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
+      p(class="help-block" ng-show="tryoutForm.time.$invalid") This field is required
 
     div(class="form-group row" ng-repeat="categ in input.categories track by $index")
       ng-form(name="categoryForm")
@@ -43,5 +43,5 @@ div.container-fluid
         button(class="btn btn-sm center-block" ng-show="$last" ng-click="input.addField()")
           i(class="fa fa-2x fa-plus")
     
-    input(type="button" class="btn btn-md" ng-click="input.back()" value="Cancel" title="Cancel")
+    input(type="button" class="btn btn-md" ui-turn-on="cancelModal" value="Cancel" title="Cancel")
     input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")

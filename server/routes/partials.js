@@ -69,8 +69,6 @@ router.put('/scoreplayer/:id', function(req, res) {
   var playerInfo = req.body;
   var survey_id = req.body.profiles.survey_id;
   var total = req.body.total;
-  console.log(total);
-  console.log(total.toString(), 'string');
 
   //  API PUT CALL TO SPORT NGIN
   var options = {
@@ -87,11 +85,6 @@ router.put('/scoreplayer/:id', function(req, res) {
       body = JSON.parse(body);
       var access_token = body.access_token;
 
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      var data = {
-        "tryout_score": total
-      }
-
       var apiPutOptions = {
         url: "https://api.sportngin.com/survey_results/" + survey_id + "/answers?tryout_score="+total,
         headers: {
@@ -107,7 +100,7 @@ router.put('/scoreplayer/:id', function(req, res) {
           console.log('Error with API PUT request,', err);
           res.status(500).send(err);
         } else {
-          console.log('body', JSON.parse(body));
+          console.log('Successfully sent PUT request to API');
           Tryout.update({
             '_id': tryout_id, 'players.player_id': player_id}, {
               '$set': {
@@ -128,6 +121,30 @@ router.put('/scoreplayer/:id', function(req, res) {
     }
   }); //  request.post
 }); //  router.put('/scoreplayer')
+
+router.put('/edit/:id', function(req, res) {
+  var tryout_id = req.params.id;
+  console.log(req.params.id);
+  console.log(req.body);
+  console.log(moment(req.body.dateString).format());
+
+  Tryout.update({'_id': tryout_id}, {
+    '$set': {
+      'title': req.body.title,
+      'time': req.body.time,
+      'dateString': req.body.dateString,
+      'categories': req.body.categories
+    }
+  }, { new: true }, function(err, tryout) {
+    if (err) {
+      console.log('Error updating edits', err);
+      res.status(500).send(err);
+    } else {
+      console.log('Successfully updated edits');
+      res.status(200).send(tryout);
+    }
+  });
+});
 
 router.delete('/:id', function(req, res) {
   if(req.isAuthenticated()) {

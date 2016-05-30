@@ -114,6 +114,10 @@ app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', funct
     TryoutService.scorePlayer(trc.playerInfo);
   };  //  trc.reviewPlayer
 
+  trc.editTryout = function() {
+    TryoutService.editThisTryout(trc.playerInfo.tryout_id);
+  };
+
 
   TryoutService.fetchOneTryout(trc.playerInfo.tryout_id);
 }]);  //  TryoutReviewController
@@ -260,9 +264,34 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
 /**********************************************************************************
                                   Edit Tryout
 **********************************************************************************/
-app.controller('EditController', ['TryoutService', '$routeParams', function(TryoutService, $routeParams) {
+app.controller('EditController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope) {
   var ec = this;
+  var originalData = TryoutService.data;
+  ec.tryoutData = originalData;
+  ec.tryout_id = $routeParams.id;
+  var num = ec.tryoutData.val.categories.length+1;
+  console.log(ec.tryout_id);
 
+  ec.addField = function() {
+    num += 1;
+    ec.tryoutData.val.categories.push({'id':num});
+  };  //  addFields
+
+  ec.removeField = function(id) {
+    ec.tryoutData.val.categories.splice(id, 1);
+  };  //  removeField
+
+  ec.reset = function() {
+    ec.tryoutData = angular.copy(originalData);
+    console.log(ec.tryoutData);
+    $scope.editForm.$setPristine();
+  };
+
+  ec.saveEdits = function() {
+    TryoutService.saveTryoutEdits(ec.tryoutData.val);
+  };
+
+  TryoutService.fetchOneTryout(ec.tryout_id);
 }]);  //  ReviewController
 
 /**********************************************************************************

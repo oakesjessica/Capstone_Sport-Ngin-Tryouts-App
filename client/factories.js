@@ -114,7 +114,6 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
   };  //  saveTotals
 
   var reviewATryout = function(info) {
-    console.log(info);
     $location.path('/tryout/' + info._id);
     // $location.path('/edit/' + info._id);
   };  //  reviewATryout
@@ -122,6 +121,17 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
   var inputTryout = function() {
     $location.path('/new/');
   };  //  inputTryout
+
+  var editThisTryout = function(id) {
+    console.log(id);
+    $location.path('/edit/' + id);
+  };
+
+  var saveTryoutEdits = function(info) {
+    $http.put('/app/view/edit/' + info._id, info).then(function(response) {
+      console.log(response);
+    });
+  };
 
   return {
     saveTryoutInfo: saveTryoutInfo,
@@ -136,6 +146,8 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     saveTotal: saveTotal,
     reviewATryout: reviewATryout,
     inputTryout: inputTryout,
+    editThisTryout: editThisTryout,
+    saveTryoutEdits: saveTryoutEdits,
     data: data
   };
 }]);
