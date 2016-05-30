@@ -1,6 +1,6 @@
 div.container-fluid
   h1(class="text-center") Edit Information
-  h5 {{ edit.tryoutData.val }}
+  p Warning! Any changes made to categories will reset any scores given to players
   ng-form(role="form" name="editForm")
     div(class="form-group row")
       label(for="title") Tryout Title
@@ -29,7 +29,7 @@ div.container-fluid
     div(class="form-group row")
       label(for="playerAlias" ng-show="$first") Players
       div(ng-repeat="player in edit.tryoutData.val.players")
-        {{ player.profiles.first_name }} {{ player.profiles.last_name }} ({{ player.profiles.level }})
+        span {{ player.profiles.first_name }} {{ player.profiles.last_name }} ({{ player.profiles.level }})
         input(class="form-control" ng-model="player.jerseyNum")
     
     button(class="btn btn-md" ng-click="edit.reset()") Reset
