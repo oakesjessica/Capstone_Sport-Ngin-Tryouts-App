@@ -131,6 +131,9 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
       $location.path('/tryout/' + info._id);
     });
   };
+  var backToReview = function(id){
+    $location.path('/tryout/' + id);
+  }
 
   return {
     saveTryoutInfo: saveTryoutInfo,
@@ -147,6 +150,7 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     inputTryout: inputTryout,
     editThisTryout: editThisTryout,
     saveTryoutEdits: saveTryoutEdits,
+    backToReview: backToReview,
     data: data
   };
 }]);
