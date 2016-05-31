@@ -10,8 +10,8 @@ var moment = require('moment');
 var request = require('request');
 var code = require('../../modules/alphaNumRandomizer');
 var addCateg = require('../../modules/playerCategories');
-var Tryout = require('../../models/tryout');
 var updateCateg = require('../../modules/updateCategories');
+var Tryout = require('../../models/tryout');
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
@@ -187,6 +187,7 @@ router.get('/edit/:id', function(req, res) {
       console.log('Error fetching tryout to edit', err);
       res.status(500).send(err);
     } else {
+      console.log('Successfully fetched tryout to edit');
       res.status(200).send(tryout);
     }
   }); //  Tryout.find
@@ -286,7 +287,6 @@ router.get('/tryout/get/:id', function(req,res){
       res.status(500).send(err);
     } else{
       console.log("Successfully retrieved tryout");
-      console.log(tryout);
       res.status(200).send(tryout);
     } //  else
   }); //  Tryout.findOne

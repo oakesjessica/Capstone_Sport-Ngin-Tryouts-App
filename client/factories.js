@@ -124,16 +124,17 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
 
   var editThisTryout = function(id) {
     $location.path('/edit/' + id);
-  };
+  };  //  editThisTryout
 
   var saveTryoutEdits = function(info) {
     $http.put('/app/view/edit/' + info._id, info).then(function(response) {
       $location.path('/tryout/' + info._id);
     });
-  };
+  };  //  saveTryoutEdits
+
   var backToReview = function(id){
     $location.path('/tryout/' + id);
-  }
+  };  //  backToReview
 
   return {
     saveTryoutInfo: saveTryoutInfo,

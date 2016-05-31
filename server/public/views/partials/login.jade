@@ -8,11 +8,11 @@ div(ui-content-for="modals")
           h4.modal-title Guest Access
         
         div.modal-body
-          input(type="text" ng-model="login.guest.code" class="form-control input-lg")
+          input(type="text" ng-model="home.guest.code" class="form-control input-lg")
             
         div.modal-footer
           button(ui-turn-off="guestModal" class="btn btn-default") close
-          button(ui-turn-off="guestModal" ng-click="login.guestLogin()" class="btn btn-primary") Login
+          button(ui-turn-off="guestModal" ng-click="home.guestLogin()" class="btn btn-primary") Login
         
 
 div.container-fluid
