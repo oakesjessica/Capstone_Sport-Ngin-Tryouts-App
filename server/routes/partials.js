@@ -13,13 +13,19 @@ var addCateg = require('../../modules/playerCategories');
 var updateCateg = require('../../modules/updateCategories');
 var Tryout = require('../../models/tryout');
 
-router.get('/', function(req, res){
+
+router.get('/home/', function(req, res) {
   if(req.isAuthenticated()){
-    res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
+
+    if(req.user.guest === false) {
+      res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
+    } else {
+      res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'), req.user);
+    }
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
-}); //  router.get('/')
+});
 
 router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
@@ -34,7 +40,7 @@ router.get('/players', function(req, res) {
 }); //  router.get('/players')
 
 router.get('/tryout', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'));
+  res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'), { guest: false });
 }); //  router.get('/tryout')
 
 router.get('/scoreplayer', function(req, res){
@@ -287,6 +293,21 @@ router.get('/tryout/get/:id', function(req,res){
       res.status(500).send(err);
     } else{
       console.log("Successfully retrieved tryout");
+      res.status(200).send(tryout);
+    } //  else
+  }); //  Tryout.findOne
+}); //  request.get('/tryout/get/:id')
+
+router.get('/tryout/guest/:code', function(req,res){
+  var code = req.params.code;
+
+  Tryout.findOne({'code': code}, function(err, tryout){
+    if(err){
+      console.log(err);
+      res.status(500).send(err);
+    } else{
+      console.log("Successfully retrieved tryout");
+      console.log(tryout);
       res.status(200).send(tryout);
     } //  else
   }); //  Tryout.findOne

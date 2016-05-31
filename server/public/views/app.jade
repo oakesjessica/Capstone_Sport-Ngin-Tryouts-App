@@ -38,12 +38,13 @@ html(ng-app="tryoutsApp")
     div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
       h1(class="app-name" ng-if="!app.user.data.username") Menu
       h1(class="app-name" ng-if="app.user.data.username") {{app.user.data.first_name}} {{app.user.data.last_name}}
+      h1(class="app-name" ng-if="app.user.data.guest") Guest
       
       div.scrollable
         div.scrollable-content
           div(class="list-group" ui-turn-off="uiSidebarLeft")
             
-            a(class="list-group-item" href="/") Home
+            a(class="homeLink list-group-item" href="/") Home
               i(class="fa fa-chevron-right pull-right")
             
             a(class="list-group-item" href="/logout") Logout
@@ -67,7 +68,8 @@ html(ng-app="tryoutsApp")
               
           ul(class="nav navbar-nav navbar-right" ng-if="app.user.data.username")
             li
-              p.navbar-text Hello, {{app.user.data.first_name}} {{app.user.data.last_name}}
+              p(class="navbar-text" ng-if="app.user.data.first_name") Hello, {{app.user.data.first_name}} {{app.user.data.last_name}}
+              p(class="navbar-text" ng-if="app.user.data.guest") Guest
             li
               a(href="/logout") Logout
                 
