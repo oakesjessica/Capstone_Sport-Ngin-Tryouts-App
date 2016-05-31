@@ -70,9 +70,11 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
     player_id: $routeParams.player,
     tryout_id: $routeParams.id
   };
+
   asc.back = function(){
     TryoutService.backToReview(info.tryout_id);
-  }
+  };
+
   asc.calcTotal = function() {
     var categScores = asc.player.val.players[0].categories;
     var total = 0;
@@ -300,9 +302,11 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
     console.log(ec.tryoutData);
     $scope.editForm.$setPristine();
   };
+  
   ec.back = function(){
     TryoutService.backToReview(ec.tryout_id);
-  }
+  };
+
   ec.saveEdits = function() {
     TryoutService.saveTryoutEdits(ec.tryoutData.val);
   };

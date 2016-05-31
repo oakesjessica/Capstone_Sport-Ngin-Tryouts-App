@@ -104,7 +104,6 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
   var fetchOneTryout = function(id){
     $http.get('/app/view/tryout/get/' + id).then(function(response){
       data.val = response.data;
-      console.log('tryout', data.val);
     });
   };  //  fetchOneTryout
 
