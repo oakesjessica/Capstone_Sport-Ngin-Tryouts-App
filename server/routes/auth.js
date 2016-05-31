@@ -16,6 +16,7 @@ router.get('/sportngin/callback',
 router.get('/logout', function(req, res){
   console.log('Logging out!!!!');
   req.logout();
+  req.session.destroy();
   res.redirect('/');
 });
 

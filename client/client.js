@@ -333,8 +333,12 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
   UserService.isAuthenticated(function(status) {
     if (status === true) {
       UserService.logout(function() {
-        // Redirect
-        $location.path('/');
+        UserService.isAuthenticated(function(status) {
+          console.log(status);
+          // Redirect
+          $location.path('/');
+
+        });
       });
     } else {
       // Redirect
