@@ -15,8 +15,8 @@ div(ui-content-for="modals")
 
 
 div.container-fluid
-h1 Tryout Management
-p Upcoming Tryouts
+h1(class="text-center") Tryout Management
+p(class="text-center") Upcoming Tryouts
 table.table.table-striped
   thead
       tr
@@ -40,7 +40,6 @@ table.table.table-striped
         td
           button(ui-turn-on="deleteModal" class="btn" ng-click="home.tryoutToDelete = tryout")
             i(class="fa fa-trash")
-a(href="/archives")
-  button(class="btn btn-primary") Archives
+  a(href="/archives") Archives
 
 button(class="btn btn-primary" ng-click="home.createNew()") Create new Tryout

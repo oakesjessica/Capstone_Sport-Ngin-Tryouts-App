@@ -222,7 +222,7 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
       };
 
       console.log(user);
-      if (user.guest == true) {
+      if (user.guest === true) {
         TryoutService.fetchOneTryout(null, user.username, function(tryout) {
           hc.playerInfo.tryout_id = tryout._id;
         });
