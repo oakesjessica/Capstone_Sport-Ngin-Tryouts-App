@@ -1,6 +1,6 @@
 div.container-fluid
-  h3(class="text-center") Tryout {{ review.displayTryout.val.title }}
-  button(class="btn btn-md" ng-click="review.editTryout()") Edit
+  h3(class="text-center") Tryout: {{ review.displayTryout.val.title }}
+  button(class="btn btn-md" ng-click="review.editTryout()") Edit Tryout
   p {{ review.displayTryout.val.dateString }} @ {{ review.displayTryout.val.time }}
   p Scoring categories: 
     span(ng-repeat="categ in review.displayTryout.val.categories")

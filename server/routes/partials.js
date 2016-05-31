@@ -11,6 +11,7 @@ var request = require('request');
 var code = require('../../modules/alphaNumRandomizer');
 var addCateg = require('../../modules/playerCategories');
 var Tryout = require('../../models/tryout');
+var updateCateg = require('../../modules/updateCategories');
 
 router.get('/', function(req, res){
   if(req.isAuthenticated()){
@@ -126,14 +127,17 @@ router.put('/edit/:id', function(req, res) {
   var tryout_id = req.params.id;
   console.log(req.params.id);
   console.log(req.body);
-  console.log(moment(req.body.dateString).format());
-
+  // console.log(moment(req.body.dateString).format());
+  var playerUpdates = updateCateg.add(req.body.players, req.body.categories);
   Tryout.update({'_id': tryout_id}, {
     '$set': {
       'title': req.body.title,
       'time': req.body.time,
       'dateString': req.body.dateString,
-      'categories': req.body.categories
+      'categories': req.body.categories,
+      'players': playerUpdates,
+      'date': new Date(req.body.dateString)
+
     }
   }, { new: true }, function(err, tryout) {
     if (err) {
@@ -282,6 +286,7 @@ router.get('/tryout/get/:id', function(req,res){
       res.status(500).send(err);
     } else{
       console.log("Successfully retrieved tryout");
+      console.log(tryout);
       res.status(200).send(tryout);
     } //  else
   }); //  Tryout.findOne

@@ -65,11 +65,14 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
   asc.player = TryoutService.data;
   var original = TryoutService.data;
 
+
   var info = {
     player_id: $routeParams.player,
     tryout_id: $routeParams.id
   };
-
+  asc.back = function(){
+    TryoutService.backToReview(info.tryout_id);
+  }
   asc.calcTotal = function() {
     var categScores = asc.player.val.players[0].categories;
     var total = 0;
@@ -102,11 +105,22 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
 **********************************************************************************/
 app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var trc = this;
+
   trc.playerInfo = {
     tryout_id: ''
   };
   trc.displayTryout = TryoutService.data;
   trc.playerInfo.tryout_id = $routeParams.id;
+  //
+  var today = new Date(2016, 05, 30);
+  var notToday = new Date(2015, 05, 30);
+  if(today > notToday ){
+    console.log("True");
+  } else {
+    console.log('False');
+  }
+  console.log('newDate', today>TryoutService.data.val.date);
+  console.log(today<TryoutService.data.val.date);
 
   trc.reviewPlayer = function(playerData){
     trc.playerInfo.player_id = playerData.player_id;
@@ -286,7 +300,9 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
     console.log(ec.tryoutData);
     $scope.editForm.$setPristine();
   };
-
+  ec.back = function(){
+    TryoutService.backToReview(ec.tryout_id);
+  }
   ec.saveEdits = function() {
     TryoutService.saveTryoutEdits(ec.tryoutData.val);
   };
