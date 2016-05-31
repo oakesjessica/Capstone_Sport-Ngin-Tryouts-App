@@ -233,7 +233,7 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
       var num = 1;
       tic.tryout = {};
       tic.categories = [{'id': 1}];
-      tic.currDate = new Date();
+      tic.today = new Date();
 
       tic.addField = function() {
         num += 1;

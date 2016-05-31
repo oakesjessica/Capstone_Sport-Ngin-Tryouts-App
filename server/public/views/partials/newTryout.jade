@@ -7,7 +7,7 @@ div(ui-content-for="modals")
           h4.modal-title Go Back to Home
         
         div.modal-body
-          p Any changes will be lost. Continue?
+          p Any changes will be lost and this tryout will not be saved. Continue?
             
         div.modal-footer
           button(ui-turn-off="cancelModal" class="btn btn-primary") Cancel
@@ -17,31 +17,33 @@ div.container-fluid
   h1(class="text-center") Tryout Information
   
   ng-form(role="form" name="tryoutForm")
-    div(class="form-group row")
+    div(class="form-group row col-md-6 col-md-offset-3")
       label(for="title") Tryout Title
       input(class="form-control" type="text" name="title" placeholder="Enter Tryout Title" ng-model="input.tryout.title" required)
       p(class="help-block" ng-show="tryoutForm.title.$invalid") This field is required
     
-    div(class="form-group row")
+    div(class="form-group row col-md-3 col-md-offset-3")
       label(for="tryoutDate") Date
-      input(class="form-control" type="text" name="date" pick-a-date="input.currDate" pick-a-date-options="{min: input.currDate}" placeholder="Pick a date" ng-model="input.tryout.date" required)
+      input(class="form-control" type="text" name="date" pick-a-date="input.currDate" pick-a-date-options="{min: input.today}" placeholder="Pick a date" ng-model="input.tryout.date" required)
       p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
       
-    div(class="form-group row")
+    div(class="form-group row col-md-3 col-md-offset-3")
       label(for="tryoutTime") Time
       input(class="form-control" type="text" name="time" pick-a-time="input.currTime" pick-a-time-options="{interval:15, min:[7, 30], max:[21,0]}" placeholder="Enter time" ng-model="input.tryout.time" required)
       p(class="help-block" ng-show="tryoutForm.time.$invalid") This field is required
 
-    div(class="form-group row" ng-repeat="categ in input.categories track by $index")
+    div(class="form-group row col-md-7 col-md-offset-3" ng-repeat="categ in input.categories track by $index")
       ng-form(name="categoryForm")
         label(for="categ" ng-show="$first") Score Categories
-        div
-          input(class="form-control" type="text" name="" ng-model="categ.field" placeholder="Enter score category" required)
+        div(class="input-group")
+          input(class="form-control" type="text" name="categ" ng-model="categ.field" placeholder="Enter score category" required)
           p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
-          button(class="btn btn-xs" ng-show="!$first" ng-click="input.removeField($index)")
-            i(class="fa fa-minus")
-        button(class="btn btn-sm center-block" ng-show="$last" ng-click="input.addField()")
-          i(class="fa fa-2x fa-plus")
+          span(class="input-group-btn")
+            button(class="btn" type="button" ng-show="!$first" ng-click="input.removeField($index)")
+              i(class="fa fa-minus")
+        button(class="btn btn-sm" ng-show="$last" ng-click="input.addField()")
+          i(class="fa fa-plus")
     
-    input(type="button" class="btn btn-md" ui-turn-on="cancelModal" value="Cancel" title="Cancel")
-    input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")
+    div(class="row col-md-6 col-md-offset-3")
+      input(type="button" class="btn btn-md" ui-turn-on="cancelModal" value="Cancel" title="Cancel")
+      input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")
