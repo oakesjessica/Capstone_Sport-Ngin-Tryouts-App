@@ -244,12 +244,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
         var currentTemplate = $route.current.templateUrl;
         $templateCache.remove(currentTemplate);
         $route.reload();
-
-
-        // TODO RJM figure out what this call is trying to do
-        // UserService.guestLogin(hc.guest, function(status){});
-      } else {
-        console.log(':(');
       }
     });
   };
