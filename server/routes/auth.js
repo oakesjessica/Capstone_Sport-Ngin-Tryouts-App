@@ -52,7 +52,7 @@ router.post('/guest', function(req, res){
       User.findOne({ username: code }, function(err, user) {
         if (err) {
           console.log(err);
-        } else if(user == "" || user == null) {
+        } else if(user === "" || user === null) {
           var newUser = new User({
             username: code,
             guest: true
@@ -68,7 +68,7 @@ router.post('/guest', function(req, res){
                 } else {
                   res.redirect('/');
                 }
-              })
+              });
             }
           });
         } else {
@@ -80,7 +80,7 @@ router.post('/guest', function(req, res){
             }
           });
         }
-      })
+      });
     }
   });
 });

@@ -36,7 +36,7 @@ app.factory('UserService', ['$http', function($http){
   var guestLogin = function(code, callback) {
     $http.get('/app/view/home/'+ code).then(function(response) {
       console.log('app', response);
-      callback(true)
+      callback(true);
     }, function(response) {
       callback(false);
     });
@@ -112,12 +112,12 @@ app.factory('TryoutService', ['$http', '$location', 'UserService', function($htt
   };  //  getOnePlayer
 
   var fetchOneTryout = function(id, code, callback){
-    if(id == null) {
+    if(id === null) {
       console.log('Enter code fetch. Code', code);
       $http.get('/app/view/tryout/guest/' + code).then(function(response) {
         data.val = response.data;
         callback(response.data);
-      })
+      });
     } else {
       $http.get('/app/view/tryout/get/' + id).then(function(response){
         data.val = response.data;
@@ -128,7 +128,7 @@ app.factory('TryoutService', ['$http', '$location', 'UserService', function($htt
   var saveTotal = function(info, id) {
     $http.put('/app/view/scoreplayer/' + id, info).then(function(response) {
       UserService.isAuthenticated(function(status, user) {
-        if(user.guest == true) {
+        if(user.guest === true) {
           $location.path('/');
         } else {
           $location.path('/tryout/' + id);
@@ -148,30 +148,30 @@ app.factory('TryoutService', ['$http', '$location', 'UserService', function($htt
 
   var editThisTryout = function(id) {
     $location.path('/edit/' + id);
-  };
+  };  //  editThisTryout
 
   var saveTryoutEdits = function(info) {
     $http.put('/app/view/edit/' + info._id, info).then(function(response) {
 
       UserService.isAuthenticated(function(status, user) {
-        if(user.guest == true) {
+        if(user.guest === true) {
           $location.path('/');
         } else {
           $location.path('/tryout/' + info._id);
         }
       });
     });
-  };
-  var backToReview = function(id){
+  };  //  saveTryoutEdits
 
+  var backToReview = function(id){
     UserService.isAuthenticated(function(status, user) {
-      if (user.guest == true) {
+      if (user.guest === true) {
         $location.path('/');
       } else {
         $location.path('/tryout/' + id);
       }
-    })
-  }
+    });
+  };
 
   return {
     saveTryoutInfo: saveTryoutInfo,
