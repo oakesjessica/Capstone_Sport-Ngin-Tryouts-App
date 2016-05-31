@@ -25,9 +25,18 @@ app.factory('UserService', ['$http', function($http){
 
   var guestAuthentication = function(code, callback){
     $http.post('/auth/guest', code).then(function(response){
-      console.log(response);
+      console.log('auth', response);
       user.guest = response.data.guest;
       callback(true);
+    }, function(response) {
+      callback(false);
+    });
+  };
+
+  var guestLogin = function(code, callback) {
+    $http.get('/app/view/home/'+ code).then(function(response) {
+      console.log('app', response);
+      callback(true)
     }, function(response) {
       callback(false);
     });
@@ -37,7 +46,8 @@ app.factory('UserService', ['$http', function($http){
     user: user,
     logout: logout,
     isAuthenticated: isAuthenticated,
-    guestAuthentication: guestAuthentication
+    guestAuthentication: guestAuthentication,
+    guestLogin: guestLogin
   };
 }]);
 

@@ -6,12 +6,12 @@ var app = angular.module('tryoutsApp', ['ngRoute', 'angular-loading-bar', 'mobil
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '/app/view/',
+      templateUrl: '/app/view/home',
       controller: 'HomeController',
       controllerAs: 'home'
     })
     .when('/logout', {
-      templateUrl: '/app/view/',
+      templateUrl: '/app/view/home',
       controller: 'LogoutController',
       controllerAs: 'logout'
     })
@@ -189,7 +189,7 @@ app.controller('AppController', ['UserService', function(UserService) {
 /**********************************************************************************
                                 HomePage
 **********************************************************************************/
-app.controller('HomeController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar){
+app.controller('HomeController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', '$route', '$templateCache', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar, $route, $templateCache){
   var hc = this;
   hc.tryouts = [];
   hc.guest = {};
@@ -221,7 +221,14 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
   hc.guestLogin = function(){
     UserService.guestAuthentication(hc.guest, function(status) {
       if(status === true) {
-        console.log('Code worked!');
+        console.log("about to reload");
+        var currentTemplate = $route.current.templateUrl;
+        $templateCache.remove(currentTemplate);
+        $route.reload();
+
+
+        // TODO RJM figure out what this call is trying to do
+        // UserService.guestLogin(hc.guest, function(status){});
       } else {
         console.log(':(');
       }
@@ -286,7 +293,6 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
   ec.tryoutData = originalData;
   ec.tryout_id = $routeParams.id;
   var num = ec.tryoutData.val.categories.length+1;
-  console.log(ec.tryout_id);
 
   ec.addField = function() {
     num += 1;
@@ -302,7 +308,7 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
     console.log(ec.tryoutData);
     $scope.editForm.$setPristine();
   };
-  
+
   ec.back = function(){
     TryoutService.backToReview(ec.tryout_id);
   };

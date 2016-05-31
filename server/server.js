@@ -47,10 +47,12 @@ passport.serializeUser(function(user, done){
   done(null, user.id);
 });
 passport.deserializeUser(function(id, done){
+  console.log('trying to find user with id', id);
   User.findById(id, function(err, user){
     if(err){
       done(err);
     } else{
+      console.log('found user', user);
       done(null, user);
     }
   });
@@ -85,7 +87,8 @@ passport.use(new OAuth2Strategy({
               username: body.metadata.current_user.user_name,
               first_name: body.metadata.current_user.first_name,
               last_name: body.metadata.current_user.last_name,
-              nginId: body.metadata.current_user.id
+              nginId: body.metadata.current_user.id,
+              guest: false
             });
             newUser.save(function(err){
               if(err){

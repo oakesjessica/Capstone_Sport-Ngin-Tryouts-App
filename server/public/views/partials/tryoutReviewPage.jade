@@ -13,7 +13,7 @@ div.container-fluid
       
       p(class="col-md-4") {{player.profiles.first_name}} {{player.profiles.last_name}}
       div(class="col-md-1")
-        button(ng-click="review.reviewPlayer(player)") Score
+        button(class="btn btn-primary" ng-click="review.reviewPlayer(player)") Score
       p(class="col-md-4") Total : 
         span(ng-if="!player.total") --
         span(ng-if="player.total") {{player.total}}

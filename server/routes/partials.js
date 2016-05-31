@@ -13,13 +13,18 @@ var addCateg = require('../../modules/playerCategories');
 var Tryout = require('../../models/tryout');
 var updateCateg = require('../../modules/updateCategories');
 
-router.get('/', function(req, res){
+
+router.get('/home/', function(req, res) {
   if(req.isAuthenticated()){
-    res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
+    if(req.user.guest == false) {
+      res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
+    } else {
+      res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'));
+    }
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
-}); //  router.get('/')
+})
 
 router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
