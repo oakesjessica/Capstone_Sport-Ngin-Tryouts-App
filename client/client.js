@@ -196,7 +196,12 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
   hc.tryoutToDelete = {};
   hc.tryouts = TryoutService.data;
 
-  UserService.isAuthenticated(function(status) {
+  hc.playerInfo = {
+    tryout_id: ''
+  };
+
+
+  UserService.isAuthenticated(function(status, user) {
     if (status === true) {
       TryoutService.fetchTryouts();
 
@@ -215,6 +220,20 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
       hc.createNew = function() {
         TryoutService.inputTryout();
       };
+
+      console.log(user);
+      if (user.guest == true) {
+        TryoutService.fetchOneTryout(null, user.username, function(tryout) {
+          hc.playerInfo.tryout_id = tryout._id;
+        });
+
+        hc.reviewPlayer = function(playerData){
+          hc.playerInfo.player_id = playerData.player_id;
+
+          TryoutService.scorePlayer(hc.playerInfo);
+        };  //  trc.reviewPlayer
+
+      }
     }
   });
 

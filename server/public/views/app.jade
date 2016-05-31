@@ -38,6 +38,7 @@ html(ng-app="tryoutsApp")
     div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
       h1(class="app-name" ng-if="!app.user.data.username") Menu
       h1(class="app-name" ng-if="app.user.data.username") {{app.user.data.first_name}} {{app.user.data.last_name}}
+      h1(class="app-name" ng-if="app.user.data.guest") Guest
       
       div.scrollable
         div.scrollable-content
@@ -66,8 +67,10 @@ html(ng-app="tryoutsApp")
               //- a(href="/tryouts") Tryouts
               
           ul(class="nav navbar-nav navbar-right" ng-if="app.user.data.username")
-            li.navbar-username
-              p.navbar-text Hello, {{app.user.data.first_name}} {{app.user.data.last_name}}
+
+            li
+              p(class="navbar-text" ng-if="app.user.data.first_name") Hello, {{app.user.data.first_name}} {{app.user.data.last_name}}
+              p(class="navbar-text" ng-if="app.user.data.guest") Guest
             li
               a(href="/logout") Logout
                 
