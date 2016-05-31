@@ -107,22 +107,12 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
 **********************************************************************************/
 app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var trc = this;
-
+  var today = new Date();
   trc.playerInfo = {
     tryout_id: ''
   };
   trc.displayTryout = TryoutService.data;
   trc.playerInfo.tryout_id = $routeParams.id;
-  //
-  var today = new Date(2016, 05, 30);
-  var notToday = new Date(2015, 05, 30);
-  if(today > notToday ){
-    console.log("True");
-  } else {
-    console.log('False');
-  }
-  console.log('newDate', today>TryoutService.data.val.date);
-  console.log(today<TryoutService.data.val.date);
 
   trc.reviewPlayer = function(playerData){
     trc.playerInfo.player_id = playerData.player_id;
@@ -200,7 +190,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
     tryout_id: ''
   };
 
-
   UserService.isAuthenticated(function(status, user) {
     if (status === true) {
       TryoutService.fetchTryouts();
@@ -221,7 +210,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
         TryoutService.inputTryout();
       };
 
-      console.log(user);
       if (user.guest === true) {
         TryoutService.fetchOneTryout(null, user.username, function(tryout) {
           hc.playerInfo.tryout_id = tryout._id;
@@ -232,7 +220,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
 
           TryoutService.scorePlayer(hc.playerInfo);
         };  //  trc.reviewPlayer
-
       }
     }
   });
@@ -369,7 +356,12 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
 /**********************************************************************************
                                   Archives
 **********************************************************************************/
-app.controller('ArchivesController', function(){
+app.controller('ArchivesController', 'TryoutService', function(TryoutService){
+  console.log('hi');
+  var ac = this;
+  ac.displayArchivedTryouts = TryoutService.data;
+
+  TryoutService.fetchArchivedTryouts();
 });
 
 
