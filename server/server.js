@@ -12,9 +12,10 @@ var bodyParser = require('body-parser');
 var router = require('./routes/router');
 var User = require('../models/user');
 var Tryout = require('../models/tryout');
-////////////////////////////////////////////////////////////////////
-//MongoDB
-////////////////////////////////////////////////////////////////////
+
+/*------------------------------------------------------------------
+                            MongoDB
+------------------------------------------------------------------*/
 var mongoUri = 'mongodb://localhost/sportNginDB';
 var mongoDB = mongoose.connect(mongoUri).connection;
 mongoDB.on('error', function(err){
@@ -24,16 +25,17 @@ mongoDB.once('open', function(){
   console.log('MongoDB connection open.');
 });
 
-////////////////////////////////////////////////////////////////////
-//Config
-////////////////////////////////////////////////////////////////////
+/*------------------------------------------------------------------
+                            Config
+------------------------------------------------------------------*/
 // app.use(morgan('dev'));
 app.use(express.static('server/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-////////////////////////////////////////////////////////////////////
-//Passport
-////////////////////////////////////////////////////////////////////
+
+/*------------------------------------------------------------------
+                            Passport
+------------------------------------------------------------------*/
 app.use(session({
   secret: 'sportNgin',
   resave: true,
@@ -66,7 +68,6 @@ passport.use(new OAuth2Strategy({
   },
   function(accessToken, refreshToken, profile, fourth, cb) {
     var url = "http://api-user.ngin.com/oauth/me?access_token=" + profile.access_token;
-    // console.log(url);
 
     var options = {json: true};
     options.url = url;
@@ -108,14 +109,14 @@ passport.use(new OAuth2Strategy({
 
 
 
-/////////////////////////////////////////////////////////////////////
-//Routers
-////////////////////////////////////////////////////////////////////
+/*------------------------------------------------------------------
+                            Routers
+------------------------------------------------------------------*/
 app.use('/', router);
 
-////////////////////////////////////////////////////////////////////
-//Server
-////////////////////////////////////////////////////////////////////
+/*------------------------------------------------------------------
+                            Server
+------------------------------------------------------------------*/
 var server = app.listen(process.env.PORT || 3000, function(){
   var port = server.address().port;
   console.log('Listening on port', port);
