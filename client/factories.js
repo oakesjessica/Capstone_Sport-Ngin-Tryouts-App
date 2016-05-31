@@ -15,7 +15,7 @@ app.factory('UserService', ['$http', function($http){
     $http.get('/auth/check').then(function(response) {
       if(response.data.success === true) {
         user.data = response.data.user;
-        callback(true, response.data);
+        callback(true, response.data.user);
       } else {
         user.data = response.data;
         callback(false);
@@ -55,7 +55,7 @@ app.factory('UserService', ['$http', function($http){
 /*******************************************************************************
                           Tryout Service
 *******************************************************************************/
-app.factory('TryoutService', ['$http', '$location', function($http, $location) {
+app.factory('TryoutService', ['$http', '$location', 'UserService', function($http, $location, UserService) {
   var data = {};
 
   var saveTryoutInfo = function(data) {
@@ -111,15 +111,29 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     });
   };  //  getOnePlayer
 
-  var fetchOneTryout = function(id){
-    $http.get('/app/view/tryout/get/' + id).then(function(response){
-      data.val = response.data;
-    });
+  var fetchOneTryout = function(id, code, callback){
+    if(id == null) {
+      console.log('Enter code fetch. Code', code);
+      $http.get('/app/view/tryout/guest/' + code).then(function(response) {
+        data.val = response.data;
+        callback(response.data);
+      })
+    } else {
+      $http.get('/app/view/tryout/get/' + id).then(function(response){
+        data.val = response.data;
+      });
+    }
   };  //  fetchOneTryout
 
   var saveTotal = function(info, id) {
     $http.put('/app/view/scoreplayer/' + id, info).then(function(response) {
-      $location.path('/tryout/' + id);
+      UserService.isAuthenticated(function(status, user) {
+        if(user.guest == true) {
+          $location.path('/');
+        } else {
+          $location.path('/tryout/' + id);
+        }
+      });
     });
   };  //  saveTotals
 
@@ -138,11 +152,25 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
 
   var saveTryoutEdits = function(info) {
     $http.put('/app/view/edit/' + info._id, info).then(function(response) {
-      $location.path('/tryout/' + info._id);
+
+      UserService.isAuthenticated(function(status, user) {
+        if(user.guest == true) {
+          $location.path('/');
+        } else {
+          $location.path('/tryout/' + info._id);
+        }
+      });
     });
   };
   var backToReview = function(id){
-    $location.path('/tryout/' + id);
+
+    UserService.isAuthenticated(function(status, user) {
+      if (user.guest == true) {
+        $location.path('/');
+      } else {
+        $location.path('/tryout/' + id);
+      }
+    })
   }
 
   return {
