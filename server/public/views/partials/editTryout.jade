@@ -32,6 +32,5 @@ div.container-fluid
         span {{ player.profiles.first_name }} {{ player.profiles.last_name }} ({{ player.profiles.level }})
         input(class="form-control" ng-model="player.jerseyNum")
     
-    button(class="btn btn-md" ng-click="edit.reset()") Reset
     button(class="btn btn-md" ng-click="edit.back()") Cancel
     button(class="btn btn-md" ng-click="edit.saveEdits()") Save

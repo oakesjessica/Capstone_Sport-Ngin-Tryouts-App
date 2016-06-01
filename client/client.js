@@ -93,12 +93,6 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
     TryoutService.saveTotal(infoData, info.tryout_id);
   };
 
-  asc.reset = function() {
-    asc.player = angular.copy(original);
-    console.log(asc.player);
-    $scope.scoreForm.$setPristine();
-  };
-
   TryoutService.getOnePlayer(info);
 }]);
 
@@ -303,19 +297,13 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
     ec.tryoutData.val.categories.splice(id, 1);
   };  //  removeField
 
-  ec.reset = function() {
-    ec.tryoutData = angular.copy(originalData);
-    console.log(ec.tryoutData);
-    $scope.editForm.$setPristine();
-  };
-
   ec.back = function(){
     TryoutService.backToReview(ec.tryout_id);
-  };
+  };  //  back
 
   ec.saveEdits = function() {
     TryoutService.saveTryoutEdits(ec.tryoutData.val);
-  };
+  };  //  saveEdits
 
   TryoutService.fetchOneTryout(ec.tryout_id);
 }]);  //  ReviewController
