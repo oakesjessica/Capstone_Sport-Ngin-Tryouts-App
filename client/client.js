@@ -350,13 +350,17 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
 /**********************************************************************************
                                   Archives
 **********************************************************************************/
-app.controller('ArchivesController', 'TryoutService', function(TryoutService){
+app.controller('ArchivesController', ['TryoutService', function(TryoutService){
   console.log('hi');
   var ac = this;
   ac.displayArchivedTryouts = TryoutService.data;
 
+  ac.reviewTryout = function(tryout) {
+    TryoutService.reviewATryout(tryout);
+  };
+
   TryoutService.fetchArchivedTryouts();
-});
+}]);
 
 
 /**********************************************************************************
