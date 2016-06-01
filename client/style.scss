@@ -71,6 +71,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
+  margin-bottom: 15px;
 }
 
 .text-center {
@@ -102,6 +103,12 @@ h1, h2, h3, h4, h5, h6 {
 .help-block {
   font-size: 11px;
   color: $alert;
+}
+input {
+  margin-bottom: 15px;
+}
+.form-control {
+  width: 65%;
 }
 
 @media screen and (min-width: 992px) {
@@ -152,4 +159,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 .form-group{
   float: inherit;
+}
+.editBtn, .sportBtn {
+  background-color: #13AA37;
+  color: #505C63;
+  margin-top: 20px;
+}
+ .btn-md {
+  background-color: #13AA37;
+  color: #505C63;
+  margin-right: 20px;
+}
+.score {
+  margin: 0;
+}
+.sportRow {
+  margin-bottom: 8px;
+  height: 40px;
 }

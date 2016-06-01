@@ -15,7 +15,7 @@ div.container-fluid
         
         p(class="col-md-4") {{player.profiles.first_name}} {{player.profiles.last_name}}
         div(class="col-md-1")
-          button(class="btn btn-primary" ng-click="home.reviewPlayer(player)") Score
+          button(class="btn sportBtn" ng-click="home.reviewPlayer(player)") Score
         p(class="col-md-4") Total : 
           span(ng-if="!player.total") --
           span(ng-if="player.total") {{player.total}}
@@ -30,13 +30,13 @@ div.container-fluid
         span {{ categ.field }}{{$last ? '' : ($index == review.displayTryout.val.categories.length-2) ? ', and ' : ', '}}
     
     h5 Players
-    div(ng-repeat="player in review.displayTryout.val.players track by $index")
-      div(class="row")
+    div(ng-repeat="player in review.displayTryout.val.players track by $index" class="sportRow")
+      div(class="row sportRow")
         p(class="col-md-1") # {{player.jerseyNum}}
         
         p(class="col-md-4") {{player.profiles.first_name}} {{player.profiles.last_name}}
         div(class="col-md-1")
-          button(class="btn btn-primary" ng-click="review.reviewPlayer(player)") Score
+          button(class="btn sportBtn btn-sm score" ng-click="review.reviewPlayer(player)") Score
         p(class="col-md-4") Total : 
           span(ng-if="!player.total") --
           span(ng-if="player.total") {{player.total}}
