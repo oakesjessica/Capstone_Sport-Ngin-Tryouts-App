@@ -137,7 +137,7 @@ input {
   box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.25);
   .item {
     background: #FFFFFF;
-    min-height: 80px;
+    height: 80px;
     width: 100%;
     padding: 20px;
     margin: 0;
@@ -175,11 +175,6 @@ input {
 
   // Dropdown Menu
 
-  .dropdown-menu {
-    padding: 0;
-    margin: 0;
-    border: none;
-  }
   .list-dropdown-menu {
     min-width: 200px;
     float: right;
@@ -189,7 +184,7 @@ input {
     z-index: 1500;
     right: 0;
     margin-top: 24px;
-    margin-right: 20px;
+    margin-right: 35px;
 
     .list-dropdown-item {
       border-bottom: 1px solid #F5F5F5;
