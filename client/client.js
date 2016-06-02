@@ -54,6 +54,12 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $locationProvider.html5Mode(true);
 }]);  //  app.config
 
+
+// Loading Bar
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeSpinner = false;
+}])
+
 /*=================================================================================
                                     Controllers
 =================================================================================*/
@@ -136,7 +142,7 @@ app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', funct
 
 
   TryoutService.fetchOneTryout(trc.playerInfo.tryout_id);
-}]);  //  TryoutReviewController
+  }]);  //  TryoutReviewController
 
 
 /**********************************************************************************

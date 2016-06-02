@@ -17,29 +17,36 @@ div(ui-content-for="modals")
 div.container-fluid
 h1(class="text-center") Tryout Management
 p(class="text-center") Upcoming Tryouts
-table.table.table-striped
-  thead
-      tr
-        th Name
-        th Date
-        th Time
-        th Guest Code
-        th Review
-        th
+
+
+
+
+ul.list
+  li(ng-repeat="tryout in home.tryouts.val track by $index")
+    div(class="item item-has-dropdown" ng-click="home.reviewTryout(tryout)")
+      p.col-xs-7 {{tryout.title}}
+      p.col-xs-2 {{tryout.dateString}}
+      p.col-xs-1 {{tryout.time}}
+      div.col-xs-1
+        button(ng-if="!tryout.code" class="btn btn-success" ng-click="home.generateGuestCode(tryout)") Get Code
+        span(ng-if="tryout.code") {{tryout.code}}
+      div.col-xs-1
+        button(ui-turn-on="deleteModal" class="btn" ng-click="home.tryoutToDelete = tryout")
           i(class="fa fa-trash")
-  tbody
-      tr(ng-repeat="tryout in home.tryouts.val track by $index")
-        td {{tryout.title}}
-        td {{tryout.dateString}}
-        td {{tryout.time}}
-        td 
-          button(ng-if="!tryout.code" class="btn btn-success" ng-click="home.generateGuestCode(tryout)") Get Code
-          span(ng-if="tryout.code") {{tryout.code}}
-        td
-          button(class="btn" ng-click="home.reviewTryout(tryout)") Review
-        td
-          button(ui-turn-on="deleteModal" class="btn" ng-click="home.tryoutToDelete = tryout")
-            i(class="fa fa-trash")
-  a(href="/archives") Archives
+    div(class="item item-dropdown-button" id="list-dropdown" ui-turn-on="dropdown{{$index}}")
+      i(class="fa fa-ellipsis-v item-dropdown-icon" aria-hidden="true")
+        
+      ul(class="list list-dropdown-menu" id="dropdown{{$index}}" aria-labelledby="list-dropdown" ui-outer-click="Ui.turnOff('dropdown{{$index}}')" ui-outer-click-if="Ui.active('dropdown{{$index}}')" ui-show="dropdown{{$index}}" ui-state="dropdown{{$index}}" ui-turn-off="dropdown{{$index}}")
+        li.list-dropdown-item Edit
+        li.list-dropdown-item Delete
+
+
+
+
+
+
+
+
+a(href="/archives") Archives
 
 button(class="btn btn-primary" ng-click="home.createNew()") Create new Tryout
