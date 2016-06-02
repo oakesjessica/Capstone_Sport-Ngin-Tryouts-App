@@ -15,7 +15,6 @@ router.get('/app/view/data', function(req, res){
 
 
 router.get('/*', function(req, res){
-  console.log('inside catch all');
   res.render(path.join(__dirname, '../public/views/app.jade'));
 });
 

@@ -74,7 +74,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 15px;
 
 
+.sportRow{
+  display: inline;
 }
+.text-center {
+  text-align: center;
+
 
 // .text-center {
 //   text-align: center;
@@ -111,6 +116,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 input {
   margin-bottom: 15px;
+}
+.input-group{
+  min-width: 250px;
+  max-width: 251px;
 }
 .form-control {
   width: 65%;
