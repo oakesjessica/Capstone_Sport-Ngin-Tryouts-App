@@ -236,6 +236,10 @@ h1, h2, h3, h4, h5, h6 {
     width: calc(100% + 40px);
     margin-left: -20px;
 
+    .form-panel-btn-icon {
+      padding-right: 10px;
+    }
+
     &:hover, &:active, &:focus {
       outline: none;
     }
