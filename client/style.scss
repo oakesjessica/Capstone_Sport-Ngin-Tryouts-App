@@ -261,7 +261,7 @@ input {
 .form-group{
   float: inherit;
 }
-.editBtn, .sportBtn {
+.sportBtn-primary {
   background-color: #13AA37;
   border: 1px solid #0F852B;
   color: #FFF;
@@ -273,6 +273,7 @@ input {
   color: #505C63;
   margin-right: 20px;
 }
+
 .score {
   margin: 0;
 }
