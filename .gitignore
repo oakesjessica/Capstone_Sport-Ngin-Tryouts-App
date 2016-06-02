@@ -3,5 +3,6 @@ npm-debug.log
 .DS_Store
 .sass-cache
 .env
-server/public/assets/css/*
-server/public/assets/js/*
+server/public/assets/css/style.min.css
+server/public/assets/css/style.min.map
+server/public/assets/js/client.min.js

@@ -263,8 +263,10 @@ input {
 }
 .editBtn, .sportBtn {
   background-color: #13AA37;
-  color: #505C63;
-  margin-top: 20px;
+  border: 1px solid #0F852B;
+  color: #FFF;
+  text-transform: uppercase;
+  font-weight: 500;
 }
  .btn-md {
   background-color: #13AA37;
