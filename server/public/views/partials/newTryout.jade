@@ -39,7 +39,7 @@ div.container-fluid
           input(class="form-control" type="text" name="categ" ng-model="categ.field" placeholder="Enter score category" required)
           p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
           span(class="input-group-btn")
-            button(class="btn" type="button" ng-show="!$first" ng-click="input.removeField($index)")
+            button(class="btn sportBtn-primary" type="button" ng-show="!$first" ng-click="input.removeField($index)")
               i(class="fa fa-minus")
         button(class="btn btn-sm" ng-show="$last" ng-click="input.addField()")
           i(class="fa fa-plus")
