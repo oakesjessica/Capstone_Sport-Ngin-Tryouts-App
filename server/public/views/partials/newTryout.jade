@@ -21,21 +21,21 @@ div.container-fluid
     // Title
     div.form-panel
       div.form-panel-group
-        label(for="title" class="text-center") Tryout Title
+        label(for="title" class="text-center form-panel-heading") Tryout Title
         input(class="form-control" type="text" name="title" placeholder="Enter Tryout Title" ng-model="input.tryout.title" required)
         p(class="help-block" ng-show="tryoutForm.title.$invalid") This field is required
     
     // Date
     div.form-panel
       div.form-panel-group
-        label(for="tryoutDate" class="text-center") Date
+        label(for="tryoutDate" class="text-center form-panel-heading") Date
         input(class="form-control" type="text" name="date" pick-a-date="input.currDate" placeholder="Pick a date" ng-model="input.tryout.date" required)
         p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
         
     // Time
     div.form-panel
       div.form-panel-group
-        label(for="tryoutTime" class="text-center") Time
+        label(for="tryoutTime" class="text-center form-panel-heading") Time
         input(class="form-control" type="text" name="time" pick-a-time="input.currTime" pick-a-time-options="{interval:15, min:[7, 30], max:[21,0]}" placeholder="Enter time" ng-model="input.tryout.time" required)
         p(class="help-block" ng-show="tryoutForm.time.$invalid") This field is required
 
@@ -48,7 +48,7 @@ div.container-fluid
           ng-form(name="categoryForm")
             
             //- Form Title
-            label(for="categ" ng-show="$first" class="text-center") Score Categories
+            label(for="categ" ng-show="$first" class="text-center form-panel-heading") Score Categories
             div(class="input-group")
               input(class="form-control" type="text" name="categ" ng-model="categ.field" placeholder="Enter score category" required)
               p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
