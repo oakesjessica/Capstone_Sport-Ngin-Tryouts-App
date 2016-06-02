@@ -6,19 +6,19 @@ div.container-fluid
     p {{ home.tryouts.val.dateString }} @ {{ home.tryouts.val.time }}
     p Scoring categories: 
       span(ng-repeat="categ in home.tryouts.val.categories")
-        span {{ categ.field }}{{$last ? '' : ($index == home.tryouts.val.categories.length-2) ? ', and ' : ', '}}
+        span.label.label-success {{ categ.field }}{{$last ? '' : ($index == home.tryouts.val.categories.length-2) ? ', and ' : ', '}}
     
     h5 Players
-    div(ng-repeat="player in home.tryouts.val.players track by $index")
-      div(class="row")
-        p(class="col-md-1") # {{player.jerseyNum}}
-        
-        p(class="col-md-4") {{player.profiles.first_name}} {{player.profiles.last_name}}
-        div(class="col-md-1")
-          button(class="btn sportBtn" ng-click="home.reviewPlayer(player)") Score
-        p(class="col-md-4") Total : 
-          span(ng-if="!player.total") --
-          span(ng-if="player.total") {{player.total}}
+    
+    ul.list
+      li(ng-repeat="player in home.tryouts.val.players track by $index")
+        div(class="item" ng-click="home.reviewPlayer(player)")
+          p(class="col-xs-3") # {{player.jerseyNum}}
+          
+          p(class="col-xs-7") {{player.profiles.first_name}} {{player.profiles.last_name}}
+          div(class="col-xs-2")
+            span(ng-if="!player.total") --
+            span(ng-if="player.total") {{player.total}}
 
   else
     h3(class="text-center") Tryout: {{ review.displayTryout.val.title }}
@@ -27,16 +27,17 @@ div.container-fluid
     p {{ review.displayTryout.val.dateString }} @ {{ review.displayTryout.val.time }}
     p Scoring categories: 
       span(ng-repeat="categ in review.displayTryout.val.categories")
-        span {{ categ.field }}{{$last ? '' : ($index == review.displayTryout.val.categories.length-2) ? ', and ' : ', '}}
+        span.label.label-success {{ categ.field }}{{$last ? '' : ($index == review.displayTryout.val.categories.length-2) ? ', and ' : ', '}}
     
-    h5 Players
-    div(ng-repeat="player in review.displayTryout.val.players track by $index" class="sportRow")
-      div(class="row sportRow")
-        p(class="col-md-1") # {{player.jerseyNum}}
-        
-        p(class="col-md-4") {{player.profiles.first_name}} {{player.profiles.last_name}}
-        div(class="col-md-1")
-          button(class="btn sportBtn btn-sm score" ng-click="review.reviewPlayer(player)") Score
-        p(class="col-md-4") Total : 
-          span(ng-if="!player.total") --
-          span(ng-if="player.total") {{player.total}}
+    p Select a player to begin scoring
+    
+    ul.list
+      li(ng-repeat="player in review.displayTryout.val.players track by $index")
+        div(class="item" ng-click="review.reviewPlayer(player)")
+          p(class="col-xs-3") # {{player.jerseyNum}}
+          
+          p(class="col-xs-7") {{player.profiles.first_name}} {{player.profiles.last_name}}
+          div(class="col-xs-2")
+            span(ng-if="!player.total") --
+            span(ng-if="player.total") {{player.total}}
+            
