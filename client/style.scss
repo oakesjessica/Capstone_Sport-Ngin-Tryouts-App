@@ -222,12 +222,23 @@ h1, h2, h3, h4, h5, h6 {
     padding: 5px;
   }
 
-  .form-panel-left-half {
-    padding-right: 10px;
+  .form-panel-btn-add {
+    width: 100%;
+    height: 50px;
+    background: #F5F5F5;
+    border-color: #F5F5F5;
+    color: #333;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+
+    &:hover, &:active, &:focus {
+      outline: none;
+    }
   }
 
-  .form-panel-right-half {
-    padding-left: 10px;
+  &.form-panel-has-button {
+    display: block;
+    padding-bottom: 0;
   }
 }
 

@@ -40,10 +40,14 @@ div.container-fluid
         p(class="help-block" ng-show="tryoutForm.time.$invalid") This field is required
 
     // Categories
-    div.form-panel
+    div(class="form-panel form-panel-has-button")
       div.form-panel-group
+        
+        //- Repeat
         div(ng-repeat="categ in input.categories track by $index")
           ng-form(name="categoryForm")
+            
+            //- Form Title
             label(for="categ" ng-show="$first" class="text-center") Score Categories
             div(class="input-group")
               input(class="form-control" type="text" name="categ" ng-model="categ.field" placeholder="Enter score category" required)
@@ -51,8 +55,11 @@ div.container-fluid
               span(class="input-group-btn")
                 button(class="btn sportBtn-primary" type="button" ng-show="!$first" ng-click="input.removeField($index)")
                   i(class="fa fa-minus")
-            button(class="btn btn-sm" ng-show="$last" ng-click="input.addField()")
-              i(class="fa fa-plus")
+
+      // Add Categories Button
+      button(class="sportBtn-primary form-panel-btn-add" ng-click="input.addField()")
+        i(class="fa fa-plus")
+        span Add Categorie
     
     div(class="row col-md-6 col-md-offset-3")
       input(type="button" class="btn btn-md" ui-turn-on="cancelModal" value="Cancel" title="Cancel")
