@@ -72,14 +72,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
   margin-bottom: 15px;
-
-
-.sportRow{
-  display: inline;
 }
 .text-center {
   text-align: center;
-
+}
 
 // .text-center {
 //   text-align: center;
@@ -190,4 +186,5 @@ input {
 .sportRow {
   margin-bottom: 8px;
   height: 40px;
+  display: inline;
 }
