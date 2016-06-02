@@ -99,12 +99,6 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
     TryoutService.saveTotal(infoData, info.tryout_id);
   };
 
-  asc.reset = function() {
-    asc.player = angular.copy(original);
-    console.log(asc.player);
-    $scope.scoreForm.$setPristine();
-  };
-
   TryoutService.getOnePlayer(info);
 }]);
 
@@ -113,22 +107,12 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
 **********************************************************************************/
 app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
   var trc = this;
-
+  var today = new Date();
   trc.playerInfo = {
     tryout_id: ''
   };
   trc.displayTryout = TryoutService.data;
   trc.playerInfo.tryout_id = $routeParams.id;
-  //
-  var today = new Date(2016, 05, 30);
-  var notToday = new Date(2015, 05, 30);
-  if(today > notToday ){
-    console.log("True");
-  } else {
-    console.log('False');
-  }
-  console.log('newDate', today>TryoutService.data.val.date);
-  console.log(today<TryoutService.data.val.date);
 
   trc.reviewPlayer = function(playerData){
     trc.playerInfo.player_id = playerData.player_id;
@@ -206,7 +190,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
     tryout_id: ''
   };
 
-
   UserService.isAuthenticated(function(status, user) {
     if (status === true) {
       TryoutService.fetchTryouts();
@@ -227,7 +210,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
         TryoutService.inputTryout();
       };
 
-      console.log(user);
       if (user.guest === true) {
         TryoutService.fetchOneTryout(null, user.username, function(tryout) {
           hc.playerInfo.tryout_id = tryout._id;
@@ -238,7 +220,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
 
           TryoutService.scorePlayer(hc.playerInfo);
         };  //  trc.reviewPlayer
-
       }
     }
   });
@@ -250,12 +231,6 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
         var currentTemplate = $route.current.templateUrl;
         $templateCache.remove(currentTemplate);
         $route.reload();
-
-
-        // TODO RJM figure out what this call is trying to do
-        // UserService.guestLogin(hc.guest, function(status){});
-      } else {
-        console.log(':(');
       }
     });
   };
@@ -328,19 +303,13 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
     ec.tryoutData.val.categories.splice(id, 1);
   };  //  removeField
 
-  ec.reset = function() {
-    ec.tryoutData = angular.copy(originalData);
-    console.log(ec.tryoutData);
-    $scope.editForm.$setPristine();
-  };
-
   ec.back = function(){
     TryoutService.backToReview(ec.tryout_id);
-  };
+  };  //  back
 
   ec.saveEdits = function() {
     TryoutService.saveTryoutEdits(ec.tryoutData.val);
-  };
+  };  //  saveEdits
 
   TryoutService.fetchOneTryout(ec.tryout_id);
 }]);  //  ReviewController
@@ -375,8 +344,16 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
 /**********************************************************************************
                                   Archives
 **********************************************************************************/
-app.controller('ArchivesController', function(){
-});
+app.controller('ArchivesController', ['TryoutService', function(TryoutService){
+  var ac = this;
+  ac.displayArchivedTryouts = TryoutService.data;
+
+  ac.reviewTryout = function(tryout) {
+    TryoutService.reviewATryout(tryout);
+  };
+
+  TryoutService.fetchArchivedTryouts();
+}]);
 
 
 /**********************************************************************************

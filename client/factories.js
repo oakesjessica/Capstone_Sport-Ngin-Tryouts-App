@@ -25,7 +25,6 @@ app.factory('UserService', ['$http', function($http){
 
   var guestAuthentication = function(code, callback){
     $http.post('/auth/guest', code).then(function(response){
-      console.log('auth', response);
       user.guest = response.data.guest;
       callback(true);
     }, function(response) {
@@ -35,7 +34,6 @@ app.factory('UserService', ['$http', function($http){
 
   var guestLogin = function(code, callback) {
     $http.get('/app/view/home/'+ code).then(function(response) {
-      console.log('app', response);
       callback(true);
     }, function(response) {
       callback(false);
@@ -78,9 +76,29 @@ app.factory('TryoutService', ['$http', '$location', 'UserService', function($htt
 
   var fetchTryouts = function(){
     $http.get('/app/view/data').then(function(response){
-      data.val = response.data;
+      var today = new Date();
+      today.setDate(today.getDate() - 1);
+      today.setHours(0,0,0,0);
+
+      var yesterday = new Date(today);
+      data.val = response.data.filter(function(tryout) {
+        return Date.parse(tryout.date) > yesterday;
+      });
     });
   };  //  fetchTryouts
+
+  var fetchArchivedTryouts = function() {
+    $http.get('/app/view/data').then(function(response){
+      var today = new Date();
+      today.setDate(today.getDate() - 1);
+      today.setHours(0,0,0,0);
+
+      var yesterday = new Date(today);
+      data.val = response.data.filter(function(tryout) {
+        return Date.parse(tryout.date) <= yesterday;
+      });
+    });
+  };
 
   var deleteTryout = function(info) {
     $http.delete('/app/view/' + info._id).then(function(response) {
@@ -177,6 +195,7 @@ app.factory('TryoutService', ['$http', '$location', 'UserService', function($htt
     saveTryoutInfo: saveTryoutInfo,
     generateCode: generateCode,
     fetchTryouts: fetchTryouts,
+    fetchArchivedTryouts: fetchArchivedTryouts,
     deleteTryout: deleteTryout,
     savePlayersToDb: savePlayersToDb,
     scorePlayer: scorePlayer,

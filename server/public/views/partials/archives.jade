@@ -1,17 +1,16 @@
 div.container-fluid
-  h1 Archives
-  p Past Tryouts
-  table
+h1(class="text-center") Archived Tryouts
+table.table.table-striped
+  thead
     tr
-      td Name
-      td Date
-    tr
-      td 
-        a() Division I
-      td 3/24/2016
-    tr
-      td 
-        a() Division II
-      td 3/26/2016
-    
-    
+      th Name
+      th Date
+      th Time
+      th View Scores
+  tbody
+    tr(ng-repeat="tryout in archive.displayArchivedTryouts.val track by $index")
+      td {{ tryout.title }}
+      td {{ tryout.dateString }}
+      td {{ tryout.time }}
+      td
+        button(class="btn sportBtn" ng-click="archive.reviewTryout(tryout)") Review

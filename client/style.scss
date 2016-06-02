@@ -71,11 +71,17 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
+  margin-bottom: 15px;
 }
-
 .text-center {
   text-align: center;
 }
+
+// .text-center {
+//   text-align: center;
+//   width: 100%;
+//   display: block;
+// }
 
 .navbar-desktop {
   border-radius: 0;
@@ -99,10 +105,23 @@ h1, h2, h3, h4, h5, h6 {
   border: none;
   box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.25);
 }
+.navbar-default .navbar-text{
+  color: #13769C;
+}
 
 .help-block {
   font-size: 11px;
   color: $alert;
+}
+input {
+  margin-bottom: 15px;
+}
+.input-group{
+  min-width: 250px;
+  max-width: 251px;
+}
+.form-control {
+  width: 65%;
 }
 
 #loading-bar .bar {
@@ -243,4 +262,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 .navbar-default .navbar-nav>li>a {
     color: $highlight;
+}
+.form-group{
+  float: inherit;
+}
+.editBtn, .sportBtn {
+  background-color: #13AA37;
+  color: #505C63;
+  margin-top: 20px;
+}
+ .btn-md {
+  background-color: #13AA37;
+  color: #505C63;
+  margin-right: 20px;
+}
+.score {
+  margin: 0;
+}
+.sportRow {
+  margin-bottom: 8px;
+  height: 40px;
+  display: inline;
 }

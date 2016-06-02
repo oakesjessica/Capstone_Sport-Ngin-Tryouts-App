@@ -10,7 +10,7 @@ div(ui-content-for="modals")
           p Removing this tryout will delete it perminantly. Are you sure you would like to continue?
             
         div.modal-footer
-          button(ui-turn-off="deleteModal" class="btn btn-primary") Cancel
+          button(ui-turn-off="deleteModal" class="btn sportBtn") Cancel
           button(ui-turn-off="deleteModal" ng-click="home.deleteTryout(home.tryoutToDelete)" class="btn btn-danger") Delete
 
 
@@ -49,4 +49,4 @@ ul.list
 
 a(href="/archives") Archives
 
-button(class="btn btn-primary" ng-click="home.createNew()") Create new Tryout
+button(class="btn sportBtn" ng-click="home.createNew()") Create new Tryout

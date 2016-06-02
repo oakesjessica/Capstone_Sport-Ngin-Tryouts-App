@@ -11,6 +11,5 @@ div.container-fluid
         h4 Total {{ assign.calcTotal() }} 
         p {{ player.total }}
       
-      input(type="button" ng-click="assign.back()" value="Cancel")
-      input(type="button" ng-click="assign.reset()" value="Reset")
-      input(type="submit" ng-click="assign.saveScoresAndTotal(player)" value="Save")
+      input(class="sportBtn" type="button" ng-click="assign.back()" value="Cancel")
+      input(class="sportBtn" type="submit" ng-click="assign.saveScoresAndTotal(player)" value="Save")
