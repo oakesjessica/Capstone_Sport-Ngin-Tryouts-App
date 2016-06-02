@@ -75,6 +75,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .text-center {
   text-align: center;
+  display: block;
 }
 
 // .text-center {
@@ -113,16 +114,6 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 11px;
   color: $alert;
 }
-input {
-  margin-bottom: 15px;
-}
-.input-group{
-  min-width: 250px;
-  max-width: 251px;
-}
-.form-control {
-  width: 65%;
-}
 
 #loading-bar .bar {
   // background: $success !important;
@@ -148,7 +139,6 @@ input {
       background: #FAFAFA;
     }
   }
-
   .item-has-dropdown{
     width: calc(100% - 20px);
     display: inline-flex;
@@ -170,6 +160,13 @@ input {
     }
     &:hover {
       background: #F5F5F5;
+    }
+  }
+
+  .item-dropdown-container {
+    &:hover {
+      background: #FFF;
+      cursor: default !important;
     }
   }
 
@@ -205,6 +202,66 @@ input {
   .open>.dropdown-menu {
     display: block;
   }
+}
+
+// Form Panel
+
+.form-panel {
+  background: #FFF;
+  padding: 20px;
+  box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.25);
+  margin-bottom: 30px;
+  display: flex;
+
+  .form-panel-heading {
+    font-size: 16px;
+  }
+
+  .form-panel-group {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .form-panel-left-half {
+    padding-right: 10px;
+  }
+
+  .form-panel-right-half {
+    padding-left: 10px;
+  }
+}
+
+.playerAlias{
+  width: 10%;
+  display: inline;
+  margin-right: 5px;
+}
+.navbar-default .navbar-nav>li>a {
+    color: $highlight;
+}
+
+.sportBtn-primary {
+  background-color: #13AA37;
+  border: 1px solid #0F852B;
+  color: #FFF;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+ .btn-md {
+  background-color: #13AA37;
+  border: 1px solid #0F852B;
+  color: #FFF;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.score {
+  margin: 0;
+}
+.sportRow {
+  margin-bottom: 8px;
+  height: 40px;
+  display: inline;
 }
 
 
@@ -249,36 +306,4 @@ input {
     padding-top: 60px;
   }
 
-}
-.playerAlias{
-  width: 10%;
-  display: inline;
-  margin-right: 5px;
-}
-.navbar-default .navbar-nav>li>a {
-    color: $highlight;
-}
-.form-group{
-  float: inherit;
-}
-.sportBtn-primary {
-  background-color: #13AA37;
-  border: 1px solid #0F852B;
-  color: #FFF;
-  text-transform: uppercase;
-  font-weight: 500;
-}
- .btn-md {
-  background-color: #13AA37;
-  color: #505C63;
-  margin-right: 20px;
-}
-
-.score {
-  margin: 0;
-}
-.sportRow {
-  margin-bottom: 8px;
-  height: 40px;
-  display: inline;
 }
