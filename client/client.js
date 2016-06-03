@@ -210,6 +210,11 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
         TryoutService.inputTryout();
       };
 
+      hc.editTryout = function(id) {
+        TryoutService.editThisTryout(id);
+      };
+
+
       if (user.guest === true) {
         TryoutService.fetchOneTryout(null, user.username, function(tryout) {
           hc.playerInfo.tryout_id = tryout._id;
@@ -287,16 +292,31 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
 /**********************************************************************************
                                   Edit Tryout
 **********************************************************************************/
-app.controller('EditController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope) {
+app.controller('EditController', ['TryoutService', 'UserService', '$routeParams', '$location', '$scope', function(TryoutService, UserService, $routeParams, $location, $scope) {
+
+  // Check if logged in
+  UserService.isAuthenticated(function(status, user) {
+    if(status == false) {
+      $location.path('/');
+    }
+  })
   var ec = this;
-  var originalData = TryoutService.data;
-  ec.tryoutData = originalData;
+  ec.tryoutData = TryoutService.data;
   ec.tryout_id = $routeParams.id;
-  var num = ec.tryoutData.val.categories.length+1;
+  ec.num = {};
+
+
+  console.log('About to run fetchOneTryout');
+
+  TryoutService.fetchOneTryout($routeParams.id, null, function() {
+    ec.num = originalData.tryoutData.val.categories.length+1;
+  });
+
+
 
   ec.addField = function() {
-    num += 1;
-    ec.tryoutData.val.categories.push({'id':num});
+    ec.num += 1;
+    ec.tryoutData.val.categories.push({'id':ec.num});
   };  //  addFields
 
   ec.removeField = function(id) {
@@ -311,7 +331,6 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
     TryoutService.saveTryoutEdits(ec.tryoutData.val);
   };  //  saveEdits
 
-  TryoutService.fetchOneTryout(ec.tryout_id);
 }]);  //  ReviewController
 
 /**********************************************************************************

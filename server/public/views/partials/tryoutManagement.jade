@@ -15,38 +15,35 @@ div(ui-content-for="modals")
 
 
 div.container-fluid
-h1(class="text-center") Tryout Management
-p(class="text-center") Upcoming Tryouts
+  h1(class="text-center") Tryout Management
+  p(class="text-center") Upcoming Tryouts
 
+  ul.list
+    li.list-header
+      span.col-xs-6 Tryout Name
+      span.col-xs-3 Date
+      span.col-xs-2 Time
+      
+    li(ng-repeat="tryout in home.tryouts.val track by $index")
+      div(class="item item-has-dropdown" ng-click="home.reviewTryout(tryout)")
+        p.col-xs-6 {{tryout.title}}
+        p.col-xs-3 {{tryout.dateString}}
+        p.col-xs-2 {{tryout.time}}
+      div(class="item item-dropdown-button" id="list-dropdown" ui-turn-on="dropdown{{$index}}")
+        i(class="fa fa-ellipsis-v item-dropdown-icon" aria-hidden="true")
+          
+        ul(class="list list-dropdown-menu" id="dropdown{{$index}}" aria-labelledby="list-dropdown" ui-outer-click="Ui.turnOff('dropdown{{$index}}')" ui-outer-click-if="Ui.active('dropdown{{$index}}')" ui-show="dropdown{{$index}}" ui-state="dropdown{{$index}}" ui-turn-off="dropdown{{$index}}")
+          li(class="list-dropdown-item" ng-if="!tryout.code") Get code
+          
+          li(class="list-dropdown-item list-dropdown-container" ng-if="tryout.code")
+            p.text-center Code
+            input(type="text" class="form-control" value="{{tryout.code}}" readonly )
+            
+          li(class="list-dropdown-item" ng-click="home.editTryout(tryout._id)") Edit
+          li(class="list-dropdown-item" ui-turn-on="deleteModal" ng-click="home.tryoutToDelete = tryout") 
+            i(class="fa fa-trash")
+            span Delete
+          
+  a(href="/archives") Archives
 
-
-
-ul.list
-  li(ng-repeat="tryout in home.tryouts.val track by $index")
-    div(class="item item-has-dropdown" ng-click="home.reviewTryout(tryout)")
-      p.col-xs-7 {{tryout.title}}
-      p.col-xs-2 {{tryout.dateString}}
-      p.col-xs-1 {{tryout.time}}
-      div.col-xs-1
-        button(ng-if="!tryout.code" class="btn btn-success" ng-click="home.generateGuestCode(tryout)") Get Code
-        span(ng-if="tryout.code") {{tryout.code}}
-      div.col-xs-1
-        button(ui-turn-on="deleteModal" class="btn" ng-click="home.tryoutToDelete = tryout")
-          i(class="fa fa-trash")
-    div(class="item item-dropdown-button" id="list-dropdown" ui-turn-on="dropdown{{$index}}")
-      i(class="fa fa-ellipsis-v item-dropdown-icon" aria-hidden="true")
-        
-      ul(class="list list-dropdown-menu" id="dropdown{{$index}}" aria-labelledby="list-dropdown" ui-outer-click="Ui.turnOff('dropdown{{$index}}')" ui-outer-click-if="Ui.active('dropdown{{$index}}')" ui-show="dropdown{{$index}}" ui-state="dropdown{{$index}}" ui-turn-off="dropdown{{$index}}")
-        li.list-dropdown-item Edit
-        li.list-dropdown-item Delete
-
-
-
-
-
-
-
-
-a(href="/archives") Archives
-
-button(class="btn sportBtn-primary" ng-click="home.createNew()") Create new Tryout
+  button(class="btn btn-spt-primary" ng-click="home.createNew()") Create new Tryout

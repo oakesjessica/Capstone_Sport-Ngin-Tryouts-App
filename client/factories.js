@@ -130,6 +130,7 @@ app.factory('TryoutService', ['$http', '$location', 'UserService', function($htt
   };  //  getOnePlayer
 
   var fetchOneTryout = function(id, code, callback){
+    console.log('fetchOneTryout');
     if(id === null) {
       console.log('Enter code fetch. Code', code);
       $http.get('/app/view/tryout/guest/' + code).then(function(response) {

@@ -17,33 +17,54 @@ div.container-fluid
   h1(class="text-center") Tryout Information
   
   ng-form(role="form" name="tryoutForm")
-    div(class="form-group row col-md-6 col-md-offset-3")
-      label(for="title") Tryout Title
-      input(class="form-control" type="text" name="title" placeholder="Enter Tryout Title" ng-model="input.tryout.title" required)
-      p(class="help-block" ng-show="tryoutForm.title.$invalid") This field is required
     
-    div(class="form-group row col-md-3 col-md-offset-3")
-      label(for="tryoutDate") Date
-      input(class="form-control" type="text" name="date" pick-a-date="input.currDate" placeholder="Pick a date" ng-model="input.tryout.date" required)
-      p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
-      
-    div(class="form-group row col-md-3 col-md-offset-3")
-      label(for="tryoutTime") Time
-      input(class="form-control" type="text" name="time" pick-a-time="input.currTime" pick-a-time-options="{interval:15, min:[7, 30], max:[21,0]}" placeholder="Enter time" ng-model="input.tryout.time" required)
-      p(class="help-block" ng-show="tryoutForm.time.$invalid") This field is required
+    // Title
+    div.form-panel
+      div.form-panel-group
+        label(for="title" class="text-center form-panel-heading") Tryout Title
+        input(class="form-control" type="text" name="title" placeholder="Enter Tryout Title" ng-model="input.tryout.title" required)
+        p(class="help-block" ng-show="tryoutForm.title.$invalid") This field is required
+    
+    // Date
+    div.form-panel
+      div.form-panel-group
+        label(for="tryoutDate" class="text-center form-panel-heading") Date
+        input(class="form-control" type="text" name="date" pick-a-date="input.currDate" placeholder="Pick a date" ng-model="input.tryout.date" required)
+        p(class="help-block" ng-show="tryoutForm.date.$invalid") This field is required
+        
+    // Time
+    div.form-panel
+      div.form-panel-group
+        label(for="tryoutTime" class="text-center form-panel-heading") Time
+        input(class="form-control" type="text" name="time" pick-a-time="input.currTime" pick-a-time-options="{interval:15, min:[7, 30], max:[21,0]}" placeholder="Enter time" ng-model="input.tryout.time" required)
+        p(class="help-block" ng-show="tryoutForm.time.$invalid") This field is required
 
-    div(class="form-group row col-md-7 col-md-offset-3" ng-repeat="categ in input.categories track by $index")
-      ng-form(name="categoryForm")
-        label(for="categ" ng-show="$first") Score Categories
-        div(class="input-group")
-          input(class="form-control" type="text" name="categ" ng-model="categ.field" placeholder="Enter score category" required)
-          p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
-          span(class="input-group-btn")
-            button(class="btn sportBtn-primary" type="button" ng-show="!$first" ng-click="input.removeField($index)")
-              i(class="fa fa-minus")
-        button(class="btn btn-sm" ng-show="$last" ng-click="input.addField()")
-          i(class="fa fa-plus")
+    // Categories
+    div(class="form-panel form-panel-has-button")
+      div.form-panel-group
+        
+        //- Repeat
+        div(ng-repeat="categ in input.categories track by $index")
+          ng-form(name="categoryForm")
+            
+            //- Form Title
+            label(for="categ" ng-show="$first" class="text-center form-panel-heading") Score Categories
+            
+            div(class="form-panel-category" ng-show="$first")
+              input(class="form-control" type="text" name="categ" ng-model="categ.field" placeholder="Enter score category" required)
+              p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
+                
+            div(class="input-group form-panel-category" ng-show="!$first")
+              input(class="form-control" type="text" name="categ" ng-model="categ.field" placeholder="Enter score category" required)
+              p(class="help-block" ng-show="tryoutForm.categ.$invalid") This field cannot be empty
+              span(class="input-group-btn")
+                button(class="btn sportBtn-primary" type="button" ng-show="!$first" ng-click="input.removeField($index)")
+                  i(class="fa fa-minus")
+
+      // Add Categories Button
+      button(class="btn form-panel-btn-add" ng-click="input.addField()")
+        i(class="fa fa-plus form-panel-btn-icon")
+        span Add Category
     
-    div(class="row col-md-6 col-md-offset-3")
-      input(type="button" class="btn btn-md" ui-turn-on="cancelModal" value="Cancel" title="Cancel")
-      input(type="submit" class="btn btn-md" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")
+    input(type="button" class="btn btn-spt-default" ui-turn-on="cancelModal" value="Cancel" title="Cancel")
+    input(type="submit" class="btn btn-spt-primary" ng-disabled="tryoutForm.$invalid" ng-click="input.submitInfo()" value="Save" title="Submit")
