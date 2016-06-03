@@ -19,6 +19,11 @@ div.container-fluid
   p(class="text-center") Upcoming Tryouts
 
   ul.list
+    li.list-header
+      span.col-xs-6 Tryout Name
+      span.col-xs-3 Date
+      span.col-xs-2 Time
+      
     li(ng-repeat="tryout in home.tryouts.val track by $index")
       div(class="item item-has-dropdown" ng-click="home.reviewTryout(tryout)")
         p.col-xs-6 {{tryout.title}}
