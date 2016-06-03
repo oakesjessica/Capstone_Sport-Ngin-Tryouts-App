@@ -7,18 +7,18 @@ div.container-fluid
     p Scoring categories: 
       span(ng-repeat="categ in home.tryouts.val.categories")
         span.label.label-success {{ categ.field }}{{$last ? '' : ($index == home.tryouts.val.categories.length-2) ? ', and ' : ', '}}
-    
-    h5 Players
-    
+    div(class="row")
+      h5(class="col-xs-9") Players
+      h5(class="col-xs-2 text-center") Total Score
     ul.list
       li(ng-repeat="player in home.tryouts.val.players track by $index")
         div(class="item" ng-click="home.reviewPlayer(player)")
           p(class="col-xs-3") # {{player.jerseyNum}}
           
-          p(class="col-xs-7") {{player.profiles.first_name}} {{player.profiles.last_name}}
+          p(class="col-xs-7") 
           div(class="col-xs-2")
             span(ng-if="!player.total") --
-            span(ng-if="player.total") {{player.total}}
+            span(ng-if="player.total")  {{player.total}}
 
   else
     h3(class="text-center") Tryout: {{ review.displayTryout.val.title }}
