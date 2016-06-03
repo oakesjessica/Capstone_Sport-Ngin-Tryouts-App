@@ -210,6 +210,11 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
         TryoutService.inputTryout();
       };
 
+      hc.editTryout = function(id) {
+        TryoutService.editThisTryout(id);
+      };
+
+
       if (user.guest === true) {
         TryoutService.fetchOneTryout(null, user.username, function(tryout) {
           hc.playerInfo.tryout_id = tryout._id;
@@ -289,10 +294,17 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
 **********************************************************************************/
 app.controller('EditController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope) {
   var ec = this;
-  var originalData = TryoutService.data;
-  ec.tryoutData = originalData;
+  ec.tryoutData = TryoutService.data;
   ec.tryout_id = $routeParams.id;
-  var num = ec.tryoutData.val.categories.length+1;
+
+
+  console.log('About to run fetchOneTryout');
+
+  TryoutService.fetchOneTryout($routeParams.id, null, function() {
+    var num = originalData.tryoutData.val.categories.length+1;
+  });
+
+
 
   ec.addField = function() {
     num += 1;
@@ -311,7 +323,6 @@ app.controller('EditController', ['TryoutService', '$routeParams', '$scope', fun
     TryoutService.saveTryoutEdits(ec.tryoutData.val);
   };  //  saveEdits
 
-  TryoutService.fetchOneTryout(ec.tryout_id);
 }]);  //  ReviewController
 
 /**********************************************************************************
