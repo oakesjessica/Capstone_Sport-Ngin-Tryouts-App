@@ -318,6 +318,13 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
+/*---------------------    Inputs     --------------------*/
+
+// Override angular form validation
+.ng-invalid {
+  border-color: #ea322f !important;
+}
+
 .score {
   margin: 0;
 }

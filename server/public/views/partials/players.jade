@@ -1,9 +1,13 @@
 div.container-fluid
-  h1 Players
-  p Assign Player Jersey Numbers
-  p Warning! Please complete this page before leaving
-    div(class="form-group row" ng-repeat="player in num.playersList.val") 
-      input(class="form-control playerAlias" type="text" name="playerAlias" maxlength="2" ng-model="player.alias")
-      p {{player.qu_el_3797779}} {{player.qu_el_3797780}} (Division: {{player.qu_el_3797961}})
+  h1.text-center Players
+  p.text-center Assign Player Jersey Numbers
+  
+  
+  div(class="form-panel" ng-repeat="player in num.playersList.val") 
+    div.form-panel-group
+      p.text-center.form-panel-heading {{player.qu_el_3797779}} {{player.qu_el_3797780}} (Division: {{player.qu_el_3797961}})
+      input(class="form-control" type="text" name="playerAlias" maxlength="3" ng-model="player.alias" placeholder="Jersy Number")
 
-button(class="btn sportBtn-primary" ng-click="num.savePlayers()") Save
+  p.text-danger.text-center Warning! Please complete this page before leaving
+
+  button(class="btn sportBtn-primary" ng-click="num.savePlayers()") Save
