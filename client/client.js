@@ -292,7 +292,14 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
 /**********************************************************************************
                                   Edit Tryout
 **********************************************************************************/
-app.controller('EditController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope) {
+app.controller('EditController', ['TryoutService', 'UserService', '$routeParams', '$location', '$scope', function(TryoutService, UserService, $routeParams, $location, $scope) {
+
+  // Check if logged in
+  UserService.isAuthenticated(function(status, user) {
+    if(status == false) {
+      $location.path('/');
+    }
+  })
   var ec = this;
   ec.tryoutData = TryoutService.data;
   ec.tryout_id = $routeParams.id;
