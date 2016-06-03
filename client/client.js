@@ -303,19 +303,20 @@ app.controller('EditController', ['TryoutService', 'UserService', '$routeParams'
   var ec = this;
   ec.tryoutData = TryoutService.data;
   ec.tryout_id = $routeParams.id;
+  ec.num = {};
 
 
   console.log('About to run fetchOneTryout');
 
   TryoutService.fetchOneTryout($routeParams.id, null, function() {
-    var num = originalData.tryoutData.val.categories.length+1;
+    ec.num = originalData.tryoutData.val.categories.length+1;
   });
 
 
 
   ec.addField = function() {
-    num += 1;
-    ec.tryoutData.val.categories.push({'id':num});
+    ec.num += 1;
+    ec.tryoutData.val.categories.push({'id':ec.num});
   };  //  addFields
 
   ec.removeField = function(id) {
