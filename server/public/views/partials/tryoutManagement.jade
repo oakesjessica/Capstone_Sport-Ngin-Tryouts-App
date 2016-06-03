@@ -24,6 +24,8 @@ div.container-fluid
       span.col-xs-3 Date
       span.col-xs-2 Time
       
+      
+      
     li(ng-repeat="tryout in home.tryouts.val track by $index")
       div(class="item item-has-dropdown" ng-click="home.reviewTryout(tryout)")
         p.col-xs-6 {{tryout.title}}
@@ -44,6 +46,7 @@ div.container-fluid
             i(class="fa fa-trash")
             span Delete
           
-  a(href="/archives") Archives
+  a(href="/archives")
+    button(class="btn btn-spt-default") Archives
 
   button(class="btn btn-spt-primary" ng-click="home.createNew()") Create new Tryout
