@@ -66,8 +66,16 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 /**********************************************************************************
                                 Score Player
 **********************************************************************************/
-app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope){
+app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scope', 'UserService', '$location', function(TryoutService, $routeParams, $scope, UserService, $location){
   var asc = this;
+
+  UserService.isAuthenticated(function(status, user) {
+    if(status == false) {
+      $location.path('/');
+    }
+  });
+
+
   asc.player = TryoutService.data;
   var original = TryoutService.data;
 
@@ -105,8 +113,15 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
 /**********************************************************************************
                               Review Tryout Information
 **********************************************************************************/
-app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
+app.controller('TryoutReviewController', ['$routeParams', 'TryoutService','UserService','$location', function($routeParams, TryoutService, UserService, $location){
   var trc = this;
+
+  UserService.isAuthenticated(function(status, user) {
+    if(status == false) {
+      $location.path('/');
+    }
+  })
+
   var today = new Date();
   trc.playerInfo = {
     tryout_id: ''
@@ -363,8 +378,15 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
 /**********************************************************************************
                                   Archives
 **********************************************************************************/
-app.controller('ArchivesController', ['TryoutService', function(TryoutService){
+app.controller('ArchivesController', ['TryoutService', 'UserService', '$location', function(TryoutService, UserService, $location){
   var ac = this;
+
+  UserService.isAuthenticated(function(status, user) {
+    if(status == false) {
+      $location.path('/');
+    }
+  })
+
   ac.displayArchivedTryouts = TryoutService.data;
 
   ac.reviewTryout = function(tryout) {
