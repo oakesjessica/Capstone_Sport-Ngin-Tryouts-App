@@ -231,7 +231,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     height: 50px;
     background: #F5F5F5;
-    border-color: #F5F5F5;
+    border: none;
     color: #333;
     width: calc(100% + 40px);
     margin-left: -20px;
@@ -260,19 +260,45 @@ h1, h2, h3, h4, h5, h6 {
     color: $highlight;
 }
 
-.sportBtn-primary {
+
+/*-----------   Buttons   ------------*/
+.btn-spt-primary {
   background-color: #13AA37;
   border: 1px solid #0F852B;
   color: #FFF;
   text-transform: uppercase;
   font-weight: 500;
+
+  &:hover {
+    border-color: #15682b;
+    color: #FFF;
+  }
+
+  &:disabled {
+    background: #FFF;
+    border-color: #e0e1e2;
+    color: #babbbc;
+  }
 }
- .btn-md {
-  background-color: #13AA37;
-  border: 1px solid #0F852B;
-  color: #FFF;
+
+ .btn-spt-default {
+  background-color: #FFF;
+  border: 1px solid #BABABA;
+  color: #646769;
   text-transform: uppercase;
   font-weight: 500;
+
+  &:hover {
+    border-color: #8e8f91;
+    color: #646769;
+  }
+
+  &:disabled {
+    background: #FFF;
+    border-color: #e0e1e2;
+    color: #babbbc;
+  }
+
 }
 
 .score {
