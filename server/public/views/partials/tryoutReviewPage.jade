@@ -4,9 +4,9 @@ div.container-fluid
     h1(class="text-center"){{ home.tryouts.val.title }}
     p.text-center 
       span(class="fa fa-calendar-o fa-icon-group" aria-hidden="true")
-      {{ review.displayTryout.val.dateString }} |
+      {{ home.tryouts.val.dateString }} |
       span(class="fa fa-clock-o fa-icon-group" aria-hidden="true")
-      {{ review.displayTryout.val.time }}
+      {{ home.tryouts.val.time }}
     p Scoring categories: 
       span(ng-repeat="categ in home.tryouts.val.categories")
         span.label.label-success {{ categ.field }}{{$last ? '' : ($index == home.tryouts.val.categories.length-2) ? ', and ' : ', '}}

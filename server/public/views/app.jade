@@ -39,7 +39,7 @@ html(ng-app="tryoutsApp")
     div(ui-yield-to="modals")
         
     // Sidebar
-    div(class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
+    div(class="sidebar sidebar-left sidebar-spt" toggleable parent-active-class="sidebar-left-in" id="uiSidebarLeft")
       h1(class="app-name" ng-if="!app.user.data.username") Menu
       h1(class="app-name" ng-if="app.user.data.username") {{app.user.data.first_name}} {{app.user.data.last_name}}
       h1(class="app-name" ng-if="app.user.data.guest") Guest
