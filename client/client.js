@@ -70,7 +70,7 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
   var asc = this;
 
   UserService.isAuthenticated(function(status, user) {
-    if(status == false) {
+    if(status === false) {
       $location.path('/');
     }
   });
@@ -126,10 +126,10 @@ app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', 'cfpL
   var trc = this;
 
   UserService.isAuthenticated(function(status, user) {
-    if(status == false) {
+    if(status === false) {
       $location.path('/');
     }
-  })
+  });
 
   var today = new Date();
   trc.playerInfo = {
