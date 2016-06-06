@@ -44,7 +44,19 @@ router.get('/tryout', function(req, res){
 }); //  router.get('/tryout')
 
 router.get('/scoreplayer', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'));
+  if (req.isAuthenticated()) {
+    console.log(req.user);
+
+    console.log();
+    if(req.user.guest === false) {
+      console.log('\n\n\n\n\n\n\nhit guest score player route');
+      res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'), {});
+    } else {
+      res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'), { guest: true });
+    }
+  } else {
+    res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'));
+  }
 }); //  router.get('/scoreplayer')
 
 router.get('/archives', function(req, res){
