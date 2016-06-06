@@ -32,7 +32,7 @@ div.container-fluid
       div(class="item item-dropdown-button" id="list-dropdown" ui-turn-on="dropdown{{$index}}")
         i(class="fa fa-ellipsis-v item-dropdown-icon" aria-hidden="true")
           
-        ul(class="list list-dropdown-menu" id="dropdown{{$index}}" aria-labelledby="list-dropdown" ui-outer-click="Ui.turnOff('dropdown{{$index}}')" ui-outer-click-if="Ui.active('dropdown{{$index}}')" ui-show="dropdown{{$index}}" ui-state="dropdown{{$index}}" ui-turn-off="dropdown{{$index}}")
+        ul(class="list list-dropdown-menu" id="dropdown{{$index}}" aria-labelledby="list-dropdown" ui-outer-click="Ui.turnOff('dropdown' + $index)" ui-outer-click-if="Ui.active('dropdown' + $index)" ui-show="dropdown{{$index}}" ui-state="dropdown{{$index}}" ui-turn-off="dropdown{{$index}}")
           li(class="list-dropdown-item" ng-if="!tryout.code" ng-click="home.generateGuestCode(tryout)") Get code
           
           li(class="list-dropdown-item list-dropdown-container" ng-if="tryout.code")
