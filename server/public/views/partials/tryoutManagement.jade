@@ -19,10 +19,10 @@ div.container-fluid
   p(class="text-center") Upcoming Tryouts
 
   ul.list
-    li.list-header
-      span.col-xs-6 Tryout Name
-      span.col-xs-3 Date
-      span.col-xs-2 Time
+    //- li.list-header
+    //-   span.col-xs-6 Tryout Name
+    //-   span.col-xs-3 Date
+    //-   span.col-xs-2 Time
       
       
       
@@ -35,18 +35,19 @@ div.container-fluid
         i(class="fa fa-ellipsis-v item-dropdown-icon" aria-hidden="true")
           
         ul(class="list list-dropdown-menu" id="dropdown{{$index}}" aria-labelledby="list-dropdown" ui-outer-click="Ui.turnOff('dropdown' + $index)" ui-outer-click-if="Ui.active('dropdown' + $index)" ui-show="dropdown{{$index}}" ui-state="dropdown{{$index}}" ui-turn-off="dropdown{{$index}}")
-          li(class="list-dropdown-item" ng-if="!tryout.code" ng-click="home.generateGuestCode(tryout)") Get code
+          li(class="list-dropdown-item" ng-if="!tryout.code" ng-click="home.generateGuestCode(tryout)")
+            i(class="fa fa-share-square-o fa-icon-group" aria-hidden="true")
+            span Get code
           
           li(class="list-dropdown-item list-dropdown-container" ng-if="tryout.code")
             p.text-center Code
             input(type="text" class="form-control" value="{{tryout.code}}" readonly )
             
-          li(class="list-dropdown-item" ng-click="home.editTryout(tryout._id)") Edit
+          li(class="list-dropdown-item" ng-click="home.editTryout(tryout._id)")
+            i(class="fa fa-pencil-square-o fa-icon-group" aria-hidden="true")
+            span Edit
           li(class="list-dropdown-item" ui-turn-on="deleteModal" ng-click="home.tryoutToDelete = tryout") 
-            i(class="fa fa-trash")
+            i(class="fa fa-trash-o fa-icon-group")
             span Delete
-          
-  a(href="/archives")
-    button(class="btn btn-spt-default") Archives
-
-  button(class="btn btn-spt-primary" ng-click="home.createNew()") Create new Tryout
+  a(href="/archives" class="btn btn-spt-default") Archives
+  button(class="btn btn-spt-primary btn-spt-group" ng-click="home.createNew()") Create new Tryout

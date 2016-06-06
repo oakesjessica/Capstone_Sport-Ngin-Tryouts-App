@@ -78,6 +78,16 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   display: block;
 }
+
+.title-icon {
+  font-size: 24px;
+  padding:10px;
+}
+
+.fa-icon-group {
+  padding-left: 5px;
+  padding-right: 5px;
+}
 .navbar-desktop {
   border-radius: 0;
   height: 80px;
@@ -280,7 +290,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   font-weight: 500;
 
-  &:hover {
+  &:hover, &:active, &:focus {
     border-color: #15682b;
     color: #FFF;
   }
@@ -292,7 +302,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
- .btn-spt-default {
+.btn-spt-default {
   background-color: #FFF;
   border: 1px solid #BABABA;
   color: #646769;
@@ -310,6 +320,10 @@ h1, h2, h3, h4, h5, h6 {
     color: #babbbc;
   }
 
+}
+
+.btn-spt-group {
+  margin-left: 5px;
 }
 
 /*---------------------    Inputs     --------------------*/

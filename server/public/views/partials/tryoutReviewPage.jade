@@ -1,9 +1,12 @@
 div.container-fluid
   
   if guest
-    h3(class="text-center") Tryout: {{ home.tryouts.val.title }}
-
-    p {{ home.tryouts.val.dateString }} @ {{ home.tryouts.val.time }}
+    h1(class="text-center"){{ home.tryouts.val.title }}
+    p.text-center 
+      span(class="fa fa-calendar-o fa-icon-group" aria-hidden="true")
+      {{ review.displayTryout.val.dateString }} |
+      span(class="fa fa-clock-o fa-icon-group" aria-hidden="true")
+      {{ review.displayTryout.val.time }}
     p Scoring categories: 
       span(ng-repeat="categ in home.tryouts.val.categories")
         span.label.label-success {{ categ.field }}{{$last ? '' : ($index == home.tryouts.val.categories.length-2) ? ', and ' : ', '}}
@@ -21,15 +24,20 @@ div.container-fluid
             span(ng-if="player.total")  {{player.total}}
 
   else
-    h3(class="text-center") Tryout: {{ review.displayTryout.val.title }}
+    h1(class="text-center"){{ review.displayTryout.val.title }}
+      a
+        span(class="fa fa-pencil-square-o title-icon" aria-hidden="true" ng-click="review.editTryout()")
 
-    button(class="btn btn-md" ng-click="review.editTryout()") Edit Tryout
-    p {{ review.displayTryout.val.dateString }} @ {{ review.displayTryout.val.time }}
+
+    p.text-center 
+      span(class="fa fa-calendar-o fa-icon-group" aria-hidden="true")
+      {{ review.displayTryout.val.dateString }} |
+      span(class="fa fa-clock-o fa-icon-group" aria-hidden="true")
+      {{ review.displayTryout.val.time }}
     p Scoring categories: 
       span(ng-repeat="categ in review.displayTryout.val.categories")
         span.label.label-success {{ categ.field }}{{$last ? '' : ($index == review.displayTryout.val.categories.length-2) ? ', and ' : ', '}}
     
-    p Select a player to begin scoring
     
     ul.list
       li(ng-repeat="player in review.displayTryout.val.players track by $index")
