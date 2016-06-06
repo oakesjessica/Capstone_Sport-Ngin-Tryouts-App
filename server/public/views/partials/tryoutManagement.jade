@@ -41,7 +41,7 @@ div.container-fluid
           
           li(class="list-dropdown-item list-dropdown-container" ng-if="tryout.code")
             p.text-center Code
-            input(type="text" class="form-control" value="{{tryout.code}}" readonly )
+            input(type="text" class="form-control" value="{{tryout.code}}" readonly select-on-click )
             
           li(class="list-dropdown-item" ng-click="home.editTryout(tryout._id)")
             i(class="fa fa-pencil-square-o fa-icon-group" aria-hidden="true")

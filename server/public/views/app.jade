@@ -72,7 +72,7 @@ html(ng-app="tryoutsApp")
               p(class="navbar-text" ng-if="app.user.data.first_name") Hello, {{app.user.data.first_name}} {{app.user.data.last_name}}
               p(class="navbar-text" ng-if="app.user.data.guest") Guest
             li
-              a(href="/logout") Logout
+              a(href="/logout" class="navbar-logout") Logout
                 
       // Mobile Navbar    
       div(class="navbar navbar-app navbar-absolute-top navbar-mobile")
