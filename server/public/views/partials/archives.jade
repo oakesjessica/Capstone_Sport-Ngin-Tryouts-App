@@ -10,8 +10,8 @@ div(ui-content-for="modals")
           p Removing this tryout will delete it perminantly. Are you sure you would like to continue?
             
         div.modal-footer
-          button(ui-turn-off="deleteModal" class="btn sportBtn") Cancel
-          button(ui-turn-off="deleteModal" ng-click="archive.deleteTryout(home.tryoutToDelete)" class="btn btn-danger") Delete
+          button(ui-turn-off="deleteModal" class="btn btn-spt-default") Cancel
+          button(ui-turn-off="deleteModal" ng-click="archive.deleteTryout(home.tryoutToDelete)" class="btn btn-spt-default") Delete
 
 
 
@@ -28,5 +28,5 @@ div.container-fluid
           
         ul(class="list list-dropdown-menu" id="dropdown{{$index}}" aria-labelledby="list-dropdown" ui-outer-click="Ui.turnOff('dropdown' + $index)" ui-outer-click-if="Ui.active('dropdown' + $index)" ui-show="dropdown{{$index}}" ui-state="dropdown{{$index}}" ui-turn-off="dropdown{{$index}}")
           li(class="list-dropdown-item" ui-turn-on="deleteModal" ng-click="home.tryoutToDelete = tryout")
-            i(class="fa fa-trash")
+            i(class="fa fa-trash fa-icon-group")
             span Delete
