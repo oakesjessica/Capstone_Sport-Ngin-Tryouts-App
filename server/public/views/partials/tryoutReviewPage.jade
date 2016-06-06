@@ -9,7 +9,7 @@ div.container-fluid
       {{ home.tryouts.val.time }}
     p Scoring categories: 
       span(ng-repeat="categ in home.tryouts.val.categories")
-        span.label.label-success {{ categ.field }}{{$last ? '' : ($index == home.tryouts.val.categories.length-2) ? ', and ' : ', '}}
+        span.label.label-success.cat-label {{ categ.field }}
     div(class="row")
       h5(class="col-xs-9") Players
       h5(class="col-xs-2 text-center") Total Score
@@ -36,7 +36,7 @@ div.container-fluid
       {{ review.displayTryout.val.time }}
     p Scoring categories: 
       span(ng-repeat="categ in review.displayTryout.val.categories")
-        span.label.label-success {{ categ.field }}{{$last ? '' : ($index == review.displayTryout.val.categories.length-2) ? ', and ' : ', '}}
+        span.label.label-success.cat-label {{ categ.field }}
     
     
     ul.list
