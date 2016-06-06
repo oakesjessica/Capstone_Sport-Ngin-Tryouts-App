@@ -346,6 +346,17 @@ input{
     display: none !important;
   }
 
+  .navbar-brand {
+    margin-right: inherit;
+    margin-top: -10px;
+  }
+
+  .navbar-logo {
+    margin-left: auto;
+    margin-right: auto;
+    width: 335px;
+  }
+
   .scrollable, .sidebar {
     display: none !important;
   }
@@ -371,6 +382,12 @@ input{
 
   .has-navbar-top .app-body {
     padding-top: 60px;
+  }
+
+  .navbar-brand>img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
 }
