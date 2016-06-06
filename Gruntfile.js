@@ -45,6 +45,8 @@ module.exports = function(grunt) {
                    "angular-route/angular-route.min.js",
                    "angular-route/angular-route.min.js.map",
                    "angular-ui-router/release/angular-ui-router.min.js",
+                   "angular-ui-bootstrap/dist/ui-bootstrap.js",
+                   "angular-ui-bootstrap/dist/ui-bootstrap-tpls.js",
                    "bootstrap/dist/js/bootstrap.min.js",
                    "bootstrap/dist/css/bootstrap.min.css",
                    "bootstrap/dist/css/bootstrap.min.css.map",
@@ -80,6 +82,8 @@ module.exports = function(grunt) {
                    "pickadate/lib/compressed/themes/classic.css",
                    "pickadate/lib/compressed/themes/classic.date.css",
                    "pickadate/lib/compressed/themes/classic.time.css",
+                   "font-awesome/css/font-awesome.min.css",
+                   "font-awesome/fonts/*"
                ],
                "dest": "server/public/vendor/"
            }

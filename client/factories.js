@@ -15,7 +15,7 @@ app.factory('UserService', ['$http', function($http){
     $http.get('/auth/check').then(function(response) {
       if(response.data.success === true) {
         user.data = response.data.user;
-        callback(true, response.data);
+        callback(true, response.data.user);
       } else {
         user.data = response.data;
         callback(false);
@@ -25,8 +25,15 @@ app.factory('UserService', ['$http', function($http){
 
   var guestAuthentication = function(code, callback){
     $http.post('/auth/guest', code).then(function(response){
-      console.log(response);
       user.guest = response.data.guest;
+      callback(true);
+    }, function(response) {
+      callback(false);
+    });
+  };
+
+  var guestLogin = function(code, callback) {
+    $http.get('/app/view/home/'+ code).then(function(response) {
       callback(true);
     }, function(response) {
       callback(false);
@@ -37,7 +44,8 @@ app.factory('UserService', ['$http', function($http){
     user: user,
     logout: logout,
     isAuthenticated: isAuthenticated,
-    guestAuthentication: guestAuthentication
+    guestAuthentication: guestAuthentication,
+    guestLogin: guestLogin
   };
 }]);
 
@@ -45,7 +53,7 @@ app.factory('UserService', ['$http', function($http){
 /*******************************************************************************
                           Tryout Service
 *******************************************************************************/
-app.factory('TryoutService', ['$http', '$location', function($http, $location) {
+app.factory('TryoutService', ['$http', '$location', 'UserService', function($http, $location, UserService) {
   var data = {};
 
   var saveTryoutInfo = function(data) {
@@ -68,9 +76,29 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
 
   var fetchTryouts = function(){
     $http.get('/app/view/data').then(function(response){
-      data.val = response.data;
+      var today = new Date();
+      today.setDate(today.getDate() - 1);
+      today.setHours(0,0,0,0);
+
+      var yesterday = new Date(today);
+      data.val = response.data.filter(function(tryout) {
+        return Date.parse(tryout.date) > yesterday;
+      });
     });
   };  //  fetchTryouts
+
+  var fetchArchivedTryouts = function() {
+    $http.get('/app/view/data').then(function(response){
+      var today = new Date();
+      today.setDate(today.getDate() - 1);
+      today.setHours(0,0,0,0);
+
+      var yesterday = new Date(today);
+      data.val = response.data.filter(function(tryout) {
+        return Date.parse(tryout.date) <= yesterday;
+      });
+    });
+  };
 
   var deleteTryout = function(info) {
     $http.delete('/app/view/' + info._id).then(function(response) {
@@ -101,15 +129,36 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     });
   };  //  getOnePlayer
 
-  var fetchOneTryout = function(id){
-    $http.get('/app/view/tryout/get/' + id).then(function(response){
-      data.val = response.data;
-    });
+  var fetchOneTryout = function(id, code, callback){
+    // console.log('fetchOneTryout');
+    if(id === null) {
+      console.log('Enter code fetch. Code', code);
+      $http.get('/app/view/tryout/guest/' + code).then(function(response) {
+        data.val = response.data;
+        data.val.players.sort(function(a, b) {
+          return a.jerseyNum - b.jerseyNum;
+        });
+        callback(response.data);
+      });
+    } else {
+      $http.get('/app/view/tryout/get/' + id).then(function(response){
+        data.val = response.data;
+        data.val.players.sort(function(a, b) {
+          return a.jerseyNum - b.jerseyNum;
+        });
+      });
+    }
   };  //  fetchOneTryout
 
   var saveTotal = function(info, id) {
     $http.put('/app/view/scoreplayer/' + id, info).then(function(response) {
-      $location.path('/tryout/' + id);
+      UserService.isAuthenticated(function(status, user) {
+        if(user.guest === true) {
+          $location.path('/');
+        } else {
+          $location.path('/tryout/' + id);
+        }
+      });
     });
   };  //  saveTotals
 
@@ -123,13 +172,29 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
   };  //  inputTryout
 
   var editThisTryout = function(id) {
-    console.log(id);
     $location.path('/edit/' + id);
-  };
+  };  //  editThisTryout
 
   var saveTryoutEdits = function(info) {
     $http.put('/app/view/edit/' + info._id, info).then(function(response) {
-      console.log(response);
+
+      UserService.isAuthenticated(function(status, user) {
+        if(user.guest === true) {
+          $location.path('/');
+        } else {
+          $location.path('/tryout/' + info._id);
+        }
+      });
+    });
+  };  //  saveTryoutEdits
+
+  var backToReview = function(id){
+    UserService.isAuthenticated(function(status, user) {
+      if (user.guest === true) {
+        $location.path('/');
+      } else {
+        $location.path('/tryout/' + id);
+      }
     });
   };
 
@@ -137,6 +202,7 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     saveTryoutInfo: saveTryoutInfo,
     generateCode: generateCode,
     fetchTryouts: fetchTryouts,
+    fetchArchivedTryouts: fetchArchivedTryouts,
     deleteTryout: deleteTryout,
     savePlayersToDb: savePlayersToDb,
     scorePlayer: scorePlayer,
@@ -148,6 +214,21 @@ app.factory('TryoutService', ['$http', '$location', function($http, $location) {
     inputTryout: inputTryout,
     editThisTryout: editThisTryout,
     saveTryoutEdits: saveTryoutEdits,
+    backToReview: backToReview,
     data: data
   };
+}]);
+
+app.directive('selectOnClick', ['$window', function ($window) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.on('click', function () {
+                if (!$window.getSelection().toString()) {
+                    // Required for mobile Safari
+                    this.setSelectionRange(0, this.value.length)
+                }
+            });
+        }
+    };
 }]);

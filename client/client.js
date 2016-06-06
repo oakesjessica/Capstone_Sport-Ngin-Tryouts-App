@@ -6,12 +6,12 @@ var app = angular.module('tryoutsApp', ['ngRoute', 'angular-loading-bar', 'mobil
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '/app/view/',
+      templateUrl: '/app/view/home',
       controller: 'HomeController',
       controllerAs: 'home'
     })
     .when('/logout', {
-      templateUrl: '/app/view/',
+      templateUrl: '/app/view/home',
       controller: 'LogoutController',
       controllerAs: 'logout'
     })
@@ -54,20 +54,39 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $locationProvider.html5Mode(true);
 }]);  //  app.config
 
+
+// Loading Bar
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeSpinner = false;
+}])
+
 /*=================================================================================
                                     Controllers
 =================================================================================*/
 /**********************************************************************************
                                 Score Player
 **********************************************************************************/
-app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope){
+app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scope', '$timeout', 'cfpLoadingBar','UserService', '$location', function(TryoutService, $routeParams, $scope, $timeout, cfpLoadingBar, UserService, $location){
   var asc = this;
+
+  UserService.isAuthenticated(function(status, user) {
+    if(status === false) {
+      $location.path('/');
+    }
+  });
+
+
   asc.player = TryoutService.data;
   var original = TryoutService.data;
+
 
   var info = {
     player_id: $routeParams.player,
     tryout_id: $routeParams.id
+  };
+
+  asc.back = function(){
+    TryoutService.backToReview(info.tryout_id);
   };
 
   asc.calcTotal = function() {
@@ -88,20 +107,31 @@ app.controller('AssignScoreController', ['TryoutService', '$routeParams', '$scop
     TryoutService.saveTotal(infoData, info.tryout_id);
   };
 
-  asc.reset = function() {
-    asc.player = angular.copy(original);
-    console.log(asc.player);
-    $scope.scoreForm.$setPristine();
-  };
-
   TryoutService.getOnePlayer(info);
+
+  // fake the initial load so first time users can see the bar right away:
+  cfpLoadingBar.start();
+  asc.fakeIntro = true;
+  $timeout(function() {
+    cfpLoadingBar.complete();
+    asc.fakeIntro = false;
+  }, 1250);
+
 }]);
 
 /**********************************************************************************
                               Review Tryout Information
 **********************************************************************************/
-app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
+app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', 'cfpLoadingBar', '$timeout','UserService','$location', function($routeParams, TryoutService, cfpLoadingBar, $timeout, UserService, $location){
   var trc = this;
+
+  UserService.isAuthenticated(function(status, user) {
+    if(status === false) {
+      $location.path('/');
+    }
+  });
+
+  var today = new Date();
   trc.playerInfo = {
     tryout_id: ''
   };
@@ -120,13 +150,22 @@ app.controller('TryoutReviewController', ['$routeParams', 'TryoutService', funct
 
 
   TryoutService.fetchOneTryout(trc.playerInfo.tryout_id);
-}]);  //  TryoutReviewController
+
+  // fake the initial load so first time users can see the bar right away:
+  cfpLoadingBar.start();
+  trc.fakeIntro = true;
+  $timeout(function() {
+    cfpLoadingBar.complete();
+    trc.fakeIntro = false;
+  }, 1250);
+
+  }]);  //  TryoutReviewController
 
 
 /**********************************************************************************
                           Assign Player a Jersey Number
 **********************************************************************************/
-app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', function($routeParams, TryoutService){
+app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', 'cfpLoadingBar', '$timeout', function($routeParams, TryoutService, cfpLoadingBar, $timeout){
   var pc = this;
 
   pc.playerProfiles = [];
@@ -155,6 +194,15 @@ app.controller('PlayerNumberController', ['$routeParams', 'TryoutService', funct
   };  //  back
 
   TryoutService.getPlayers();
+
+  // fake the initial load so first time users can see the bar right away:
+  cfpLoadingBar.start();
+  pc.fakeIntro = true;
+  $timeout(function() {
+    cfpLoadingBar.complete();
+    pc.fakeIntro = false;
+  }, 1250);
+
 }]);
 
 
@@ -173,14 +221,18 @@ app.controller('AppController', ['UserService', function(UserService) {
 /**********************************************************************************
                                 HomePage
 **********************************************************************************/
-app.controller('HomeController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar){
+app.controller('HomeController', ['$http','UserService', 'TryoutService', '$location', '$timeout', 'cfpLoadingBar', '$route', '$templateCache', function($http, UserService, TryoutService, $location, $timeout, cfpLoadingBar, $route, $templateCache){
   var hc = this;
   hc.tryouts = [];
   hc.guest = {};
   hc.tryoutToDelete = {};
   hc.tryouts = TryoutService.data;
 
-  UserService.isAuthenticated(function(status) {
+  hc.playerInfo = {
+    tryout_id: ''
+  };
+
+  UserService.isAuthenticated(function(status, user) {
     if (status === true) {
       TryoutService.fetchTryouts();
 
@@ -199,15 +251,33 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
       hc.createNew = function() {
         TryoutService.inputTryout();
       };
+
+      hc.editTryout = function(id) {
+        TryoutService.editThisTryout(id);
+      };
+
+
+      if (user.guest === true) {
+        TryoutService.fetchOneTryout(null, user.username, function(tryout) {
+          hc.playerInfo.tryout_id = tryout._id;
+        });
+
+        hc.reviewPlayer = function(playerData){
+          hc.playerInfo.player_id = playerData.player_id;
+
+          TryoutService.scorePlayer(hc.playerInfo);
+        };  //  trc.reviewPlayer
+      }
     }
   });
 
   hc.guestLogin = function(){
     UserService.guestAuthentication(hc.guest, function(status) {
       if(status === true) {
-        console.log('Code worked!');
-      } else {
-        console.log(':(');
+        console.log("about to reload");
+        var currentTemplate = $route.current.templateUrl;
+        $templateCache.remove(currentTemplate);
+        $route.reload();
       }
     });
   };
@@ -225,7 +295,7 @@ app.controller('HomeController', ['$http','UserService', 'TryoutService', '$loca
 /**********************************************************************************
                             Tryout Input Form
 **********************************************************************************/
-app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location', '$routeParams', function(TryoutService, UserService, $location, $routeParams) {
+app.controller('TryoutInputController', ['TryoutService', 'UserService', '$location', '$routeParams', 'cfpLoadingBar', '$timeout', function(TryoutService, UserService, $location, $routeParams, cfpLoadingBar, $timeout) {
   var tic = this;
 
   UserService.isAuthenticated(function(status) {
@@ -233,7 +303,7 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
       var num = 1;
       tic.tryout = {};
       tic.categories = [{'id': 1}];
-      tic.currDate = new Date();
+      tic.today = new Date();
 
       tic.addField = function() {
         num += 1;
@@ -258,46 +328,82 @@ app.controller('TryoutInputController', ['TryoutService', 'UserService', '$locat
     }
   }); //  UserService
 
+  // fake the initial load so first time users can see the bar right away:
+  cfpLoadingBar.start();
+  tic.fakeIntro = true;
+  $timeout(function() {
+    cfpLoadingBar.complete();
+    tic.fakeIntro = false;
+  }, 1250);
+
+
 }]); //  TryoutInputController
 
 
 /**********************************************************************************
                                   Edit Tryout
 **********************************************************************************/
-app.controller('EditController', ['TryoutService', '$routeParams', '$scope', function(TryoutService, $routeParams, $scope) {
+app.controller('EditController', ['TryoutService', 'UserService', '$routeParams', '$location', '$scope', 'cfpLoadingBar', '$timeout', function(TryoutService, UserService, $routeParams, $location, $scope, cfpLoadingBar, $timeout) {
+
+  // Check if logged in
+  UserService.isAuthenticated(function(status, user) {
+    if(status == false) {
+      $location.path('/');
+    }
+  })
   var ec = this;
-  var originalData = TryoutService.data;
-  ec.tryoutData = originalData;
+  ec.tryoutData = TryoutService.data;
   ec.tryout_id = $routeParams.id;
-  var num = ec.tryoutData.val.categories.length+1;
-  console.log(ec.tryout_id);
+  ec.num = {};
+
+
+  console.log('About to run fetchOneTryout');
+
+  TryoutService.fetchOneTryout($routeParams.id, null, function() {
+    ec.num = originalData.tryoutData.val.categories.length+1;
+  });
+
+
 
   ec.addField = function() {
-    num += 1;
-    ec.tryoutData.val.categories.push({'id':num});
+    ec.num += 1;
+    ec.tryoutData.val.categories.push({'id':ec.num});
   };  //  addFields
 
   ec.removeField = function(id) {
     ec.tryoutData.val.categories.splice(id, 1);
   };  //  removeField
 
-  ec.reset = function() {
-    ec.tryoutData = angular.copy(originalData);
-    console.log(ec.tryoutData);
-    $scope.editForm.$setPristine();
-  };
+  ec.back = function(){
+    TryoutService.backToReview(ec.tryout_id);
+  };  //  back
 
   ec.saveEdits = function() {
     TryoutService.saveTryoutEdits(ec.tryoutData.val);
+  };  //  saveEdits
+
+  ec.startLoad = function() {
+    cfpLoadingBar.start();
   };
 
-  TryoutService.fetchOneTryout(ec.tryout_id);
+  ec.completeLoad = function() {
+    cfpLoadingBar.complete();
+  }
+
+  // fake the initial load so first time users can see the bar right away:
+  ec.startLoad();
+  ec.fakeIntro = true;
+  $timeout(function() {
+    ec.completeLoad();
+    ec.fakeIntro = false;
+  }, 1250);
+
 }]);  //  ReviewController
 
 /**********************************************************************************
                                   Logout
 **********************************************************************************/
-app.controller('LogoutController', ['UserService', '$templateCache','$location', function(UserService, $templateCache, $location) {
+app.controller('LogoutController', ['UserService', '$templateCache','$location', 'cfpLoadingBar', '$timeout', function(UserService, $templateCache, $location, cfpLoadingBar, $timeout) {
   var vm = this;
 
   // Remove cached page
@@ -307,21 +413,65 @@ app.controller('LogoutController', ['UserService', '$templateCache','$location',
   UserService.isAuthenticated(function(status) {
     if (status === true) {
       UserService.logout(function() {
-        // Redirect
-        $location.path('/');
+        UserService.isAuthenticated(function(status) {
+          console.log(status);
+          // Redirect
+          $location.path('/');
+
+        });
       });
     } else {
       // Redirect
       $location.path('/');
     }
   }); //  UserService.isAuthenticated
+
+  // fake the initial load so first time users can see the bar right away:
+  cfpLoadingBar.start();
+  vm.fakeIntro = true;
+  $timeout(function() {
+    cfpLoadingBar.complete();
+    vm.fakeIntro = false;
+  }, 1250);
+
 }]);  //  LogoutController
 
 /**********************************************************************************
                                   Archives
 **********************************************************************************/
-app.controller('ArchivesController', function(){
-});
+app.controller('ArchivesController', ['TryoutService', 'cfpLoadingBar', '$timeout','UserService', '$location', function(TryoutService, cfpLoadingBar, $timeout, UserService, $location){
+  var ac = this;
+
+  UserService.isAuthenticated(function(status, user) {
+    if(status == false) {
+      $location.path('/');
+    }
+  })
+
+  ac.displayArchivedTryouts = TryoutService.data;
+
+  ac.reviewTryout = function(tryout) {
+    TryoutService.reviewATryout(tryout);
+  };
+
+  TryoutService.fetchArchivedTryouts();
+
+  ac.startLoad = function() {
+    cfpLoadingBar.start();
+  };
+
+  ac.completeLoad = function() {
+    cfpLoadingBar.complete();
+  }
+
+  // fake the initial load so first time users can see the bar right away:
+  ac.startLoad();
+  ac.fakeIntro = true;
+  $timeout(function() {
+    ac.completeLoad();
+    ac.fakeIntro = false;
+  }, 1250);
+}]);
 
 
 /**********************************************************************************

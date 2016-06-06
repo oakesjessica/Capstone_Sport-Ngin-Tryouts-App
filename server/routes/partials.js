@@ -10,15 +10,22 @@ var moment = require('moment');
 var request = require('request');
 var code = require('../../modules/alphaNumRandomizer');
 var addCateg = require('../../modules/playerCategories');
+var updateCateg = require('../../modules/updateCategories');
 var Tryout = require('../../models/tryout');
 
-router.get('/', function(req, res){
+
+router.get('/home/', function(req, res) {
   if(req.isAuthenticated()){
-    res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
+
+    if(req.user.guest === false) {
+      res.render(path.join(__dirname, '../public/views/partials/tryoutManagement.jade'));
+    } else {
+      res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'), req.user);
+    }
   } else {
     res.render(path.join(__dirname, '../public/views/partials/login.jade'));
   }
-}); //  router.get('/')
+});
 
 router.get('/new', function(req, res) {
   res.render(path.join(__dirname, '../public/views/partials/newTryout.jade'));
@@ -33,11 +40,23 @@ router.get('/players', function(req, res) {
 }); //  router.get('/players')
 
 router.get('/tryout', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'));
+  res.render(path.join(__dirname, '../public/views/partials/tryoutReviewPage.jade'), { guest: false });
 }); //  router.get('/tryout')
 
 router.get('/scoreplayer', function(req, res){
-  res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'));
+  if (req.isAuthenticated()) {
+    console.log(req.user);
+
+    console.log();
+    if(req.user.guest === false) {
+      console.log('\n\n\n\n\n\n\nhit guest score player route');
+      res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'), {});
+    } else {
+      res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'), { guest: true });
+    }
+  } else {
+    res.render(path.join(__dirname, '../public/views/partials/scorePlayer.jade'));
+  }
 }); //  router.get('/scoreplayer')
 
 router.get('/archives', function(req, res){
@@ -126,14 +145,17 @@ router.put('/edit/:id', function(req, res) {
   var tryout_id = req.params.id;
   console.log(req.params.id);
   console.log(req.body);
-  console.log(moment(req.body.dateString).format());
-
+  // console.log(moment(req.body.dateString).format());
+  var playerUpdates = updateCateg.add(req.body.players, req.body.categories);
   Tryout.update({'_id': tryout_id}, {
     '$set': {
       'title': req.body.title,
       'time': req.body.time,
       'dateString': req.body.dateString,
-      'categories': req.body.categories
+      'categories': req.body.categories,
+      'players': playerUpdates,
+      'date': new Date(req.body.dateString)
+
     }
   }, { new: true }, function(err, tryout) {
     if (err) {
@@ -183,6 +205,7 @@ router.get('/edit/:id', function(req, res) {
       console.log('Error fetching tryout to edit', err);
       res.status(500).send(err);
     } else {
+      console.log('Successfully fetched tryout to edit');
       res.status(200).send(tryout);
     }
   }); //  Tryout.find
@@ -282,6 +305,21 @@ router.get('/tryout/get/:id', function(req,res){
       res.status(500).send(err);
     } else{
       console.log("Successfully retrieved tryout");
+      res.status(200).send(tryout);
+    } //  else
+  }); //  Tryout.findOne
+}); //  request.get('/tryout/get/:id')
+
+router.get('/tryout/guest/:code', function(req,res){
+  var code = req.params.code;
+
+  Tryout.findOne({'code': code}, function(err, tryout){
+    if(err){
+      console.log(err);
+      res.status(500).send(err);
+    } else{
+      console.log("Successfully retrieved tryout");
+      console.log(tryout);
       res.status(200).send(tryout);
     } //  else
   }); //  Tryout.findOne
