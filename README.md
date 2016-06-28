@@ -15,9 +15,13 @@ TODO: Write History
 
 ##Current Contributers
 [Taylor Ashton](https://github.com/tashton1009)
+
 [Jennifer Johnson](https://github.com/jenjeep7)
+
 [Jessica Oakes](https://github.com/oakesjessica)
+
 [Chris Rabuse](https://github.com/Mandosis)
+
 [Chris Tuttle](https://github.com/crisco679)
 
 ##License
