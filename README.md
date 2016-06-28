@@ -3,7 +3,8 @@ Located in Nordeast Minneapolis, Sport Ngin builds applications and services to 
 
 
 ##Installation
-`git clone` `URL/SSH link`
+`git clone URL/SSH link`
+
 `npm install`
 
 ##Usage
